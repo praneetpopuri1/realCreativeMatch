@@ -1,0 +1,108 @@
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignIn">
+
+    <TextView
+        android:id="@+id/signInText"
+        style="@style/myEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_extralight"
+        android:text="Sign Up"
+        android:textSize="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.041" />
+
+    <TextView
+        android:id="@+id/usernameTextView"
+        style="@style/myEditText"
+        android:layout_width="89dp"
+        android:layout_height="39dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Username"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="170dp" />
+
+    <EditText
+        android:id="@+id/usernameET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=""
+
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="227dp" />
+    <!--
+    create an onfocus to change the background tint later
+    -->
+    <TextView
+        android:id="@+id/emailTextView"
+        style="@style/myEditText"
+        android:layout_width="54dp"
+        android:layout_height="38dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Email"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="312dp" />
+
+    <EditText
+        android:id="@+id/emailET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=""
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="375dp" />
+    <!--
+        create an onfocus to change the background tint later
+        -->
+
+    <TextView
+        android:id="@+id/passwordTextView"
+        style="@style/myEditText"
+        android:layout_width="97dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Password"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="449dp" />
+
+    <EditText
+        android:id="@+id/passwordET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=""
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="513dp" />
+
+    <TextView
+        android:id="@+id/nameTextView"
+        style="@style/myEditText"
+        android:layout_width="97dp"
+        android:layout_height="30dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Name"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="592dp" />
+
+    <EditText
+        android:id="@+id/nameET"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint=""
+        android:inputType="textPersonName"
+        tools:layout_editor_absoluteX="46dp"
+        tools:layout_editor_absoluteY="655dp" />
+</androidx.constraintlayout.widget.ConstraintLayout>

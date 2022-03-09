@@ -13,4 +13,12 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+    <style name="myEditText">
+        <item name="android:textSize">@dimen/fontSz</item>
+        <item name="android:layout_width">@dimen/etWidth</item>
+        <item name="android:layout_height">@dimen/etHeight</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_marginTop">@dimen/topMarginBetweenET</item>
+    </style>
 </resources>

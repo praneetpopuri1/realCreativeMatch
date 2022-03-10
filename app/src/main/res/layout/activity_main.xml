@@ -6,24 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!--suppress AndroidDomInspection -->
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="173dp"
-        android:layout_height="41dp"
-        android:text="Hello World!"
+        android:id="@+id/titleTextView"
+        android:layout_width="302dp"
+        android:layout_height="65dp"
+        android:gravity="center"
+        android:text="Meet Fellow Artists"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.185" />
+        app:layout_constraintVertical_bias="0.159" />
+
+    <!--suppress AndroidDomInspection -->
 
     <Button
         android:id="@+id/logInButton"
         android:layout_width="135dp"
         android:layout_height="52dp"
-        android:layout_marginTop="460dp"
+        android:layout_marginTop="408dp"
         android:text="Log In"
-        app:cornerRadius="15"
+        app:cornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -32,14 +38,24 @@
         android:id="@+id/signInButton"
         android:layout_width="143dp"
         android:layout_height="52dp"
-        android:layout_marginTop="296dp"
+        android:layout_marginTop="280dp"
         android:text="Sign In"
         android:textColor="#FFFFFF"
-        app:cornerRadius="15"
+        app:cornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="508dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.527"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ligntingbulb" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

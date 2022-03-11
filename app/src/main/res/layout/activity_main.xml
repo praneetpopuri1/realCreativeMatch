@@ -39,6 +39,7 @@
         android:layout_width="143dp"
         android:layout_height="52dp"
         android:layout_marginTop="240dp"
+        android:onClick="goSignUp"
         android:text="Sign In"
         android:textColor="#FFFFFF"
         app:cornerRadius="15dp"

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FirebaseHelper {
+    public final String TAG = "Denna";
     private static String uid = null;            // var will be updated for currently signed in user
     // inside MainActivity with the mAuth var
     private FirebaseAuth mAuth;
@@ -37,7 +38,7 @@ public class FirebaseHelper {
 
         return mAuth;
     }
-
+/*
     public void attachReadDataToUser() {
         // need to put stuff here
         if (getmAuth().getCurrentUser() != null){
@@ -50,6 +51,8 @@ public class FirebaseHelper {
             });
         }
     }
+
+ */
 
 
     public void addUserToFirestore(String name, String newUID) {
@@ -87,6 +90,10 @@ public class FirebaseHelper {
 
 
     }
+    public void updateUid(String uid) {
+
+    }
+    /*
 
     public void addData(WishListItem wish) {
         //add a wishlist item to the data
@@ -152,12 +159,12 @@ public class FirebaseHelper {
 
     }
 
-    /* https://www.youtube.com/watch?v=0ofkvm97i0s
+     https://www.youtube.com/watch?v=0ofkvm97i0s
     This video is good!!!   Basically he talks about what it means for tasks to be asychronous
     and how you can create an interface and then using that interface pass an object of the interface
     type from a callback method and access it after the callback method.  It also allows you to delay
     certain things from occuring until after the onSuccess is finished.
-     */
+
 
     private void readData(FirestoreCallback firestoreCallback) {
         myItems.clear();  //clears out the array list so it gets a fresh copy of the data
@@ -192,4 +199,6 @@ public class FirebaseHelper {
     public interface FirestoreCallback {
         void onCallback (ArrayList<WishListItem> myList);
     }
+
+     */
 }

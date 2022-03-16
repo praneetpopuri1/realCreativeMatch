@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".surveyActivity">
+
+    <RadioGroup
+        android:id="@+id/radioGroupOne"
+        android:layout_width="79dp"
+        android:layout_height="139dp"
+        tools:layout_editor_absoluteX="151dp"
+        tools:layout_editor_absoluteY="132dp">
+
+        <RadioButton
+            android:id="@+id/radio_three"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="checkButton"
+            android:text="three"
+            tools:layout_editor_absoluteX="275dp"
+            tools:layout_editor_absoluteY="151dp" />
+
+        <RadioButton
+            android:id="@+id/radio_two"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="checkButton"
+            android:text="two"
+            tools:layout_editor_absoluteX="186dp"
+            tools:layout_editor_absoluteY="151dp" />
+
+        <RadioButton
+            android:id="@+id/radio_one"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="checkButton"
+            android:text="one"
+            tools:layout_editor_absoluteX="107dp"
+            tools:layout_editor_absoluteY="151dp" />
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/text_view_selected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your selection"
+        android:textSize="@dimen/fontSz"
+        tools:layout_editor_absoluteX="150dp"
+        tools:layout_editor_absoluteY="28dp" />
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

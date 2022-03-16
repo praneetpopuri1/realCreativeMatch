@@ -35,7 +35,7 @@ public class signIn extends AppCompatActivity {
         // Get user data
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
-
+        Log.i(TAG,  email + " " + password);
         // verify all user data is entered
         if (email.length() == 0 || password.length() == 0) {
             Toast.makeText(getApplicationContext(), "Enter all fields", Toast.LENGTH_SHORT).show();
@@ -48,7 +48,7 @@ public class signIn extends AppCompatActivity {
         else {
 
             // code to sign in user
-            firebaseHelper.getmAuth().createUserWithEmailAndPassword(email,password)
+            firebaseHelper.getmAuth().signInWithEmailAndPassword(email,password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {

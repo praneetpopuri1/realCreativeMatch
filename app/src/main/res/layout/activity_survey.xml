@@ -6,122 +6,213 @@
     android:layout_height="wrap_content"
     android:fillViewport="true">
 
-<androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
 
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:context=".surveyActivity">
-
-
-    <LinearLayout
-
-        android:id="@+id/radioGroupOne"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="120dp"
+        android:layout_height="wrap_content"
+        tools:context=".surveyActivity">
+
+
+        <LinearLayout
+
+            android:id="@+id/radioGroupTwo"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginBottom="80dp"
+            app:layout_constraintBottom_toTopOf="@+id/radioGroupThree"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RadioButton
+                android:id="@+id/radio_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="one" />
+
+            <RadioButton
+                android:id="@+id/radio_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="two" />
+
+            <RadioButton
+                android:id="@+id/radio_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="three" />
+
+            <RadioButton
+                android:id="@+id/radio_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="four" />
+
+            <RadioButton
+                android:id="@+id/radio_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="five" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/radioGroupOne"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:layout_marginBottom="92dp"
+            app:layout_constraintBottom_toTopOf="@+id/radioGroupTwo"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <RadioButton
+                android:id="@+id/radio_eleven"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="one" />
+
+            <RadioButton
+                android:id="@+id/radio_twelve"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="two" />
+
+            <RadioButton
+                android:id="@+id/radio_thirteen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="three" />
+
+            <RadioButton
+                android:id="@+id/radio_fourteen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="four" />
+
+            <RadioButton
+                android:id="@+id/radio_fifteen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="five" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/radioGroupThree"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:layout_editor_absoluteY="480dp">
+
+            <RadioButton
+                android:id="@+id/radio_twenty_one"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="one" />
+
+            <RadioButton
+                android:id="@+id/radio_twenty_two"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="two" />
+
+            <RadioButton
+                android:id="@+id/radio_twenty_three"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="three" />
+
+            <RadioButton
+                android:id="@+id/radio_twenty_four"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="four" />
+
+            <RadioButton
+                android:id="@+id/radio_twenty_five"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="checkButton"
+                android:text="five" />
+
+
+        </LinearLayout>
+
+        <TextView
+        android:id="@+id/intro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
+        android:text="Real Quick Questions"
+        android:textSize="@dimen/titleFontSz"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <RadioButton
-            android:id="@+id/radio_one"
+    <TextView
+        android:id="@+id/firstQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="How Likely on a Friday Night will you go out to party"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroupTwo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/secondQuestion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:text="How Likely on a Friday Night will you go out to party"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroupOne"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/secondQuestion2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="one" />
-
-        <RadioButton
-            android:id="@+id/radio_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="two" />
-
-        <RadioButton
-            android:id="@+id/radio_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="three" />
-
-        <RadioButton
-            android:id="@+id/radio_four"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="four" />
-
-        <RadioButton
-            android:id="@+id/radio_five"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="five" />
+            android:layout_marginBottom="36dp"
+            android:text="How Likely on a Friday Night will you go out to party"
+            app:layout_constraintBottom_toTopOf="@+id/radioGroupThree"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.492"
+            app:layout_constraintStart_toStartOf="parent" />
 
 
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/radioGroupOne"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="55dp">
-
-        <RadioButton
-            android:id="@+id/radio_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="one" />
-
-        <RadioButton
-            android:id="@+id/radio_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="two" />
-
-        <RadioButton
-            android:id="@+id/radio_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="three" />
-
-        <RadioButton
-            android:id="@+id/radio_four"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="four" />
-
-        <RadioButton
-            android:id="@+id/radio_five"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:onClick="checkButton"
-            android:text="five" />
-
-
-    </LinearLayout>
-
-
-
-
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

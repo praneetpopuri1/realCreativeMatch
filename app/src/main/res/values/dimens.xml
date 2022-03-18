@@ -4,6 +4,7 @@
     <dimen name="margin">10dp</dimen>
     <dimen name="etWidth">280dp</dimen>
     <dimen name="etHeight">50dp</dimen>
+    <dimen name="titleFontSz">25sp</dimen>
     <dimen name="fontSz">16sp</dimen>
     <dimen name="buttonFontSz">14sp</dimen>
     <dimen name="topMarginBetweenET">30dp</dimen>

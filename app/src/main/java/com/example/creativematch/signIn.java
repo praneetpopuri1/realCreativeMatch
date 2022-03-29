@@ -3,6 +3,7 @@ package com.example.creativematch;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -58,8 +59,8 @@ public class signIn extends AppCompatActivity {
 
 
 
-                                //Intent intent = new Intent(signUp.this, AddItemActivity.class);
-                                //start(intent);
+                                Intent intent = new Intent(signIn.this, surveyActivity.class);
+                                startActivity(intent);
                             }
                             else{
                                 Log.d(TAG, "sign In failed for " + email + " " + password);

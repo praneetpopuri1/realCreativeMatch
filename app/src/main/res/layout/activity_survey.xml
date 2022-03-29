@@ -23,14 +23,15 @@
             app:layout_constraintBottom_toTopOf="@+id/radioGroupThree"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/intro"
+            app:layout_constraintVertical_bias="1.0">
 
             <RadioButton
                 android:id="@+id/radio_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
                 android:text="one" />
 
             <RadioButton
@@ -38,7 +39,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
                 android:text="two" />
 
             <RadioButton
@@ -46,7 +46,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
                 android:text="three" />
 
             <RadioButton
@@ -54,7 +53,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
                 android:text="four" />
 
             <RadioButton
@@ -62,7 +60,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
                 android:text="five" />
 
 
@@ -74,15 +71,20 @@
             android:layout_height="65dp"
             android:layout_marginBottom="92dp"
             android:orientation="horizontal"
+
             app:layout_constraintBottom_toTopOf="@+id/radioGroupTwo"
-            app:layout_constraintStart_toStartOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/intro"
+            app:layout_constraintVertical_bias="1.0">
 
             <RadioButton
                 android:id="@+id/radio_eleven"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="one" />
 
             <RadioButton
@@ -90,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="two" />
 
             <RadioButton
@@ -98,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="three" />
 
             <RadioButton
@@ -106,7 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="four" />
 
             <RadioButton
@@ -114,7 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="five" />
 
 
@@ -124,18 +126,20 @@
             android:id="@+id/radioGroupThree"
             android:layout_width="match_parent"
             android:layout_height="65dp"
+            android:layout_marginTop="408dp"
             android:orientation="horizontal"
+            android:onClick="onRadioButtonClicked"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="480dp">
+            app:layout_constraintTop_toBottomOf="@+id/intro">
 
             <RadioButton
                 android:id="@+id/radio_twenty_one"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="one" />
 
             <RadioButton
@@ -143,7 +147,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="two" />
 
             <RadioButton
@@ -151,7 +155,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="three" />
 
             <RadioButton
@@ -159,7 +163,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="four" />
 
             <RadioButton
@@ -167,7 +171,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:onClick="checkButton"
+                android:onClick="onRadioButtonClicked"
                 android:text="five" />
 
 

@@ -78,7 +78,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/intro"
             app:layout_constraintVertical_bias="1.0">
-
             <RadioButton
                 android:id="@+id/radio_eleven"
                 android:layout_width="wrap_content"
@@ -209,16 +208,28 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/secondQuestion2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:text="How Likely on a Friday Night will you go out to party"
+        app:layout_constraintBottom_toTopOf="@+id/radioGroupThree"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
         <TextView
-            android:id="@+id/secondQuestion2"
+            android:id="@+id/secondQuestion3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="36dp"
+            android:layout_marginTop="164dp"
             android:text="How Likely on a Friday Night will you go out to party"
-            app:layout_constraintBottom_toTopOf="@+id/radioGroupThree"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.492"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintHorizontal_bias="0.898"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/radioGroupThree" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

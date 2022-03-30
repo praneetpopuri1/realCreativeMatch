@@ -25,12 +25,14 @@ public class surveyActivity extends AppCompatActivity {
 
 
     }
-
+    // this function only needs to run for the last radio group because it iterates through all of them
+    // that is true but if someone switches one of there answers then it doesn't work out
     public void onRadioButtonClicked(View view) {
 
         RadioGroup rbOne = (RadioGroup) findViewById(R.id.radioGroupOne);
         //https://stackoverflow.com/questions/16561247/collecting-data-from-multiple-radio-button-groups-in-android
         int childCount = rbOne.getChildCount();
+        extraversion = 0;
         // gets how many buttons are in the radio group
         // iterates through every radio button to see if checked
         // if checked then adds whatever number the i is which will be relative to whatever the order is sequenced
@@ -39,14 +41,14 @@ public class surveyActivity extends AppCompatActivity {
 
         for (int i = 0; i < childCount; i++) {
             View v = rbOne.getChildAt(i);
-
             if (v instanceof RadioButton)
                 if (((RadioButton) v).isChecked())
-                    lExtraversion += i + 1;
-                    extraversion += lExtraversion;
+
+
+                    extraversion += i + 1;
             Log.i(TAG, "The Extraversion is: " + extraversion);
         }
-
+        // same things is repeated here
 
         RadioGroup rbTwo = (RadioGroup) findViewById(R.id.radioGroupTwo);
         childCount = rbTwo.getChildCount();

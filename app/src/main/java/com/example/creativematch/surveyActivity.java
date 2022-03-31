@@ -5,23 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.google.firebase.auth.FirebaseUser;
 
 public class surveyActivity extends AppCompatActivity {
     RadioGroup radioGroupOne;
-    private int extraversion, Openness;
+    private int openness, agreeableness, conscientiousness;
+    public static FirebaseHelper firebaseHelper;
     public final String TAG = "Denna";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey);
+        firebaseHelper = new FirebaseHelper();
 
 
     }
@@ -32,7 +30,9 @@ public class surveyActivity extends AppCompatActivity {
         RadioGroup rbOne = (RadioGroup) findViewById(R.id.radioGroupOne);
         //https://stackoverflow.com/questions/16561247/collecting-data-from-multiple-radio-button-groups-in-android
         int childCount = rbOne.getChildCount();
-        extraversion = 0;
+        agreeableness = 0;
+        openness = 0;
+        conscientiousness = 0;
         // gets how many buttons are in the radio group
         // iterates through every radio button to see if checked
         // if checked then adds whatever number the i is which will be relative to whatever the order is sequenced
@@ -45,8 +45,8 @@ public class surveyActivity extends AppCompatActivity {
                 if (((RadioButton) v).isChecked())
 
 
-                    extraversion += i + 1;
-            Log.i(TAG, "The Extraversion is: " + extraversion);
+                    agreeableness += i + 1;
+            Log.i(TAG, "The Extraversion is: " + agreeableness);
         }
         // same things is repeated here
 
@@ -57,9 +57,12 @@ public class surveyActivity extends AppCompatActivity {
             View v = rbTwo.getChildAt(i);
             if (v instanceof RadioButton)
                 if (((RadioButton) v).isChecked())
-                    Openness = Openness + i + 1;
-            Log.i(TAG, "The Openness is: " + Openness);
+                    agreeableness = agreeableness + i + 1;
+            Log.i(TAG, "The Openness is: " + agreeableness);
         }
+        FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
+
+        firebaseHelper.addPersonalityData(openness, agreeableness, conscientiousness, user.getUid());
     }
         // Check which radio button was clicked
         /*

@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -93,20 +94,62 @@ public class FirebaseHelper {
     public void updateUid(String uid) {
 
     }
-    /*
 
-    public void addData(WishListItem wish) {
+
+    public void addPersonalityData(int agreeableness, int openness, int conscientiousness, String uid) {
         //add a wishlist item to the data
         // this method will be overloaded and the other method wull incorprate the to
         // handle asynch calls for reading data to keep myItems al up to data
-        addData(wish, new FirestoreCallback() {
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("agreeableness",agreeableness);
+        db.document("users/"+
+                uid)
+                .set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onCallback(ArrayList<WishListItem> myList) {
-
+            public void onSuccess(Void unused) {
+                Log.i(TAG, agreeableness + "agreeableness was added");
             }
-        });
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "error adding agreeableness");
+                    }
+                });
+        docData = new HashMap<>();
+        docData.put("openness",openness);
+        db.document("users/"+
+                uid)
+                .set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.i(TAG, openness + "openness was added");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "error adding openness");
+                    }
+                });
+        docData = new HashMap<>();
+        docData.put("conscientiousness",conscientiousness);
+        db.document("users/"+
+                uid)
+                .set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Log.i(TAG, openness + "conscientiousness was added");
+            }
+        })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "error adding conscientiousness");
+                    }
+                });
     }
-
+ /*
 
 
     private void addData(WishListItem w, FirestoreCallback firestoreCallback)

@@ -25,6 +25,7 @@ public class FirebaseHelper {
     // inside MainActivity with the mAuth var
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    Map<String, Object> allFields = new HashMap<>();
 
     public FirebaseHelper() {
         // will gel
@@ -63,16 +64,15 @@ public class FirebaseHelper {
         */
         // the doc Id of the doc we are adding will be the same as the uid of the current user
         // simmilar to making an object
-        Map<String, Object> user = new HashMap<>();
 
         //put data into my obhject using a key value pair where i label each item I put in the map
         // the key "name" is tje key that is used to label the data fireStore
         // the parameter value of name is passed in to be the value assigned to name in firestore
-        user.put("name", name);
+        allFields.put("name", name);
 
         // this will create a new document in the collection "users" and assign it a docID that is = to newUID
         db.collection("users").document(newUID)
-                .set(user)
+                .set(allFields)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
@@ -100,13 +100,14 @@ public class FirebaseHelper {
         //add a wishlist item to the data
         // this method will be overloaded and the other method wull incorprate the to
         // handle asynch calls for reading data to keep myItems al up to data
-        Map<String, Object> docData = new HashMap<>();
-        docData.put("agreeableness",agreeableness);
-        db.document("users/"+
-                uid)
-                .set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        allFields.put("agreeableness",agreeableness);
+        allFields.put("openness",openness);
+        allFields.put("conscientiousness",conscientiousness);
+        db.collection("users/")
+                .add(allFields).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
             @Override
-            public void onSuccess(Void unused) {
+            public void onSuccess(DocumentReference documentReference) {
                 Log.i(TAG, agreeableness + "agreeableness was added");
             }
         })
@@ -116,39 +117,9 @@ public class FirebaseHelper {
                         Log.d(TAG, "error adding agreeableness");
                     }
                 });
-        docData = new HashMap<>();
-        docData.put("openness",openness);
-        db.document("users/"+
-                uid)
-                .set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.i(TAG, openness + "openness was added");
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "error adding openness");
-                    }
-                });
-        docData = new HashMap<>();
-        docData.put("conscientiousness",conscientiousness);
-        db.document("users/"+
-                uid)
-                .set(docData).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Log.i(TAG, openness + "conscientiousness was added");
-            }
-        })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "error adding conscientiousness");
-                    }
-                });
+
     }
+
  /*
 
 

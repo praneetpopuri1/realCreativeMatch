@@ -46,7 +46,7 @@ public class surveyActivity extends AppCompatActivity {
 
 
                     agreeableness += i + 1;
-            Log.i(TAG, "The Extraversion is: " + agreeableness);
+            Log.i(TAG, "The agreeableness is: " + agreeableness);
         }
         // same things is repeated here
 
@@ -58,8 +58,11 @@ public class surveyActivity extends AppCompatActivity {
             if (v instanceof RadioButton)
                 if (((RadioButton) v).isChecked())
                     agreeableness = agreeableness + i + 1;
-            Log.i(TAG, "The Openness is: " + agreeableness);
+            Log.i(TAG, "The agreeableness is: " + agreeableness);
         }
+
+    }
+    public void nextPage(View view) {
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
 
         firebaseHelper.addPersonalityData(openness, agreeableness, conscientiousness, user.getUid());

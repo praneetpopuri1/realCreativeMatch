@@ -63,8 +63,8 @@ public class signUp extends AppCompatActivity {
                                 firebaseHelper.addUserToFirestore(name, user.getUid());
 
 
-                                //Intent intent = new Intent(getApplicationContext(), AddItemActivity.class);
-                                //startActivity(intent);
+                                Intent intent = new Intent(signUp.this, surveyActivity.class);
+                                startActivity(intent);
 
                             }
                             else{

@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -124,6 +125,31 @@ public class FirebaseHelper {
 
 
     }
+
+    public ArrayList<String> queerySearch(int agreeableness, int openness, int conscientiousness) {
+        ArrayList<String> similarUser = new ArrayList<String>();
+        CollectionReference usersRef = db.collection("users");
+        usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness)
+                .whereGreaterThanOrEqualTo("openness", openness)
+                .whereGreaterThanOrEqualTo("conscientiousness", conscientiousness);
+
+
+        usersRef.get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+    }
+
+
 
  /*
 

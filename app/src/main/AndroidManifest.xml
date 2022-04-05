@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CreativeMatch">
         <activity
+            android:name=".ListView"
+            android:exported="false" />
+        <activity
             android:name=".surveyActivity"
             android:exported="false" />
         <activity

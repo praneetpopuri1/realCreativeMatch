@@ -9,11 +9,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -124,8 +123,8 @@ public class FirebaseHelper {
 
     }
 
-    public ArrayList<String> queerySearch(int agreeableness, int openness, int conscientiousness) {
-        ArrayList<String> similarUser = new ArrayList<String>();
+    public ArrayList <String> queerySearch(int agreeableness, int openness, int conscientiousness) {
+        ArrayList<String> similarUser = new ArrayList<>();
         CollectionReference usersRef = db.collection("users");
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
                 .whereLessThan("agreeableness", agreeableness + 20)
@@ -140,7 +139,10 @@ public class FirebaseHelper {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userName = document.getString("name");
+                                similarUser.add(userName);
+                            }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }

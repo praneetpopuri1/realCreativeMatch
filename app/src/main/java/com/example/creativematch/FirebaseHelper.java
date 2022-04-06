@@ -89,10 +89,8 @@ public class FirebaseHelper {
                 });
 
 
-
-
-
     }
+
     public void updateUid(String uid) {
 
     }
@@ -105,11 +103,11 @@ public class FirebaseHelper {
         DocumentReference personalityRef = db.collection("users").document(uid);
 
         Map<String, Object> personality = new HashMap<>();
-        personality.put("agreeableness",agreeableness);
-        personality.put("openness",openness);
-        personality.put("conscientiousness",conscientiousness);
+        personality.put("agreeableness", agreeableness);
+        personality.put("openness", openness);
+        personality.put("conscientiousness", conscientiousness);
         personalityRef
-        .update(personality)
+                .update(personality)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -130,7 +128,9 @@ public class FirebaseHelper {
         ArrayList<String> similarUser = new ArrayList<String>();
         CollectionReference usersRef = db.collection("users");
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness)
+                .whereLessThan("agreeableness", agreeableness + 20)
                 .whereGreaterThanOrEqualTo("openness", openness)
+                .whereLessThanOrEqualTo("openness", openness + 20)
                 .whereGreaterThanOrEqualTo("conscientiousness", conscientiousness);
 
 
@@ -139,15 +139,16 @@ public class FirebaseHelper {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            
+
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+        return similarUser;
 
+       }
 
-    }
 
 
 

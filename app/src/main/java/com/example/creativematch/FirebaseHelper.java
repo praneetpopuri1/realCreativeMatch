@@ -127,11 +127,12 @@ public class FirebaseHelper {
     public ArrayList<String> queerySearch(int agreeableness, int openness, int conscientiousness) {
         ArrayList<String> similarUser = new ArrayList<String>();
         CollectionReference usersRef = db.collection("users");
-        usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness)
+        usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
                 .whereLessThan("agreeableness", agreeableness + 20)
-                .whereGreaterThanOrEqualTo("openness", openness)
+                .whereGreaterThanOrEqualTo("openness", openness - 20)
                 .whereLessThanOrEqualTo("openness", openness + 20)
-                .whereGreaterThanOrEqualTo("conscientiousness", conscientiousness);
+                .whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
+                .whereLessThanOrEqualTo("conscientiousness", conscientiousness + 20);
 
 
         usersRef.get()

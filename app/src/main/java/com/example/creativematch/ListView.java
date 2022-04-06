@@ -12,9 +12,12 @@ public class ListView extends AppCompatActivity {
         setContentView(R.layout.activity_list_view);
     }
 
+    /*
     public String getRandomUser(){
         String uid;
         
         return uid;
     }
+    
+     */
 }

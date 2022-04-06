@@ -1,8 +1,10 @@
-package com.example.creativematch;
+package com.example.creativematch.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.creativematch.R;
 
 public class ListView extends AppCompatActivity {
 

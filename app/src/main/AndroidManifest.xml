@@ -10,19 +10,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CreativeMatch">
         <activity
-            android:name=".ListView"
+            android:name=".activities.ListView"
             android:exported="false" />
         <activity
-            android:name=".surveyActivity"
+            android:name=".activities.surveyActivity"
             android:exported="false" />
         <activity
-            android:name=".signIn"
+            android:name=".activities.signIn"
             android:exported="false" />
         <activity
-            android:name=".signUp"
+            android:name=".activities.signUp"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

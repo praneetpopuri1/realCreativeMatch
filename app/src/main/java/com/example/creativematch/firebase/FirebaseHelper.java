@@ -1,4 +1,4 @@
-package com.example.creativematch;
+package com.example.creativematch.firebase;
 
 import android.util.Log;
 

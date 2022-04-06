@@ -1,4 +1,4 @@
-package com.example.creativematch;
+package com.example.creativematch.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
+import com.example.creativematch.firebase.FirebaseHelper;
+import com.example.creativematch.R;
 import com.google.firebase.auth.FirebaseUser;
 
 public class surveyActivity extends AppCompatActivity {

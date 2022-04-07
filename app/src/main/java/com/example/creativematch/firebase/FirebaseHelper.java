@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.creativematch.activities.otherUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -11,6 +12,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -95,18 +97,19 @@ public class FirebaseHelper {
     }
 
 
-    public void addPersonalityData(int agreeableness, int openness, int conscientiousness, String uid) {
+    public void addPersonalityData(String profession, int agreeableness, int openness, int conscientiousness, String uid) {
         //add a wishlist item to the data
         // this method will be overloaded and the other method wull incorprate the to
         // handle asynch calls for reading data to keep myItems al up to data
         DocumentReference personalityRef = db.collection("users").document(uid);
 
-        Map<String, Object> personality = new HashMap<>();
-        personality.put("agreeableness", agreeableness);
-        personality.put("openness", openness);
-        personality.put("conscientiousness", conscientiousness);
+        Map<String, Object> personalityProfession = new HashMap<>();
+        personalityProfession.put("agreeableness", agreeableness);
+        personalityProfession.put("openness", openness);
+        personalityProfession.put("conscientiousness", conscientiousness);
+        personalityProfession.put("profession", profession);
         personalityRef
-                .update(personality)
+                .update(personalityProfession)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -123,11 +126,11 @@ public class FirebaseHelper {
 
     }
 
-    public ArrayList <String> queerySearch(int agreeableness, int openness, int conscientiousness) {
-        ArrayList<String> similarUser = new ArrayList<>();
+    public ArrayList <otherUser> queerySearch(int agreeableness, int openness, int conscientiousness) {
+        ArrayList<otherUser> similarUsers = new ArrayList<>();
         CollectionReference usersRef = db.collection("users");
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
-                .whereLessThan("agreeableness", agreeableness + 20)
+                .whereLessThanOrEqualTo("agreeableness", agreeableness + 20)
                 .whereGreaterThanOrEqualTo("openness", openness - 20)
                 .whereLessThanOrEqualTo("openness", openness + 20)
                 .whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
@@ -141,16 +144,65 @@ public class FirebaseHelper {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String userName = document.getString("name");
-                                similarUser.add(userName);
+                                String profession = document.getString("profession");
+                                otherUser anotherUser = new otherUser(profession,userName);
+                                similarUsers.add(anotherUser);
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
-        return similarUser;
+        return similarUsers;
 
        }
+
+       public int[] getPersonality(String uid){
+           DocumentReference docRef = db.collection("users").document(uid);
+           int[] personalityArray = new int[3];
+           docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+               @Override
+               public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                   if (task.isSuccessful()) {
+                       DocumentSnapshot document = task.getResult();
+                       if (document.exists()) {
+
+                           personalityArray[0] = Integer.parseInt(document.getString("agreeableness"));
+                           personalityArray[1] = Integer.parseInt(document.getString("openness"));
+                           personalityArray[2] = Integer.parseInt(document.getString("conscientiousness"));
+                       } else {
+                           Log.d(TAG, "No such document");
+                       }
+                   } else {
+                       Log.d(TAG, "get failed with ", task.getException());
+                   }
+               }
+           });
+        return personalityArray;
+       }
+
+    public String getProfession(String uid){
+        DocumentReference docRef = db.collection("users").document(uid);
+        final String[] getProfession = new String[1];
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        getProfession[0] = document.getString("profession");
+                    } else {
+                        Log.d(TAG, "No such document");
+                    }
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+        return getProfession[0];
+    }
 
 
 

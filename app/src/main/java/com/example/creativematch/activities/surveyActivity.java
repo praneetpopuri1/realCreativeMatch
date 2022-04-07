@@ -66,8 +66,8 @@ public class surveyActivity extends AppCompatActivity {
     }
     public void nextPage(View view) {
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
-
-        firebaseHelper.addPersonalityData(openness, agreeableness, conscientiousness, user.getUid());
+        String profession = "";
+        firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
     }
         // Check which radio button was clicked
         /*

@@ -3,9 +3,11 @@ package com.example.creativematch.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.creativematch.R;
 import com.example.creativematch.firebase.FirebaseHelper;
+import com.example.creativematch.OtherUser;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -13,27 +15,31 @@ import java.util.Random;
 
 public class ListView extends AppCompatActivity {
     public static FirebaseHelper firebaseHelper;
+    public final String TAG = "Denna";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_view);
         firebaseHelper = new FirebaseHelper();
+        ArrayList<OtherUser> fOtherUsers = new ArrayList<OtherUser>();
+        fOtherUsers = getRandomUsers();
+        Log.d(TAG, "in onCreate the other users are: " + fOtherUsers.toString());
     }
 
 
 
-    public ArrayList<otherUser> getRandomUsers(){
-        ArrayList<otherUser> otherUsers = new ArrayList<otherUser>();
+    public ArrayList<OtherUser> getRandomUsers(){
+        ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
         int[] personality = firebaseHelper.getPersonality(user.getUid());
-        ArrayList<otherUser> anotherUsers = firebaseHelper.queerySearch(personality[0],personality[1] , personality[2]);
-        ArrayList<otherUser> samePUser = new ArrayList<otherUser>();
-        ArrayList<otherUser> diffPUser = new ArrayList<otherUser>();
+        ArrayList<OtherUser> anotherUsers = firebaseHelper.queerySearch(personality[0],personality[1] , personality[2]);
+        ArrayList<OtherUser> samePUser = new ArrayList<OtherUser>();
+        ArrayList<OtherUser> diffPUser = new ArrayList<OtherUser>();
         int i = 0;
-            for (otherUser users : anotherUsers){
+            for (OtherUser users : anotherUsers){
                 String originalProfession = firebaseHelper.getProfession(user.getUid());
-                if(originalProfession.equals(users.profession)){
+                if(originalProfession.equals(users.getProfession())){
                     samePUser.add(users);
                 }
                 else{
@@ -62,7 +68,7 @@ public class ListView extends AppCompatActivity {
                 }
             }
             else{
-                if (k < samePUser.size()) {
+                if (l < diffPUser.size()) {
                     otherUsers.add(diffPUser.get(l));
                     l++;
                 }

@@ -12,7 +12,9 @@ import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.R;
 import com.google.firebase.auth.FirebaseUser;
 
-public class surveyActivity extends AppCompatActivity {
+import java.util.Random;
+
+public class SurveyActivity extends AppCompatActivity {
     RadioGroup radioGroupOne;
     private int openness, agreeableness, conscientiousness;
     public static FirebaseHelper firebaseHelper;
@@ -47,7 +49,7 @@ public class surveyActivity extends AppCompatActivity {
                 if (((RadioButton) v).isChecked())
 
 
-                    agreeableness += i + 1;
+                    agreeableness = 15*(agreeableness + i + 1);
             Log.i(TAG, "The agreeableness is: " + agreeableness);
         }
         // same things is repeated here
@@ -59,14 +61,35 @@ public class surveyActivity extends AppCompatActivity {
             View v = rbTwo.getChildAt(i);
             if (v instanceof RadioButton)
                 if (((RadioButton) v).isChecked())
-                    agreeableness = agreeableness + i + 1;
-            Log.i(TAG, "The agreeableness is: " + agreeableness);
+                    openness = 15*(openness + i + 1);
+            Log.i(TAG, "The agreeableness is: " + openness);
+        }
+
+        RadioGroup rbThree = (RadioGroup) findViewById(R.id.radioGroupThree);
+        childCount = rbTwo.getChildCount();
+
+        for (int i = 0; i < childCount; i++) {
+            View v = rbTwo.getChildAt(i);
+            if (v instanceof RadioButton)
+                if (((RadioButton) v).isChecked())
+                    conscientiousness = 15*(conscientiousness + i + 1);
+            Log.i(TAG, "The agreeableness is: " + openness);
         }
 
     }
     public void nextPage(View view) {
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
-        String profession = "";
+        Random rand = new Random(); //instance of random class
+        int upperbound = 1;
+        String profession;
+        //generate random values from 0-24
+        int int_random = rand.nextInt(upperbound);
+        if (int_random == 0) {
+             profession = "farmer";
+        }
+        else{
+            profession = "computer porgrammer";
+        }
         firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
     }
         // Check which radio button was clicked

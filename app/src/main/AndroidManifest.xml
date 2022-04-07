@@ -15,13 +15,13 @@
             android:name=".activities.ListView"
             android:exported="false" />
         <activity
-            android:name=".activities.surveyActivity"
+            android:name=".activities.SurveyActivity"
             android:exported="false" />
         <activity
-            android:name=".activities.signIn"
+            android:name=".activities.SignIn"
             android:exported="false" />
         <activity
-            android:name=".activities.signUp"
+            android:name=".activities.SignUp"
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"

@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
-public class signIn extends AppCompatActivity {
+public class SignIn extends AppCompatActivity {
 
     public static FirebaseHelper firebaseHelper;
     public final String TAG = "Denna";
@@ -60,7 +60,7 @@ public class signIn extends AppCompatActivity {
 
 
 
-                                Intent intent = new Intent(signIn.this, surveyActivity.class);
+                                Intent intent = new Intent(SignIn.this, SurveyActivity.class);
                                 startActivity(intent);
                             }
                             else{

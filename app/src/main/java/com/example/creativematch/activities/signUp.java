@@ -17,7 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 
-public class signUp extends AppCompatActivity {
+public class SignUp extends AppCompatActivity {
 
     public static FirebaseHelper firebaseHelper;
     public final String TAG = "Denna";
@@ -65,7 +65,7 @@ public class signUp extends AppCompatActivity {
                                 firebaseHelper.addUserToFirestore(name, user.getUid());
 
 
-                                Intent intent = new Intent(signUp.this, surveyActivity.class);
+                                Intent intent = new Intent(SignUp.this, SurveyActivity.class);
                                 startActivity(intent);
 
                             }

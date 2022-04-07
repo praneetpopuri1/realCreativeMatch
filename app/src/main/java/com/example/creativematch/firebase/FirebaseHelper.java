@@ -3,8 +3,7 @@ package com.example.creativematch.firebase;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-
-import com.example.creativematch.activities.otherUser;
+import com.example.creativematch.OtherUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -126,8 +125,8 @@ public class FirebaseHelper {
 
     }
 
-    public ArrayList <otherUser> queerySearch(int agreeableness, int openness, int conscientiousness) {
-        ArrayList<otherUser> similarUsers = new ArrayList<>();
+    public ArrayList <OtherUser> queerySearch(int agreeableness, int openness, int conscientiousness) {
+        ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
         CollectionReference usersRef = db.collection("users");
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
                 .whereLessThanOrEqualTo("agreeableness", agreeableness + 20)
@@ -145,7 +144,7 @@ public class FirebaseHelper {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String userName = document.getString("name");
                                 String profession = document.getString("profession");
-                                otherUser anotherUser = new otherUser(profession,userName);
+                                OtherUser anotherUser = new OtherUser(profession,userName);
                                 similarUsers.add(anotherUser);
                             }
                         } else {

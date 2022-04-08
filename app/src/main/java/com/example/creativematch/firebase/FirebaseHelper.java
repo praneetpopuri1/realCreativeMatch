@@ -145,6 +145,7 @@ public class FirebaseHelper {
                                 String userName = document.getString("name");
                                 String profession = document.getString("profession");
                                 OtherUser anotherUser = new OtherUser(profession,userName);
+                                Log.d(TAG, "the other users are: " + anotherUser);
                                 similarUsers.add(anotherUser);
                             }
                         } else {
@@ -170,6 +171,7 @@ public class FirebaseHelper {
                            personalityArray[0] = Integer.parseInt(document.getString("agreeableness"));
                            personalityArray[1] = Integer.parseInt(document.getString("openness"));
                            personalityArray[2] = Integer.parseInt(document.getString("conscientiousness"));
+                           Log.d(TAG, "the personality of the users are: " + personalityArray.toString());
                        } else {
                            Log.d(TAG, "No such document");
                        }
@@ -192,6 +194,7 @@ public class FirebaseHelper {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         getProfession[0] = document.getString("profession");
+                        Log.d(TAG, "the personality of the users are: " + getProfession.toString());
                     } else {
                         Log.d(TAG, "No such document");
                     }

@@ -15,6 +15,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,6 +95,37 @@ public class FirebaseHelper {
     public void updateUid(String uid) {
 
     }
+    /*
+    public void addALotOfUsers(ArrayList<OtherUser> user, String newUID){
+        //need to itterate through all of the users and add them to the batch
+        WriteBatch batch = db.batch();
+        Map<String, Object>  user = new HashMap<>();
+
+        user.put("name", name);
+        user.put("agreeableness", agreeableness);
+        user.put("openness", openness);
+        user.put("conscientiousness", conscientiousness);
+        user.put("profession", profession);
+
+
+        db.collection("users").document(newUID)
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.i(TAG, name + " has " + agreeableness + " " + openness + " " + conscientiousness + " and is a " + profession);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "error adding user account");
+                    }
+                });
+
+    }
+
+     */
 
 
     public void addPersonalityData(String profession, int agreeableness, int openness, int conscientiousness, String uid) {

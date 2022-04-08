@@ -4,6 +4,9 @@ public class OtherUser {
 
     String profession;
     String name;
+    int agreeableness;
+    int openness;
+    int conscientiousness;
     public String getProfession() {
         return profession;
     }
@@ -14,6 +17,16 @@ public class OtherUser {
     public OtherUser(String profession, String name) {
         this.profession = profession;
         this.name = name;
+
+
+    }
+    public OtherUser(String profession, String name, int agreeableness, int openness, int conscientiousness) {
+        this.profession = profession;
+        this.name = name;
+        this.agreeableness = agreeableness;
+        this.openness = openness;
+        this.conscientiousness = conscientiousness;
+
 
 
     }

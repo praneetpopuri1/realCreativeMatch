@@ -47,10 +47,8 @@ public class SurveyActivity extends AppCompatActivity {
             View v = rbOne.getChildAt(i);
             if (v instanceof RadioButton)
                 if (((RadioButton) v).isChecked())
-
-
                     agreeableness = 15*(agreeableness + i + 1);
-            Log.i(TAG, "The agreeableness is: " + agreeableness);
+                    Log.i(TAG, "The agreeableness is: " + agreeableness);
         }
         // same things is repeated here
 
@@ -62,25 +60,25 @@ public class SurveyActivity extends AppCompatActivity {
             if (v instanceof RadioButton)
                 if (((RadioButton) v).isChecked())
                     openness = 15*(openness + i + 1);
-            Log.i(TAG, "The agreeableness is: " + openness);
+                    Log.i(TAG, "The openness is: " + openness);
         }
 
         RadioGroup rbThree = (RadioGroup) findViewById(R.id.radioGroupThree);
-        childCount = rbTwo.getChildCount();
+        childCount = rbThree.getChildCount();
 
         for (int i = 0; i < childCount; i++) {
-            View v = rbTwo.getChildAt(i);
+            View v = rbThree.getChildAt(i);
             if (v instanceof RadioButton)
                 if (((RadioButton) v).isChecked())
                     conscientiousness = 15*(conscientiousness + i + 1);
-            Log.i(TAG, "The agreeableness is: " + openness);
+                    Log.i(TAG, "The conscientiousness is: " + conscientiousness);
         }
 
     }
     public void nextPage(View view) {
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
         Random rand = new Random(); //instance of random class
-        int upperbound = 1;
+        int upperbound = 2;
         String profession;
         //generate random values from 0-24
         int int_random = rand.nextInt(upperbound);
@@ -88,8 +86,9 @@ public class SurveyActivity extends AppCompatActivity {
              profession = "farmer";
         }
         else{
-            profession = "computer porgrammer";
+            profession = "computer programmer";
         }
+        Log.i(TAG, "The profession is: " + profession);
         firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
     }
         // Check which radio button was clicked

@@ -18,6 +18,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,22 +43,39 @@ public class FirebaseHelper {
 
         return mAuth;
     }
-/*
-    public void attachReadDataToUser() {
+
+    /*
+    public ArrayList <OtherUser> attachReadDataToUserOU(int agreeableness, int openness, int conscientiousness, String uid) {
         // need to put stuff here
         if (getmAuth().getCurrentUser() != null){
             uid =mAuth.getUid();
-            readData(new FirestoreCallback() {
+            addPersonalityData(String.valueOf(new FirestoreCallbackOU() {
                 @Override
-                public void onCallback(ArrayList<WishListItem> myList) {
-                    Log.i(TAG, "Inside attachReadDataToUser, onCallBack" + myList.toString());
+                public void onCallback(ArrayList<OtherUser> users) {
+                    Log.i(TAG, "Inside attachReadDataToUser, onCallBack" + users.toString());
                 }
-            });
+            }), agreeableness, openness, conscientiousness, uid);
         }
+        return
     }
 
- */
+     */
 
+
+
+
+    //https://stackoverflow.com/questions/53301344/generate-unique-id-like-firebase-firestore
+    public String generateUniqueFirestoreId(){
+        // Alphanumeric characters
+    String chars =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder autoId = new StringBuilder();
+        for (int i = 0; i < 20; i++) {
+            autoId.append(chars.charAt((int) Math.floor(Math.random() * chars.length())));
+        }
+
+    return autoId.toString();
+}
 
     public void addUserToFirestore(String name, String newUID) {
     /*
@@ -95,37 +113,24 @@ public class FirebaseHelper {
     public void updateUid(String uid) {
 
     }
-    /*
-    public void addALotOfUsers(ArrayList<OtherUser> user, String newUID){
+
+    public void addALotOfUsers(ArrayList<OtherUser> users){
         //need to itterate through all of the users and add them to the batch
         WriteBatch batch = db.batch();
-        Map<String, Object>  user = new HashMap<>();
+        for (OtherUser user: users) {
+            DocumentReference personalityRef = db.collection("users").document(generateUniqueFirestoreId());
+            batch.set(personalityRef,user);
+        }
 
-        user.put("name", name);
-        user.put("agreeableness", agreeableness);
-        user.put("openness", openness);
-        user.put("conscientiousness", conscientiousness);
-        user.put("profession", profession);
+        batch.commit().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
 
-
-        db.collection("users").document(newUID)
-                .set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.i(TAG, name + " has " + agreeableness + " " + openness + " " + conscientiousness + " and is a " + profession);
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "error adding user account");
-                    }
-                });
-
+            }
+        });
     }
 
-     */
+
 
 
     public void addPersonalityData(String profession, int agreeableness, int openness, int conscientiousness, String uid) {
@@ -157,19 +162,21 @@ public class FirebaseHelper {
 
     }
 
-    public ArrayList <OtherUser> queerySearch(int agreeableness, int openness, int conscientiousness) {
+    public ArrayList <OtherUser> queerySearch(FirestoreCallbackOU firestoreCallbackOU,int agreeableness, int openness, int conscientiousness) {
         ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
         CollectionReference usersRef = db.collection("users");
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
-                .whereLessThanOrEqualTo("agreeableness", agreeableness + 20)
-                .whereGreaterThanOrEqualTo("openness", openness - 20)
-                .whereLessThanOrEqualTo("openness", openness + 20)
-                .whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
-                .whereLessThanOrEqualTo("conscientiousness", conscientiousness + 20);
+                //.whereLessThanOrEqualTo("agreeableness", agreeableness + 20)
+                //.whereGreaterThanOrEqualTo("openness", openness - 20)
+                //.whereLessThanOrEqualTo("openness", openness + 20)
+                //.whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
+                //.whereLessThanOrEqualTo("conscientiousness", conscientiousness + 20)
+                .limit(20);
 
 
         usersRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -179,17 +186,20 @@ public class FirebaseHelper {
                                 OtherUser anotherUser = new OtherUser(profession,userName);
                                 Log.d(TAG, "the other users are: " + anotherUser);
                                 similarUsers.add(anotherUser);
+
                             }
+                            firestoreCallbackOU.onCallback(similarUsers);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+        Log.d(TAG, "the other users are: " + similarUsers.toString());
         return similarUsers;
 
        }
 
-       public int[] getPersonality(String uid){
+       public int[] getPersonality(FirestoreCallbackP firestoreCallbackP, String uid){
            DocumentReference docRef = db.collection("users").document(uid);
            int[] personalityArray = new int[3];
            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -207,15 +217,17 @@ public class FirebaseHelper {
                        } else {
                            Log.d(TAG, "No such document");
                        }
+                       firestoreCallbackP.onCallback(personalityArray);
                    } else {
                        Log.d(TAG, "get failed with ", task.getException());
                    }
                }
            });
+           Log.d(TAG, "the personality of the users are: " + Arrays.toString(personalityArray));
         return personalityArray;
        }
 
-    public String getProfession(String uid){
+    public String getProfession(FirestoreCallbackPro firestoreCallbackPro,String uid){
         DocumentReference docRef = db.collection("users").document(uid);
         final String[] getProfession = new String[1];
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -230,11 +242,13 @@ public class FirebaseHelper {
                     } else {
                         Log.d(TAG, "No such document");
                     }
+                    firestoreCallbackPro.onCallback(getProfession);
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
+        Log.d(TAG, "the personality of the users are: " + Arrays.toString(getProfession));
         return getProfession[0];
     }
 
@@ -330,10 +344,18 @@ public class FirebaseHelper {
                 });
     }
 
+  */
+
     //https://stackoverflow.com/questions/48499310/how-to-return-a-documentsnapshot-as-a-result-of-a-method/48500679#48500679
-    public interface FirestoreCallback {
-        void onCallback (ArrayList<WishListItem> myList);
+    public interface FirestoreCallbackOU {
+        void onCallback (ArrayList<OtherUser> listUsers);
+    }
+    public interface FirestoreCallbackP {
+        void onCallback (int[] personality);
+    }
+    public interface FirestoreCallbackPro {
+        void onCallback (String[] profession);
     }
 
-     */
+
 }

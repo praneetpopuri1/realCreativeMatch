@@ -1,5 +1,7 @@
 package com.example.creativematch;
 
+import androidx.annotation.NonNull;
+
 public class OtherUser {
 
     String profession;
@@ -7,6 +9,31 @@ public class OtherUser {
     int agreeableness;
     int openness;
     int conscientiousness;
+
+    public int getAgreeableness() {
+        return agreeableness;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "OtherUser{" +
+                "profession='" + profession + '\'' +
+                ", name='" + name + '\'' +
+                ", agreeableness=" + agreeableness +
+                ", openness=" + openness +
+                ", conscientiousness=" + conscientiousness +
+                '}';
+    }
+
+    public int getOpenness() {
+        return openness;
+    }
+
+    public int getConscientiousness() {
+        return conscientiousness;
+    }
+
     public String getProfession() {
         return profession;
     }
@@ -31,11 +58,4 @@ public class OtherUser {
 
     }
 
-    @Override
-    public String toString() {
-        return "OtherUser{" +
-                "profession='" + profession + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }

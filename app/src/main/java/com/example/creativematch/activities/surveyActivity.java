@@ -2,6 +2,7 @@ package com.example.creativematch.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.R;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.List;
 import java.util.Random;
 
 public class SurveyActivity extends AppCompatActivity {
@@ -90,6 +92,9 @@ public class SurveyActivity extends AppCompatActivity {
         }
         Log.i(TAG, "The profession is: " + profession);
         firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
+        Intent intent = new Intent(SurveyActivity.this, ListView.class);
+        startActivity(intent);
+
     }
         // Check which radio button was clicked
         /*

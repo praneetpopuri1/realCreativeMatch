@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">creativeMatch</string>
+    <string name="select_user">Select User</string>
 </resources>

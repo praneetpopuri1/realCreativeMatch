@@ -20,6 +20,7 @@ import com.google.firebase.firestore.WriteBatch;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class FirebaseHelper {
@@ -28,6 +29,7 @@ public class FirebaseHelper {
     // inside MainActivity with the mAuth var
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+    ArrayList<Integer> personalityArray = new ArrayList<Integer>();
 
 
     public FirebaseHelper() {
@@ -166,11 +168,11 @@ public class FirebaseHelper {
         ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
         CollectionReference usersRef = db.collection("users");
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
-                //.whereLessThanOrEqualTo("agreeableness", agreeableness + 20)
-                //.whereGreaterThanOrEqualTo("openness", openness - 20)
-                //.whereLessThanOrEqualTo("openness", openness + 20)
-                //.whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
-                //.whereLessThanOrEqualTo("conscientiousness", conscientiousness + 20)
+                .whereLessThanOrEqualTo("agreeableness", agreeableness + 20)
+                .whereGreaterThanOrEqualTo("openness", openness - 20)
+                .whereLessThanOrEqualTo("openness", openness + 20)
+                .whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
+                .whereLessThanOrEqualTo("conscientiousness", conscientiousness + 20)
                 .limit(20);
 
 
@@ -198,38 +200,51 @@ public class FirebaseHelper {
         return similarUsers;
 
        }
+    public void attachReadPersonalityToUser(String newUid) {
+        // need to put stuff here
 
-       public int[] getPersonality(FirestoreCallbackP firestoreCallbackP, String uid){
+            getPersonality(new FirestoreCallbackP() {
+                @Override
+                public void onCallback(ArrayList<Integer> personality) {
+                    Log.i(TAG, "Inside attachReadDataToUser, onCallBack" + personality.toString());
+                }
+            }, newUid);
+    }
+
+       public void getPersonality(FirestoreCallbackP firestoreCallbackP, String uid){
+        personalityArray.clear();
            DocumentReference docRef = db.collection("users").document(uid);
-           int[] personalityArray = new int[3];
+
            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
                @Override
                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                    if (task.isSuccessful()) {
-                       DocumentSnapshot document = task.getResult();
-                       if (document.exists()) {
+                            DocumentSnapshot document = task.getResult();
 
-                           personalityArray[0] = Integer.parseInt(document.getString("agreeableness"));
-                           personalityArray[1] = Integer.parseInt(document.getString("openness"));
-                           personalityArray[2] = Integer.parseInt(document.getString("conscientiousness"));
+                           ArrayList<Integer> personalitiesArray = new ArrayList<>();
+                           personalitiesArray.add(Integer.parseInt(document.getString("agreeableness")));
+                           personalitiesArray.add(Integer.parseInt(document.getString("openness")));
+                           personalitiesArray.add(Integer.parseInt(document.getString("conscientiousness")));
                            Log.d(TAG, "the personality of the users are: " + personalityArray.toString());
-                       } else {
-                           Log.d(TAG, "No such document");
-                       }
+                           personalityArray = personalitiesArray;
+
                        firestoreCallbackP.onCallback(personalityArray);
                    } else {
                        Log.d(TAG, "get failed with ", task.getException());
                    }
                }
            });
-           Log.d(TAG, "the personality of the users are: " + Arrays.toString(personalityArray));
-        return personalityArray;
+           Log.d(TAG, "the personality of the users are: " + personalityArray.toString());
        }
+
+    public ArrayList<Integer> getPersonalityArray() {
+        return personalityArray;
+    }
 
     public String getProfession(FirestoreCallbackPro firestoreCallbackPro,String uid){
         DocumentReference docRef = db.collection("users").document(uid);
-        final String[] getProfession = new String[1];
+        final ArrayList<String> getProfession = new ArrayList<String>();
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
             @Override
@@ -237,7 +252,7 @@ public class FirebaseHelper {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        getProfession[0] = document.getString("profession");
+                        getProfession.add(document.getString("profession"));
                         Log.d(TAG, "the personality of the users are: " + getProfession.toString());
                     } else {
                         Log.d(TAG, "No such document");
@@ -248,9 +263,11 @@ public class FirebaseHelper {
                 }
             }
         });
-        Log.d(TAG, "the personality of the users are: " + Arrays.toString(getProfession));
-        return getProfession[0];
+        Log.d(TAG, "the personality of the users are: " + getProfession.get(0));
+        return getProfession.get(0);
     }
+
+
 
 
 
@@ -351,10 +368,10 @@ public class FirebaseHelper {
         void onCallback (ArrayList<OtherUser> listUsers);
     }
     public interface FirestoreCallbackP {
-        void onCallback (int[] personality);
+        void onCallback (ArrayList<Integer> personality);
     }
     public interface FirestoreCallbackPro {
-        void onCallback (String[] profession);
+        void onCallback (ArrayList<String> profession);
     }
 
 

@@ -11,7 +11,6 @@ import com.example.creativematch.OtherUser;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class ListView extends AppCompatActivity {
     public static FirebaseHelper firebaseHelper;
@@ -23,23 +22,22 @@ public class ListView extends AppCompatActivity {
         setContentView(R.layout.activity_list_view);
         firebaseHelper = new FirebaseHelper();
         ArrayList<OtherUser> fOtherUsers = new ArrayList<OtherUser>();
-        fOtherUsers = getRandomUsers();
+        //fOtherUsers =
+        getRandomUsers();
         //Log.d(TAG, "in onCreate the other users are: " + fOtherUsers.toString());
     }
 
 
 
-    public ArrayList<OtherUser> getRandomUsers(){
+    public //ArrayList<OtherUser>
+    void getRandomUsers(){
         ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
-        int[] personality = firebaseHelper.getPersonality(new FirebaseHelper.FirestoreCallbackP() {
-            @Override
-            public void onCallback(int[] personality) {
-                Log.i(TAG, "Inside getRandomUsers, onCallBack" + personality.toString());
-            }
-        }, user.getUid());
+        firebaseHelper.attachReadPersonalityToUser(user.getUid());
+        ArrayList<Integer> userPersonality = firebaseHelper.getPersonalityArray();
+        Log.i(TAG, "the current users personalities are: " + userPersonality.toString());
 
-
+        /*
         ArrayList<OtherUser> anotherUsers = firebaseHelper.queerySearch(new FirebaseHelper.FirestoreCallbackOU() {
             @Override
             public void onCallback(ArrayList<OtherUser> listUsers) {
@@ -94,6 +92,8 @@ public class ListView extends AppCompatActivity {
 
 
         return otherUsers;
+
+         */
     }
 
 }

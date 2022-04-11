@@ -29,7 +29,7 @@ public class ListView extends AppCompatActivity {
 
 
 
-    public //ArrayList<OtherUser>
+    public //ArrayList<OtherUser
     void getRandomUsers(){
         ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();

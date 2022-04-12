@@ -207,6 +207,7 @@ public class FirebaseHelper {
                 @Override
                 public void onCallback(ArrayList<Integer> personality) {
                     Log.i(TAG, "Inside attachReadDataToUser, onCallBack" + personality.toString());
+                    personalityArray = personality;
                 }
             }, newUid);
     }
@@ -226,10 +227,9 @@ public class FirebaseHelper {
                            personalitiesArray.add(Integer.parseInt(document.getString("agreeableness")));
                            personalitiesArray.add(Integer.parseInt(document.getString("openness")));
                            personalitiesArray.add(Integer.parseInt(document.getString("conscientiousness")));
-                           Log.d(TAG, "the personality of the users are: " + personalityArray.toString());
-                           personalityArray = personalitiesArray;
+                           Log.d(TAG, "the personality of the users are: " + personalitiesArray.toString());
 
-                       firestoreCallbackP.onCallback(personalityArray);
+                       firestoreCallbackP.onCallback(personalitiesArray);
                    } else {
                        Log.d(TAG, "get failed with ", task.getException());
                    }

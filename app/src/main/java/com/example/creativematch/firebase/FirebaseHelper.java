@@ -201,18 +201,15 @@ public class FirebaseHelper {
 
        }
     public void attachReadPersonalityToUser(String newUid) {
-        // need to put stuff here
 
-            getPersonality(new FirestoreCallbackP() {
+            getPersonality(newUid, new FirestoreCallbackP() {
                 @Override
                 public void onCallback(ArrayList<Integer> personality) {
-                    Log.i(TAG, "Inside attachReadDataToUser, onCallBack" + personality.toString());
-                    personalityArray = personality;
                 }
-            }, newUid);
+            });
     }
 
-       public void getPersonality(FirestoreCallbackP firestoreCallbackP, String uid){
+       public void getPersonality(String uid, FirestoreCallbackP firestoreCallbackP){
         personalityArray.clear();
            DocumentReference docRef = db.collection("users").document(uid);
 
@@ -224,12 +221,12 @@ public class FirebaseHelper {
                             DocumentSnapshot document = task.getResult();
 
                            ArrayList<Integer> personalitiesArray = new ArrayList<>();
-                           personalitiesArray.add(Integer.parseInt(document.getString("agreeableness")));
-                           personalitiesArray.add(Integer.parseInt(document.getString("openness")));
-                           personalitiesArray.add(Integer.parseInt(document.getString("conscientiousness")));
+                           personalitiesArray.get(Integer.parseInt(document.getString("agreeableness")));
+                           personalitiesArray.get(Integer.parseInt(document.getString("openness")));
+                           personalitiesArray.get(Integer.parseInt(document.getString("conscientiousness")));
                            Log.d(TAG, "the personality of the users are: " + personalitiesArray.toString());
-
-                       firestoreCallbackP.onCallback(personalitiesArray);
+                       personalityArray =  personalitiesArray;
+                       firestoreCallbackP.onCallback(personalityArray);
                    } else {
                        Log.d(TAG, "get failed with ", task.getException());
                    }

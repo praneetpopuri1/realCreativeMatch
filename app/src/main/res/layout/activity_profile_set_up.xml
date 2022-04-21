@@ -14,10 +14,14 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+        <!--
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop=""
+            android:layout_marginTop="">
+
+        </TextView>
+        -->
     </LinearLayout>
 
 </ScrollView>

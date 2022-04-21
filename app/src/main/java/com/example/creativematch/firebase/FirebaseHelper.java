@@ -206,7 +206,8 @@ public class FirebaseHelper {
             getPersonality(newUid, new FirestoreCallbackP() {
                 @Override
                 public void onCallback(ArrayList<Integer> personality) {
-                    Log.i(TAG, "Inside attachReadDataToUser, onCallBack " + personality.toString());
+                    Log.i(TAG, "Inside attachReadPersonalityToUser, onCallBack " + personality.toString());
+                    Log.d(TAG, "the personality of the users in callback are: " + personalityArray.toString());
                 }
             });
         }
@@ -215,29 +216,28 @@ public class FirebaseHelper {
        public void getPersonality(String uid, FirestoreCallbackP firestoreCallbackP){
         personalityArray.clear();
            DocumentReference docRef = db.collection("users").document(uid);
-
            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
                @Override
                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                   Log.d(TAG, "on complete ran");
+                   Log.d(TAG, "on complete ran inside get personality");
                    if (task.isSuccessful()) {
+                       Log.d(TAG, task.getResult().toString());
                        DocumentSnapshot document = task.getResult();
-                       ArrayList<Integer> personalitiesArray = new ArrayList<>();
-                            if (document.exists()) {
-                                personalitiesArray.add(Integer.parseInt(document.getString("agreeableness")));
-                                personalitiesArray.add(Integer.parseInt(document.getString("openness")));
-                                personalitiesArray.add(Integer.parseInt(document.getString("conscientiousness")));
-                                Log.d(TAG, "the personality of the users are: " + personalitiesArray.toString());
-                            }
-                       personalityArray =  personalitiesArray;
+                       personalityArray.add(17);
+                                personalityArray.add(document.getLong("agreeableness").intValue());
+                                Log.d(TAG, document.getData().toString());
+                                //personalityArray.add(Integer.parseInt(document.getString("openness")));
+                                Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+                                //personalityArray.add(Integer.parseInt(document.getString("conscientiousness")));
+                                Log.d(TAG, "the personality of the users are: " + personalityArray);
                        firestoreCallbackP.onCallback(personalityArray);
                    } else {
                        Log.d(TAG, "get failed with ", task.getException());
                    }
                }
            });
-           Log.d(TAG, "the personality of the users are: " + personalityArray.toString());
+           Log.d(TAG, "the personality of the users end of method are: " + personalityArray.toString());
        }
 
     public ArrayList<Integer> getPersonalityArray() {

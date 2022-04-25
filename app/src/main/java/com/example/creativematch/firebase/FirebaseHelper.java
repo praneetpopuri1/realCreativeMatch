@@ -30,6 +30,7 @@ public class FirebaseHelper {
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
     ArrayList<Integer> personalityArray = new ArrayList<Integer>();
+    ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
 
 
     public FirebaseHelper() {
@@ -164,32 +165,39 @@ public class FirebaseHelper {
 
     }
 
-    public void queerySearch(FirestoreCallbackOU firestoreCallbackOU,int agreeableness, int openness, int conscientiousness) {
-        ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
+    public void queerySearch(int agreeableness, int openness, int conscientiousness, FirestoreCallbackOU firestoreCallbackOU) {
+        similarUsers.clear();
         CollectionReference usersRef = db.collection("users");
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
-                .whereLessThanOrEqualTo("agreeableness", agreeableness + 20)
-                .whereGreaterThanOrEqualTo("openness", openness - 20)
-                .whereLessThanOrEqualTo("openness", openness + 20)
-                .whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
+                .whereLessThanOrEqualTo("agreeableness", agreeableness + 20);
+        usersRef.whereGreaterThanOrEqualTo("openness", openness - 20)
+                .whereLessThanOrEqualTo("openness", openness + 20);
+        usersRef.whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
                 .whereLessThanOrEqualTo("conscientiousness", conscientiousness + 20)
                 .limit(20);
-
+            Log.i(TAG, "queerySearch has not crashed");
 
         usersRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-
+                    int i = 0;
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 String userName = document.getString("name");
                                 String profession = document.getString("profession");
-                                OtherUser anotherUser = new OtherUser(profession,userName);
+                                int agreeableness = document.getLong("agreeableness").intValue();
+                                //Log.d(TAG, document.getData().toString());
+                                int openness = document.getLong("openness").intValue();
+                                //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+                                int conscientiousness =  document.getLong("conscientiousness").intValue();
+                                OtherUser anotherUser = new OtherUser(profession, userName,);
+
                                 Log.d(TAG, "the other users are: " + anotherUser);
                                 similarUsers.add(anotherUser);
-
+                                i++;
                             }
+                            Log.d(TAG, "the amount of users called are: " + i);
                             firestoreCallbackOU.onCallback(similarUsers);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -199,18 +207,6 @@ public class FirebaseHelper {
         Log.d(TAG, "the other users are: " + similarUsers.toString());
 
        }
-    public void attachReadPersonalityToUser(String newUid) {
-        if (getmAuth().getCurrentUser() != null) {
-            uid = mAuth.getUid();
-            getPersonality(newUid, new FirestoreCallbackP() {
-                @Override
-                public void onCallback(ArrayList<Integer> personality) {
-                    Log.i(TAG, "Inside attachReadPersonalityToUser, onCallBack " + personality.toString());
-                    Log.d(TAG, "the personality of the users in callback are: " + personalityArray.toString());
-                }
-            });
-        }
-    }
 
        public void getPersonality(String uid, FirestoreCallbackP firestoreCallbackP){
         personalityArray.clear();

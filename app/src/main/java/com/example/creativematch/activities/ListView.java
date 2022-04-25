@@ -38,17 +38,19 @@ public class ListView extends AppCompatActivity {
             public void onCallback(ArrayList<Integer> personality) {
                 Log.i(TAG, "Inside getRandomUsers, onCallBack " + personality.toString());
 
-                    firebaseHelper.queerySearch(new FirebaseHelper.FirestoreCallbackOU() {
+                    firebaseHelper.queerySearch(personality.get(1), personality.get(1), personality.get(2),
+                            new FirebaseHelper.FirestoreCallbackOU() {
                         @Override
                         public void onCallback(ArrayList<OtherUser> listUsers) {
-                            Log.i(TAG, "Inside getRandomUsers, onCallBack" + personality.toString());
+                            Log.i(TAG, "Inside getRandomUsers, onCallBack" + listUsers.toString());
+
                         }
-                    }, personality.get(1), personality.get(1), personality.get(2));
+                    } );
 
             }
         });
 
-
+        /*
         ArrayList<OtherUser> samePUser = new ArrayList<OtherUser>();
         ArrayList<OtherUser> diffPUser = new ArrayList<OtherUser>();
         int i = 0;
@@ -101,8 +103,16 @@ public class ListView extends AppCompatActivity {
 
 
             return otherUsers;
+
+         */
     }
         public interface FirestoreCallbackP {
             void onCallback (ArrayList<Integer> personality);
         }
+
+    public interface FirestoreCallbackOU {
+        void onCallback (ArrayList<OtherUser> listUsers);
+    }
+
+
     }

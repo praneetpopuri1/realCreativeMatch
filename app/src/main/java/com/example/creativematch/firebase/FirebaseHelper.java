@@ -164,7 +164,7 @@ public class FirebaseHelper {
 
     }
 
-    public ArrayList <OtherUser> queerySearch(FirestoreCallbackOU firestoreCallbackOU,int agreeableness, int openness, int conscientiousness) {
+    public void queerySearch(FirestoreCallbackOU firestoreCallbackOU,int agreeableness, int openness, int conscientiousness) {
         ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
         CollectionReference usersRef = db.collection("users");
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
@@ -197,7 +197,6 @@ public class FirebaseHelper {
                     }
                 });
         Log.d(TAG, "the other users are: " + similarUsers.toString());
-        return similarUsers;
 
        }
     public void attachReadPersonalityToUser(String newUid) {
@@ -222,14 +221,12 @@ public class FirebaseHelper {
                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                    Log.d(TAG, "on complete ran inside get personality");
                    if (task.isSuccessful()) {
-                       Log.d(TAG, task.getResult().toString());
                        DocumentSnapshot document = task.getResult();
-                       personalityArray.add(17);
                                 personalityArray.add(document.getLong("agreeableness").intValue());
-                                Log.d(TAG, document.getData().toString());
-                                //personalityArray.add(Integer.parseInt(document.getString("openness")));
-                                Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
-                                //personalityArray.add(Integer.parseInt(document.getString("conscientiousness")));
+                                //Log.d(TAG, document.getData().toString());
+                                personalityArray.add(document.getLong("openness").intValue());
+                                //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+                                personalityArray.add(document.getLong("conscientiousness").intValue());
                                 Log.d(TAG, "the personality of the users are: " + personalityArray);
                        firestoreCallbackP.onCallback(personalityArray);
                    } else {

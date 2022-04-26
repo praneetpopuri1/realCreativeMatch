@@ -168,6 +168,10 @@ public class FirebaseHelper {
     public void queerySearch(int agreeableness, int openness, int conscientiousness, FirestoreCallbackOU firestoreCallbackOU) {
         similarUsers.clear();
         CollectionReference usersRef = db.collection("users");
+        Log.i(TAG, "agreeableness in queerySearch: " + agreeableness);
+
+
+        /*
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
                 .whereLessThanOrEqualTo("agreeableness", agreeableness + 20);
         usersRef.whereGreaterThanOrEqualTo("openness", openness - 20)
@@ -175,9 +179,11 @@ public class FirebaseHelper {
         usersRef.whereGreaterThanOrEqualTo("conscientiousness", conscientiousness - 20)
                 .whereLessThanOrEqualTo("conscientiousness", conscientiousness + 20)
                 .limit(20);
+
+         */
             Log.i(TAG, "queerySearch has not crashed");
 
-        usersRef.get()
+        usersRef.whereGreaterThanOrEqualTo("agreeableness", 50).get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     int i = 0;
                     @Override
@@ -191,7 +197,7 @@ public class FirebaseHelper {
                                 int openness = document.getLong("openness").intValue();
                                 //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
                                 int conscientiousness =  document.getLong("conscientiousness").intValue();
-                                OtherUser anotherUser = new OtherUser(profession, userName,);
+                                OtherUser anotherUser = new OtherUser(profession, userName, agreeableness, openness, conscientiousness);
 
                                 Log.d(TAG, "the other users are: " + anotherUser);
                                 similarUsers.add(anotherUser);

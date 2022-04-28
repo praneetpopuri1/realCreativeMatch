@@ -91,7 +91,7 @@ public class SurveyActivity extends AppCompatActivity {
             profession = "computer programmer";
         }
         Log.i(TAG, "The profession is: " + profession);
-        //firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
+        firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
         Intent intent = new Intent(SurveyActivity.this, ListView.class);
         startActivity(intent);
 

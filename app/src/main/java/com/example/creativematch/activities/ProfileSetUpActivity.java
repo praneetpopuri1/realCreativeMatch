@@ -74,7 +74,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
                     preferenceManager.putString(Constants.Key_USER_ID, documentReference.getId());
                     preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 })
                 .addOnFailureListener(exception ->{
 

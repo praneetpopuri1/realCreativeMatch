@@ -44,7 +44,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
 
     private void setListeners() {// vid 3 0:58
         binding.submitButton.setOnClickListener(v->{
-            if (isValidImage()){
+            if (isValidInformation()){
                 confirmAccount();
             }
         });
@@ -110,7 +110,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
             }
     );
 
-    private Boolean isValidImage(){
+    private Boolean isValidInformation(){
         if(encodedImage==null){
             showToast("Select profile image");
             return false;

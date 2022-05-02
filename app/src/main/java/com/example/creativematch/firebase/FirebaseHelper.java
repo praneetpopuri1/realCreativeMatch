@@ -13,6 +13,7 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
@@ -181,9 +182,14 @@ public class FirebaseHelper {
                 .limit(20);
 
          */
-            Log.i(TAG, "queerySearch has not crashed");
-
-        usersRef.whereGreaterThanOrEqualTo("agreeableness", 50).get()
+        Query agreeablenessQuery = usersRef
+                                .whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
+                                .whereLessThanOrEqualTo("agreeableness", agreeableness + 20);
+        Query populationQuery = usersRef.whereLessThan("population", 100000);
+        Query nameQuery = usersRef.whereGreaterThanOrEqualTo("name", "San Francisco");
+        agreeablenessQuery
+                .limit(10)
+                .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     int i = 0;
                     @Override

@@ -12,4 +12,5 @@
     <color name="navy_blue">#FF000040</color>
     <color name="secondary_text">#FF757575</color>
     <color name="yellow">#FFC905</color>
+    <color name="darkGrey">#FF353535</color>
 </resources>

@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CreativeMatch">
         <activity
+            android:name=".activities.MainPage"
+            android:exported="false" />
+        <activity
             android:name=".activities.ProfileSetUpActivity"
             android:exported="false" />
         <activity

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.creativematch.R;
 import com.example.creativematch.Utilities.Constants;
+import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.databinding.ActivityProfileSetUpBinding;
 import com.github.javafaker.Bool;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,6 +30,7 @@ import java.util.HashMap;
 public class ProfileSetUpActivity extends AppCompatActivity {
 
     private ActivityProfileSetUpBinding binding;
+    private PreferenceManager preferenceManager;
     private String encodedImage;
 
     @Override
@@ -36,12 +38,13 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityProfileSetUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
     }
 
     private void setListeners() {// vid 3 0:58
         binding.submitButton.setOnClickListener(v->{
-            if (isValidImage()){
+            if (isValidInformation()){
                 confirmAccount();
             }
         });
@@ -66,7 +69,12 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .add(user)
                 .addOnSuccessListener(documentReference -> {
-
+                    loading(false);
+                    preferenceManager.putBoolean(Constants.KEY_IS_SINGED_IN, true);
+                    preferenceManager.putString(Constants.Key_USER_ID, documentReference.getId());
+                    preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 })
                 .addOnFailureListener(exception ->{
 
@@ -102,7 +110,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
             }
     );
 
-    private Boolean isValidImage(){
+    private Boolean isValidInformation(){
         if(encodedImage==null){
             showToast("Select profile image");
             return false;

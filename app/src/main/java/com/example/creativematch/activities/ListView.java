@@ -42,7 +42,7 @@ public class ListView extends AppCompatActivity {
                             new FirebaseHelper.FirestoreCallbackOU() {
                         @Override
                         public void onCallback(ArrayList<OtherUser> listUsers) {
-                            Log.i(TAG, "Inside getRandomUsers, onCallBack" + listUsers.toString());
+                            Log.i(TAG, "Inside getRandomUsers, onCallBack the length of the array: " + listUsers.size() + " these are the users themselves " + listUsers.toString());
 
                         }
                     } );

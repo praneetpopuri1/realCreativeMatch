@@ -185,8 +185,12 @@ public class FirebaseHelper {
         Query agreeablenessQuery = usersRef
                                 .whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
                                 .whereLessThanOrEqualTo("agreeableness", agreeableness + 20);
-        Query populationQuery = usersRef.whereLessThan("population", 100000);
-        Query nameQuery = usersRef.whereGreaterThanOrEqualTo("name", "San Francisco");
+        Query opennessQuery = usersRef
+                                    .whereGreaterThanOrEqualTo("openness", openness - 20)
+                                    .whereLessThanOrEqualTo("openness", openness + 20);
+        Query conscientiousnessQuery = usersRef
+                                        .whereGreaterThanOrEqualTo("openness", openness - 20)
+                                        .whereLessThanOrEqualTo("openness", openness + 20);
         agreeablenessQuery
                 .limit(10)
                 .get()
@@ -205,17 +209,75 @@ public class FirebaseHelper {
                                 int conscientiousness =  document.getLong("conscientiousness").intValue();
                                 OtherUser anotherUser = new OtherUser(profession, userName, agreeableness, openness, conscientiousness);
 
-                                Log.d(TAG, "the other users are: " + anotherUser);
                                 similarUsers.add(anotherUser);
                                 i++;
                             }
-                            Log.d(TAG, "the amount of users called are: " + i);
+                            Log.d(TAG, "the amount of users called are in agreeablenessQuery: " + i);
                             firestoreCallbackOU.onCallback(similarUsers);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
+
+        opennessQuery
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    int i = 0;
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userName = document.getString("name");
+                                String profession = document.getString("profession");
+                                int agreeableness = document.getLong("agreeableness").intValue();
+                                //Log.d(TAG, document.getData().toString());
+                                int openness = document.getLong("openness").intValue();
+                                //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+                                int conscientiousness =  document.getLong("conscientiousness").intValue();
+                                OtherUser anotherUser = new OtherUser(profession, userName, agreeableness, openness, conscientiousness);
+
+                                similarUsers.add(anotherUser);
+                                i++;
+                            }
+                            Log.d(TAG, "the amount of users called are in opennessQuery: " + i);
+                            firestoreCallbackOU.onCallback(similarUsers);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        conscientiousnessQuery
+                .limit(10)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    int i = 0;
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userName = document.getString("name");
+                                String profession = document.getString("profession");
+                                int agreeableness = document.getLong("agreeableness").intValue();
+                                //Log.d(TAG, document.getData().toString());
+                                int openness = document.getLong("openness").intValue();
+                                //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+                                int conscientiousness =  document.getLong("conscientiousness").intValue();
+                                OtherUser anotherUser = new OtherUser(profession, userName, agreeableness, openness, conscientiousness);
+
+                                similarUsers.add(anotherUser);
+                                i++;
+                            }
+                            Log.d(TAG, "the amount of users called are in conscientiousnessQuery: " + i);
+                            firestoreCallbackOU.onCallback(similarUsers);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
         Log.d(TAG, "the other users are: " + similarUsers.toString());
 
        }

@@ -32,7 +32,7 @@ public class FirebaseHelper {
     private FirebaseFirestore db;
     ArrayList<Integer> personalityArray = new ArrayList<Integer>();
     ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
-    private int j = 80;
+    private boolean isFirstCall = false;
 
 
     public FirebaseHelper() {
@@ -168,9 +168,7 @@ public class FirebaseHelper {
     }
 
     public void queerySearch(int agreeableness, int openness, int conscientiousness, FirestoreCallbackOU firestoreCallbackOU) {
-        if( j > 20) {
-            similarUsers.clear();
-        }
+
         ArrayList<OtherUser> finalUsers = new ArrayList<OtherUser>();
         CollectionReference usersRef = db.collection("users");
         Log.i(TAG, "agreeableness in queerySearch: " + agreeableness);
@@ -190,7 +188,7 @@ public class FirebaseHelper {
                                 .whereGreaterThanOrEqualTo("agreeableness", agreeableness - 25)
                                 .whereLessThanOrEqualTo("agreeableness", agreeableness + 25);
         agreeablenessQuery
-                .limit(j)
+                .limit(80)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     int i = 0;
@@ -224,12 +222,12 @@ public class FirebaseHelper {
                             }
                             Log.d(TAG, "the users that are in simular users: " + similarUsers.toString());
                             Log.d(TAG, "the amount of users that are in simular users: " + similarUsers.size());
-                            /*
-                            if(finalUsers.size() < 20){
-                                j = 20;
-                                queerySearch(agreeableness, openness, conscientiousness, firestoreCallbackOU);
+
+                            while (similarUsers.size() < 20){
+                                j
+                                paginateQueery(agreeableness, openness, conscientiousness, , firestoreCallbackOU);
                             }
-                            */
+
                             firestoreCallbackOU.onCallback(similarUsers);
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -240,6 +238,13 @@ public class FirebaseHelper {
         Log.d(TAG, "the other users are: " + similarUsers.toString());
 
        }
+
+
+    public void paginateQueery(int agreeableness, int openness, int conscientiousness, int amountAft, FirestoreCallbackOU firestoreCallbackOU) {
+
+    }
+
+
 
        public void getPersonality(String uid, FirestoreCallbackP firestoreCallbackP){
         personalityArray.clear();

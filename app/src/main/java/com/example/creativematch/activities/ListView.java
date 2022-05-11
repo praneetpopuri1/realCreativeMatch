@@ -38,7 +38,7 @@ public class ListView extends AppCompatActivity {
             public void onCallback(ArrayList<Integer> personality) {
                 Log.i(TAG, "Inside getRandomUsers, onCallBack " + personality.toString());
 
-                    firebaseHelper.queerySearch(personality.get(0), personality.get(1), personality.get(2), 0,
+                    firebaseHelper.queerySearch(personality.get(0), personality.get(1), personality.get(2),
                             new FirebaseHelper.FirestoreCallbackOU() {
                         @Override
                         public void onCallback(ArrayList<OtherUser> listUsers) {

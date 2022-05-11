@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toStartOf="@+id/imageSignOut"
         app:layout_constraintStart_toEndOf="@+id/imageProfile"
         app:layout_constraintTop_toTopOf="@id/imageProfile" />
-
+        <!--
     <Button
         android:id="@+id/MeetNewButton"
         android:layout_width="@dimen/_300sdp"
@@ -63,5 +63,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="" />
-
+        -->
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -172,7 +172,7 @@ public class FirebaseHelper {
         ArrayList<OtherUser> finalUsers = new ArrayList<OtherUser>();
         CollectionReference usersRef = db.collection("users");
         Log.i(TAG, "agreeableness in queerySearch: " + agreeableness);
-
+        final int[] j = {60};
 
         /*
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
@@ -224,9 +224,11 @@ public class FirebaseHelper {
                             Log.d(TAG, "the amount of users that are in simular users: " + similarUsers.size());
 
                             while (similarUsers.size() < 20){
-                                j
-                                paginateQueery(agreeableness, openness, conscientiousness, , firestoreCallbackOU);
+                                j[0] += 20;
+                                paginateQueery(agreeableness, openness, conscientiousness, j[0], firestoreCallbackOU);
                             }
+
+
 
                             firestoreCallbackOU.onCallback(similarUsers);
                         } else {
@@ -241,7 +243,56 @@ public class FirebaseHelper {
 
 
     public void paginateQueery(int agreeableness, int openness, int conscientiousness, int amountAft, FirestoreCallbackOU firestoreCallbackOU) {
+        ArrayList<OtherUser> finalUsers = new ArrayList<OtherUser>();
+        CollectionReference usersRef = db.collection("users");
+        Log.d(TAG, "paginateQueery is called");
+        Query agreeablenessQuery = usersRef
+                .whereGreaterThanOrEqualTo("agreeableness", agreeableness - 25)
+                .whereLessThanOrEqualTo("agreeableness", agreeableness + 25);
+        agreeablenessQuery
+                .orderBy(String.valueOf(agreeableness))
+                .startAfter(amountAft)
+                .limit(20)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    int i = 0;
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                String userName = document.getString("name");
+                                String profession = document.getString("profession");
+                                int agreeableness = document.getLong("agreeableness").intValue();
+                                //Log.d(TAG, document.getData().toString());
+                                int openness = document.getLong("openness").intValue();
+                                //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+                                int conscientiousness =  document.getLong("conscientiousness").intValue();
+                                OtherUser anotherUser = new OtherUser(profession, userName, agreeableness, openness, conscientiousness);
 
+                                finalUsers.add(anotherUser);
+
+                                i++;
+                            }
+
+                            Log.d(TAG, "the amount of users called are in agreeablenessQuery: " + i);
+                            Log.d(TAG, "the users that are in final users: " + finalUsers.toString());
+                            for (OtherUser user: finalUsers ) {
+                                if( (user.getConscientiousness() > conscientiousness - 25 && user.getConscientiousness() < conscientiousness + 25)
+                                        && (user.getOpenness() > openness - 25 && user.getOpenness() < openness + 25)
+                                ){
+
+                                    similarUsers.add(user);
+                                }
+                            }
+                            Log.d(TAG, "the users that are in similar users: " + similarUsers.toString());
+                            Log.d(TAG, "the amount of users that are in similar users: " + similarUsers.size());
+
+                            firestoreCallbackOU.onCallback(similarUsers);
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
 

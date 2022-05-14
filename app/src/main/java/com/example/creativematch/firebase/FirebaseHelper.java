@@ -185,6 +185,7 @@ public class FirebaseHelper {
 
          */
         Query agreeablenessQuery = usersRef
+                                .orderBy("agreeableness")
                                 .whereGreaterThanOrEqualTo("agreeableness", agreeableness - 25)
                                 .whereLessThanOrEqualTo("agreeableness", agreeableness + 25);
         agreeablenessQuery
@@ -246,11 +247,10 @@ public class FirebaseHelper {
         ArrayList<OtherUser> finalUsers = new ArrayList<OtherUser>();
         CollectionReference usersRef = db.collection("users");
         Log.d(TAG, "paginateQueery is called");
-        Query agreeablenessQuery = usersRef
+        usersRef
                 .whereGreaterThanOrEqualTo("agreeableness", agreeableness - 25)
-                .whereLessThanOrEqualTo("agreeableness", agreeableness + 25);
-        agreeablenessQuery
-                .orderBy(String.valueOf(agreeableness))
+                .whereLessThanOrEqualTo("agreeableness", agreeableness + 25)
+                .orderBy("agreeableness")
                 .startAfter(amountAft)
                 .limit(20)
                 .get()

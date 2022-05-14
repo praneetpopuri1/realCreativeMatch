@@ -16,6 +16,9 @@ import java.util.Random;
 public class ListView extends AppCompatActivity {
     public static FirebaseHelper firebaseHelper;
     public final String TAG = "Denna";
+    ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
+    public int j = 80;
+    public int r = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,7 @@ public class ListView extends AppCompatActivity {
 
     public //ArrayList<OtherUser
     void getRandomUsers() {
-        ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
+
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
         firebaseHelper.getPersonality(user.getUid(), new FirebaseHelper.FirestoreCallbackP() {
             @Override
@@ -43,6 +46,14 @@ public class ListView extends AppCompatActivity {
                         @Override
                         public void onCallback(ArrayList<OtherUser> listUsers) {
                             Log.i(TAG, "Inside getRandomUsers, onCallBack the length of the array: " + listUsers.size() + " these are the users themselves " + listUsers.toString());
+                            otherUsers.addAll(listUsers);
+                            topOffUsers(personality.get(0), personality.get(1), personality.get(2), 80);
+
+
+
+
+                            Log.i(TAG, "Inside getRandomUsers, onCallBack the length of the array: " + otherUsers.size());
+
 
                         }
                     } );
@@ -105,6 +116,27 @@ public class ListView extends AppCompatActivity {
             return otherUsers;
 
          */
+    }
+
+    public void topOffUsers(int agreeableness, int openness, int conscientiousness, int amountAft){
+        if (r < 20) {
+            firebaseHelper.paginateQueery(agreeableness, openness, conscientiousness, amountAft,
+                    new FirebaseHelper.FirestoreCallbackOU() {
+                        @Override
+                        public void onCallback(ArrayList<OtherUser> listUsers) {
+                            otherUsers = listUsers;
+                            Log.i(TAG, "Inside getRandomUsers, paginateQueery retrieves an array with length of: " + otherUsers.size() + " these are the users themselves " + otherUsers.toString());
+
+                            if (otherUsers.size() < 20) {
+                                j += 20;
+                                r++;
+                                topOffUsers(agreeableness, openness, conscientiousness, j);
+                            }
+                        }
+
+                    });
+        }
+
     }
         public interface FirestoreCallbackP {
             void onCallback (ArrayList<Integer> personality);

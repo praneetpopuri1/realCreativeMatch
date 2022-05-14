@@ -172,8 +172,6 @@ public class FirebaseHelper {
         ArrayList<OtherUser> finalUsers = new ArrayList<OtherUser>();
         CollectionReference usersRef = db.collection("users");
         Log.i(TAG, "agreeableness in queerySearch: " + agreeableness);
-        final int[] j = {60};
-
         /*
         usersRef.whereGreaterThanOrEqualTo("agreeableness", agreeableness - 20)
                 .whereLessThanOrEqualTo("agreeableness", agreeableness + 20);
@@ -216,6 +214,7 @@ public class FirebaseHelper {
                             for (OtherUser user: finalUsers ) {
                                 if( (user.getConscientiousness() > conscientiousness - 25 && user.getConscientiousness() < conscientiousness + 25)
                                 && (user.getOpenness() > openness - 25 && user.getOpenness() < openness + 25)
+                                        && (similarUsers.size() < 20)
                                 ){
 
                                     similarUsers.add(user);
@@ -224,10 +223,6 @@ public class FirebaseHelper {
                             Log.d(TAG, "the users that are in simular users: " + similarUsers.toString());
                             Log.d(TAG, "the amount of users that are in simular users: " + similarUsers.size());
 
-                            while (similarUsers.size() < 20){
-                                j[0] += 20;
-                                paginateQueery(agreeableness, openness, conscientiousness, j[0], firestoreCallbackOU);
-                            }
 
 
 
@@ -274,11 +269,12 @@ public class FirebaseHelper {
                                 i++;
                             }
 
-                            Log.d(TAG, "the amount of users called are in agreeablenessQuery: " + i);
+                            Log.d(TAG, "in paginateQueery the amount of users called are in agreeablenessQuery: " + i);
                             Log.d(TAG, "the users that are in final users: " + finalUsers.toString());
                             for (OtherUser user: finalUsers ) {
                                 if( (user.getConscientiousness() > conscientiousness - 25 && user.getConscientiousness() < conscientiousness + 25)
                                         && (user.getOpenness() > openness - 25 && user.getOpenness() < openness + 25)
+                                        && (similarUsers.size() < 20)
                                 ){
 
                                     similarUsers.add(user);

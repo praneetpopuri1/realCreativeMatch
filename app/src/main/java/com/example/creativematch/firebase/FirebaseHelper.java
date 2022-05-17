@@ -33,6 +33,7 @@ public class FirebaseHelper {
     ArrayList<Integer> personalityArray = new ArrayList<Integer>();
     ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
     private boolean isFirstCall = false;
+    ArrayList<String> professionArray = new ArrayList<String>();
 
 
     public FirebaseHelper() {
@@ -322,29 +323,26 @@ public class FirebaseHelper {
         return personalityArray;
     }
 
-    public String getProfession(FirestoreCallbackPro firestoreCallbackPro,String uid){
+    public void getProfession( String uid, FirestoreCallbackPro firestoreCallbackPro){
+        professionArray.clear();
         DocumentReference docRef = db.collection("users").document(uid);
-        final ArrayList<String> getProfession = new ArrayList<String>();
+
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        getProfession.add(document.getString("profession"));
-                        Log.d(TAG, "the personality of the users are: " + getProfession.toString());
-                    } else {
-                        Log.d(TAG, "No such document");
-                    }
-                    firestoreCallbackPro.onCallback(getProfession);
+
+                        professionArray.add(document.getString("profession"));
+                        Log.d(TAG, "the personality of the users are: " + professionArray.toString());
+
+                    firestoreCallbackPro.onCallback(professionArray);
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
-        Log.d(TAG, "the personality of the users are: " + getProfession.get(0));
-        return getProfession.get(0);
     }
 
 

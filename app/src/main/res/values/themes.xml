@@ -12,4 +12,10 @@
         <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">@dimen/topMarginBetweenET</item>
     </style>
+
+    <style name="Theme.CreativeMatch.SlidrActivityTheme">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
 </resources>

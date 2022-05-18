@@ -57,6 +57,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                                                             @Override
                                                             public void onCallback(ArrayList<String> profession) {
                                                                 otherUsers =  fillUsers(profession.get(0), otherUsers);
+
                                                             }
                                                         });
 

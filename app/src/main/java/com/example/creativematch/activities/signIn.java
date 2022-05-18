@@ -60,7 +60,7 @@ public class SignIn extends AppCompatActivity {
 
 
 
-                                Intent intent = new Intent(SignIn.this, SurveyActivity.class);
+                                Intent intent = new Intent(SignIn.this, MainPage.class);
                                 startActivity(intent);
                             }
                             else{

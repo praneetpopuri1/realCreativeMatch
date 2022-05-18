@@ -2,6 +2,8 @@ package com.example.creativematch;
 
 import androidx.annotation.NonNull;
 
+import com.example.creativematch.models.User;
+
 public class OtherUser {
 
     String profession;
@@ -26,6 +28,14 @@ public class OtherUser {
                 ", openness=" + openness +
                 ", conscientiousness=" + conscientiousness +
                 '}';
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public int getOpenness() {
@@ -69,6 +79,10 @@ public class OtherUser {
         this.description = description;
 
 
+    }
+
+    public User conversionTherapy(){
+        User 
     }
 
 }

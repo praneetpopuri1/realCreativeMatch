@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.example.creativematch.OtherUser;
 import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.UsersAdapter;
@@ -22,6 +23,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
 
     private ActivityUsersBinding binding;
     private PreferenceManager preferenceManager;
+    private ArrayList<OtherUser> users = new ArrayList<OtherUser>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +32,19 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
-        getUsers();
+        setListView(users);
     }
 
     private void setListeners(){
         binding.imageBack.setOnClickListener(v-> onBackPressed());
     }
 
+    private void setListView(ArrayList<OtherUser> users){
+        UsersAdapter usersAdapter = new UsersAdapter(users, this);
+        binding.usersRecycleView.setAdapter(usersAdapter);
+        binding.usersRecycleView.setVisibility(View.VISIBLE);
+    }
+    /*
     private void getUsers(){
         loading(true);
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -71,7 +79,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                     }
                 });
     }
-
+    */
     private void showErrorMessage(){
         binding.textErrorMessage.setText(String.format("%s", "No user available"));
         binding.textErrorMessage.setVisibility(View.VISIBLE);

@@ -2,6 +2,7 @@ package com.example.creativematch.activities;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -20,7 +22,11 @@ import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.databinding.ActivityProfileSetUpBinding;
 import com.github.javafaker.Bool;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.example.creativematch.firebase.FirebaseHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -32,6 +38,9 @@ public class ProfileSetUpActivity extends AppCompatActivity {
     private ActivityProfileSetUpBinding binding;
     private PreferenceManager preferenceManager;
     private String encodedImage;
+    public static FirebaseHelper firebaseHelper;
+    public final String TAG = "Denna";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,23 +70,28 @@ public class ProfileSetUpActivity extends AppCompatActivity {
 
     private void confirmAccount(){
         loading(true);
+        FirebaseUser usersAuth = firebaseHelper.getmAuth().getCurrentUser();
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         HashMap<String, Object> user = new HashMap<>();
         user.put(Constants.KEY_DESCRIPTION, binding.Description.getText().toString());
-        user.put(Constants.KEY_WORKS, binding.workText.getText().toString());
         user.put(Constants.KEY_IMAGE, encodedImage);
-        database.collection(Constants.KEY_COLLECTION_USERS)
-                .add(user)
-                .addOnSuccessListener(documentReference -> {
-                    loading(false);
-                    preferenceManager.putBoolean(Constants.KEY_IS_SINGED_IN, true);
-                    preferenceManager.putString(Constants.Key_USER_ID, documentReference.getId());
-                    preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        database.collection("users").document(usersAuth.getUid())
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        preferenceManager.putBoolean(Constants.KEY_IS_SINGED_IN, true);
+                        preferenceManager.putString(Constants.Key_USER_ID, usersAuth.getUid());
+                        preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    }
                 })
-                .addOnFailureListener(exception ->{
-
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "error adding user account");
+                    }
                 });
     }
 

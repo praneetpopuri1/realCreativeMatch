@@ -15,6 +15,7 @@ import java.util.Random;
 
 public class ListView extends AppCompatActivity {
     public static FirebaseHelper firebaseHelper;
+    public static SwipeLeftOrRightOne swipeLeftOrRightOne;
     public final String TAG = "Denna";
     ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
     public int j = 80;
@@ -51,109 +52,21 @@ public class ListView extends AppCompatActivity {
                                                     if (otherUsers.size() < 20) {
                                                         j += 20;
                                                         r++;
-                                                        ArrayList<OtherUser> samePUser = new ArrayList<OtherUser>();
-                                                        ArrayList<OtherUser> diffPUser = new ArrayList<OtherUser>();
                                                         firebaseHelper.getProfession(user.getUid(), new FirebaseHelper.FirestoreCallbackPro() {
                                                             @Override
                                                             public void onCallback(ArrayList<String> profession) {
-
-                                                                int t = 0;
-                                                                for (OtherUser users : otherUsers) {
-
-                                                                    String originalProfession = profession.get(0);
-                                                                    if (originalProfession.equals(users.getProfession())) {
-                                                                        samePUser.add(users);
-                                                                    } else {
-                                                                        diffPUser.add(users);
-                                                                    }
-                                                                    t++;
-                                                                    if (t == 20) {
-                                                                        break;
-                                                                    }
-                                                                }
-
-                                                                Random rand = new Random(); //instance of random class
-                                                                int upperbound = 100;
-                                                                //generate random values from 0-99
-                                                                int percentSamePUser = (int) (1.3 * 100 * (((double) (samePUser.size()) / otherUsers.size())));
-                                                                int percentDiffPUser = 100 - percentSamePUser;
-                                                                int k = 0;
-                                                                int l = 0;
-                                                                otherUsers.clear();
-                                                                Log.i(TAG, "the amount of users in samePUser are: " + samePUser.size() + " the users in samePUser are: " + samePUser.toString());
-                                                                Log.i(TAG, "the amount of users in diffPUser are: " + diffPUser.size() + " the users in diffPUser are: " + diffPUser.toString());
-                                                                Log.i(TAG, "the percentage chance that a samePUser is picked is: " + percentSamePUser);
-                                                                Log.i(TAG, "the percentage chance that a diffPUser is picked is: " + percentDiffPUser);
-
-
-                                                                for (int j = 0; j < 10; j++) {
-                                                                    int int_random = rand.nextInt(upperbound + 1);
-                                                                    if (int_random > percentDiffPUser && k < samePUser.size()) {
-
-                                                                        otherUsers.add(samePUser.get(k));
-                                                                        k++;
-                                                                    }
-                                                                    else {
-                                                                        otherUsers.add(diffPUser.get(l));
-                                                                        l++;
-                                                                    }
-                                                                }
-                                                                Log.i(TAG, "the amount of users at the end are: " + otherUsers.size() + " the users at the end are: " + otherUsers.toString());
+                                                                otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
 
                                                             }
                                                         });
 
                                                     }
                                                     else{
-                                                        ArrayList<OtherUser> samePUser = new ArrayList<OtherUser>();
-                                                        ArrayList<OtherUser> diffPUser = new ArrayList<OtherUser>();
 
                                                         firebaseHelper.getProfession(user.getUid(), new FirebaseHelper.FirestoreCallbackPro() {
                                                             @Override
                                                             public void onCallback(ArrayList<String> profession) {
-                                                                int t = 0;
-                                                                for (OtherUser users : otherUsers) {
-
-                                                                    String originalProfession = profession.get(0);
-                                                                    if (originalProfession.equals(users.getProfession())) {
-                                                                        samePUser.add(users);
-                                                                    } else {
-                                                                        diffPUser.add(users);
-                                                                    }
-                                                                    t++;
-                                                                    if (t == 20) {
-                                                                        break;
-                                                                    }
-                                                                }
-
-                                                                Random rand = new Random(); //instance of random class
-                                                                int upperbound = 100;
-                                                                //generate random values from 0-99
-                                                                int percentSamePUser = (int) (1.3 * 100 * (((double) (samePUser.size()) / otherUsers.size())));
-                                                                int percentDiffPUser = 100 - percentSamePUser;
-                                                                int k = 0;
-                                                                int l = 0;
-                                                                otherUsers.clear();
-                                                                Log.i(TAG, "the amount of users in samePUser are: " + samePUser.size() + " the users in samePUser are: " + samePUser.toString());
-                                                                Log.i(TAG, "the amount of users in diffPUser are: " + diffPUser.size() + " the users in diffPUser are: " + diffPUser.toString());
-                                                                Log.i(TAG, "the percentage chance that a samePUser is picked is: " + percentSamePUser);
-                                                                Log.i(TAG, "the percentage chance that a diffPUser is picked is: " + percentDiffPUser);
-
-
-                                                                for (int j = 0; j < 10; j++) {
-                                                                    int int_random = rand.nextInt(upperbound + 1);
-                                                                    if (int_random > percentDiffPUser && k < samePUser.size()) {
-
-                                                                        otherUsers.add(samePUser.get(k));
-                                                                        k++;
-                                                                    }
-                                                                    else {
-                                                                        otherUsers.add(diffPUser.get(l));
-                                                                        l++;
-                                                                    }
-                                                                }
-                                                                Log.i(TAG, "the amount of users at the end are: " + otherUsers.size() + " the users at the end are: " + otherUsers.toString());
-
+                                                                otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
                                                             }
                                                         });
 
@@ -163,54 +76,12 @@ public class ListView extends AppCompatActivity {
                                             });
                                 }
                                 else{
-                                ArrayList<OtherUser> samePUser = new ArrayList<OtherUser>();
-                                ArrayList<OtherUser> diffPUser = new ArrayList<OtherUser>();
 
                                     firebaseHelper.getProfession(user.getUid(), new FirebaseHelper.FirestoreCallbackPro() {
                                         @Override
                                         public void onCallback(ArrayList<String> profession) {
-                                            int t = 0;
-                                            for (OtherUser users : otherUsers) {
 
-                                                String originalProfession = profession.get(0);
-                                                if (originalProfession.equals(users.getProfession())) {
-                                                    samePUser.add(users);
-                                                } else {
-                                                    diffPUser.add(users);
-                                                }
-                                                t++;
-                                                if (t == 20) {
-                                                    break;
-                                                }
-                                            }
-
-                                            Random rand = new Random(); //instance of random class
-                                            int upperbound = 100;
-                                            //generate random values from 0-99
-                                            int percentSamePUser = (int) (1.3 * 100 * (((double) (samePUser.size()) / otherUsers.size())));
-                                            int percentDiffPUser = 100 - percentSamePUser;
-                                            int k = 0;
-                                            int l = 0;
-                                            otherUsers.clear();
-                                            Log.i(TAG, "the amount of users in samePUser are: " + samePUser.size() + " the users in samePUser are: " + samePUser.toString());
-                                            Log.i(TAG, "the amount of users in diffPUser are: " + diffPUser.size() + " the users in diffPUser are: " + diffPUser.toString());
-                                            Log.i(TAG, "the percentage chance that a samePUser is picked is: " + percentSamePUser);
-                                            Log.i(TAG, "the percentage chance that a diffPUser is picked is: " + percentDiffPUser);
-
-
-                                            for (int j = 0; j < 10; j++) {
-                                                int int_random = rand.nextInt(upperbound + 1);
-                                                if (int_random > percentDiffPUser && k < samePUser.size()) {
-
-                                                    otherUsers.add(samePUser.get(k));
-                                                    k++;
-                                                }
-                                                else {
-                                                    otherUsers.add(diffPUser.get(l));
-                                                    l++;
-                                                }
-                                            }
-                                            Log.i(TAG, "the amount of users at the end are: " + otherUsers.size() + " the users at the end are: " + otherUsers.toString());
+                                            otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
 
                                         }
                                     });

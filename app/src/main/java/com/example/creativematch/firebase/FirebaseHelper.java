@@ -4,6 +4,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 import com.example.creativematch.OtherUser;
+import com.example.creativematch.Utilities.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -203,7 +204,16 @@ public class FirebaseHelper {
                                 int openness = document.getLong("openness").intValue();
                                 //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
                                 int conscientiousness =  document.getLong("conscientiousness").intValue();
-                                OtherUser anotherUser = new OtherUser(profession, userName, agreeableness, openness, conscientiousness);
+                                String description =  document.getString(Constants.KEY_DESCRIPTION);
+                                String image =  document.getString(Constants.KEY_IMAGE);
+                                OtherUser anotherUser;
+                                if (description == null && image == null) {
+                                    anotherUser = new OtherUser(profession, userName, agreeableness, openness, conscientiousness);
+                                }
+                                else{
+                                    anotherUser = new OtherUser(description, image,profession, userName, agreeableness, openness, conscientiousness);
+
+                                }
 
                                 finalUsers.add(anotherUser);
 

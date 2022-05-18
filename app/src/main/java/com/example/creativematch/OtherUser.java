@@ -6,6 +6,8 @@ public class OtherUser {
 
     String profession;
     String name;
+    String description;
+    String image;
     int agreeableness;
     int openness;
     int conscientiousness;
@@ -54,6 +56,17 @@ public class OtherUser {
         this.openness = openness;
         this.conscientiousness = conscientiousness;
 
+
+
+    }
+    public OtherUser(String image, String description,String profession, String name, int agreeableness, int openness, int conscientiousness) {
+        this.profession = profession;
+        this.name = name;
+        this.agreeableness = agreeableness;
+        this.openness = openness;
+        this.conscientiousness = conscientiousness;
+        this.image = image;
+        this.description = description;
 
 
     }

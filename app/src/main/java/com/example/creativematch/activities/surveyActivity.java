@@ -92,7 +92,7 @@ public class SurveyActivity extends AppCompatActivity {
         }
         Log.i(TAG, "The profession is: " + profession);
         //firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
-        Intent intent = new Intent(SurveyActivity.this, ListView.class);
+        Intent intent = new Intent(SurveyActivity.this, ProfileSetUpActivity.class);
         startActivity(intent);
 
     }

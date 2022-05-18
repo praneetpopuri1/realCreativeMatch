@@ -83,7 +83,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
                         preferenceManager.putBoolean(Constants.KEY_IS_SINGED_IN, true);
                         preferenceManager.putString(Constants.Key_USER_ID, usersAuth.getUid());
                         preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), MainPage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     }
                 })

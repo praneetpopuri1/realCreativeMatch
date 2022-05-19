@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 
+import com.example.creativematch.OtherUser;
 import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.ChatAdapter;
@@ -30,7 +31,7 @@ import java.util.Locale;
 public class ChatActivity extends AppCompatActivity {
 
     private ActivityChatBinding binding;
-    private com.example.creativematch.models.User receiverUser;
+    private OtherUser receiverUser;
     private List<ChatMessage> chatMessages;
     private ChatAdapter chatAdapter;
     private PreferenceManager preferenceManager;
@@ -52,7 +53,7 @@ public class ChatActivity extends AppCompatActivity {
         chatMessages = new ArrayList<>();
         chatAdapter = new ChatAdapter(
                 chatMessages,
-                getBitmapFromEncodedString(receiverUser.image),
+                getBitmapFromEncodedString(receiverUser.getImage()),
                 preferenceManager.getString(Constants.Key_USER_ID)
         );
         binding.chatRecyclerView.setAdapter(chatAdapter);
@@ -62,7 +63,7 @@ public class ChatActivity extends AppCompatActivity {
     private void sendMessage(){
         HashMap<String, Object> message = new HashMap<>();
         message.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.Key_USER_ID));
-        message.put(Constants.KEY_RECEIVER_ID, receiverUser.id);
+        message.put(Constants.KEY_RECEIVER_ID, receiverUser.getUID());
         message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
         message.put(Constants.KEY_TIMESTAMP, new Date());
         database.collection(Constants.KEY_COLLECTION_USERS).add(message);
@@ -72,10 +73,10 @@ public class ChatActivity extends AppCompatActivity {
     private void listenMessages(){
         database.collection(Constants.KEY_COLLECTION_USERS)
                 .whereEqualTo(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.Key_USER_ID))
-                .whereEqualTo(Constants.KEY_RECEIVER_ID, receiverUser.id)
+                .whereEqualTo(Constants.KEY_RECEIVER_ID, receiverUser.getUID())
                 .addSnapshotListener(eventListener);
         database.collection(Constants.KEY_COLLECTION_CHAT)
-                .whereEqualTo(Constants.KEY_SENDER_ID, receiverUser.id)
+                .whereEqualTo(Constants.KEY_SENDER_ID, receiverUser.getUID())
                 .whereEqualTo(Constants.KEY_RECEIVER_ID, preferenceManager.getString(Constants.Key_USER_ID))
                 .addSnapshotListener(eventListener);
 
@@ -117,8 +118,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void loadReceiverDetails(){
-        receiverUser = (User) getIntent().getSerializableExtra(Constants.KEY_USER);
-        binding.textName.setText(receiverUser.name);
+        receiverUser = (OtherUser) getIntent().getSerializableExtra(Constants.KEY_USER);
+        binding.textName.setText(receiverUser.getName());
     }
 
     private void setListeners(){

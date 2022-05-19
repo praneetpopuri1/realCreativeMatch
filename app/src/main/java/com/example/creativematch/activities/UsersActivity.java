@@ -149,7 +149,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
     public void onUserClicked(OtherUser user) {
 
 
-        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+        Intent intent = new Intent(getApplicationContext(), BioPage.class);
         intent.putExtra("OtherUser", user);
         startActivity(intent);
         finish();

@@ -5,11 +5,14 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creativematch.OtherUser;
+import com.example.creativematch.R;
 import com.example.creativematch.databinding.ItemContainerUserBinding;
 import com.example.creativematch.listeners.UserListener;
 import com.example.creativematch.models.User;
@@ -41,6 +44,13 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     @Override
     public void onBindViewHolder(@NonNull UsersAdapter.UserViewHolder holder, int position) {
         holder.setUserData(users.get(position));
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //set your object's last status
+                users.get(position).setChecked(isChecked);
+            }
+        });
     }
 
     @Override
@@ -51,10 +61,12 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
     class UserViewHolder extends RecyclerView.ViewHolder{
 
         ItemContainerUserBinding binding;
+        CheckBox checkBox;
 
         UserViewHolder(ItemContainerUserBinding itemContainerUserBinding){
             super(itemContainerUserBinding.getRoot());
             binding = itemContainerUserBinding;
+            checkBox = (CheckBox) itemView.findViewById(R.id.RecyclerViewCheckBox);
         }
 
         void setUserData(OtherUser user){

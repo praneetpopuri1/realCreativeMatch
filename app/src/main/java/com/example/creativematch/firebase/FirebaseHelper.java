@@ -95,14 +95,18 @@ public class FirebaseHelper {
         //put data into my obhject using a key value pair where i label each item I put in the map
         // the key "name" is tje key that is used to label the data fireStore
         // the parameter value of name is passed in to be the value assigned to name in firestore
-        Map<String, Object> fName = new HashMap<>();
-        fName.put("name", name);
-        fName.put("token", token);
+
+        String [] otherUsersUIDs = new String [0];
+        Map<String, Object> docData = new HashMap<>();
+        docData.put("name", name);
+        docData.put("token", token);
+        docData.put("UID", newUID);
+        docData.put("otherUsersUIDs", otherUsersUIDs);
 
 
         // this will create a new document in the collection "users" and assign it a docID that is = to newUID
         db.collection("users").document(newUID)
-                .set(fName)
+                .set(docData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {

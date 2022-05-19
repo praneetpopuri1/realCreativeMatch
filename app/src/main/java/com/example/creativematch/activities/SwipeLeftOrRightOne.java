@@ -1,8 +1,10 @@
 package com.example.creativematch.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -19,9 +21,16 @@ import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.adapters.VPAdapter;
 import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.models.ViewPagerItem;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.IntStream;
 
@@ -34,13 +43,14 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
     public int r = 0;
     ViewPager2 viewPager2;
     ArrayList<ViewPagerItem> viewPagerItemArrayList;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_left_or_right_one);
 
-
+        db = FirebaseFirestore.getInstance();
         firebaseHelper = new FirebaseHelper();
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
         //getRandomUsers();
@@ -74,7 +84,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                                                             public void onCallback(ArrayList<String> profession) {
                                                                 otherUsers =  fillUsers(profession.get(0), otherUsers);
                                                                 populateViewPager(otherUsers);
-
+                                                                submitButton(button, otherUsers, user);
 
                                                             }
                                                         });
@@ -87,6 +97,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                                                             public void onCallback(ArrayList<String> profession) {
                                                                 otherUsers =  fillUsers(profession.get(0), otherUsers);
                                                                 populateViewPager(otherUsers);
+                                                                submitButton(button, otherUsers, user);
 
                                                             }
                                                         });
@@ -105,7 +116,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
 
                                             otherUsers = fillUsers(profession.get(0),otherUsers);
                                             populateViewPager(otherUsers);
-
+                                            submitButton(button, otherUsers, user);
 
                                         }
                                     });
@@ -192,7 +203,8 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
 
     }
 
-    public void submitButton(Button button, ArrayList<OtherUser> otherUsers) {
+    public void submitButton(@NonNull Button button, ArrayList<OtherUser> otherUsers, FirebaseUser user) {
+
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 ArrayList<OtherUser> finalScreening = new ArrayList<>();
@@ -201,8 +213,35 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                         finalScreening.add(otherUsers.get(i));
                     }
                 }
+                DocumentReference personalityRef = db.collection("users").document(user.getUid());
+                for (int i = 0; i < finalScreening.size() - 1; i++) {
+                    personalityRef.update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(i).getUID()));
+                }
+                personalityRef.update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(viewPagerItemArrayList.size() - 1).getUID()))
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d(TAG, "DocumentSnapshot successfully written!");
+                        nextActivity();
+                    }
+                })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.w(TAG, "Error writing document", e);
+                            }
+                        });
+
+
+
+
             }
         });
+    }
+
+    public void nextActivity(){
+        Intent intent=new Intent(this, UsersActivity.class);
+        startActivity(intent);
     }
 
 }

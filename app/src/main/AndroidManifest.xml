@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CreativeMatch">
         <activity
+            android:name=".BioPage"
+            android:exported="false" />
+        <activity
             android:name=".activities.SwipeLeftOrRightOne"
             android:exported="false" />
         <activity

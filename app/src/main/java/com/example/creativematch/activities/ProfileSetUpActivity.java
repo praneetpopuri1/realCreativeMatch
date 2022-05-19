@@ -83,8 +83,10 @@ public class ProfileSetUpActivity extends AppCompatActivity {
                         preferenceManager.putBoolean(Constants.KEY_IS_SINGED_IN, true);
                         preferenceManager.putString(Constants.Key_USER_ID, usersAuth.getUid());
                         preferenceManager.putString(Constants.KEY_IMAGE, encodedImage);
+                        Log.d(TAG, "sucessfully put user information into account");
                         Intent intent = new Intent(getApplicationContext(), MainPage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

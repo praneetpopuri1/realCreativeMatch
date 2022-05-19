@@ -2,7 +2,9 @@ package com.example.creativematch.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.example.creativematch.R;
@@ -17,6 +19,7 @@ public class ListView extends AppCompatActivity {
     public static FirebaseHelper firebaseHelper;
     public static SwipeLeftOrRightOne swipeLeftOrRightOne;
     public final String TAG = "Denna";
+    public static ArrayList<OtherUser> others= new ArrayList<OtherUser>();
     ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
     public int j = 80;
     public int r = 0;
@@ -95,6 +98,14 @@ public class ListView extends AppCompatActivity {
 
 
         Log.d(TAG, "in onCreate the other users are: " + otherUsers.toString());
+
+        sendArray(otherUsers);
+    }
+
+    public void sendArray(ArrayList<OtherUser> otherUsers){
+        Intent intent=new Intent(this, UsersActivity.class);
+        intent.putExtra("Users", otherUsers);
+        startActivity(intent);
     }
 
  /*

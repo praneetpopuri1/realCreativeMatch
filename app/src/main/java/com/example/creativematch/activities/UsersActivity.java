@@ -26,9 +26,11 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
         super.onCreate(savedInstanceState);
         binding = ActivityUsersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        users = (ArrayList<OtherUser>) getIntent().getSerializableExtra("Users");
+
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
-        //setListView(users);
+        setListView(users);
     }
 
     private void setListeners(){
@@ -92,6 +94,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
 
     @Override
     public void onUserClicked(OtherUser user) {
+
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
         intent.putExtra("OtherUser", user);
         startActivity(intent);

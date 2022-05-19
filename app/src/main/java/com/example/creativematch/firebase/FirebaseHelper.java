@@ -208,14 +208,19 @@ public class FirebaseHelper {
                                 int conscientiousness =  document.getLong("conscientiousness").intValue();
                                 String description =  document.getString(Constants.KEY_DESCRIPTION);
                                 String image =  document.getString(Constants.KEY_IMAGE);
+                                String token = document.getString("token");
                                 OtherUser anotherUser;
                                 if (description == null && image == null) {
                                     anotherUser = new OtherUser(profession, userName, agreeableness, openness, conscientiousness);
                                 }
-                                else{
+                                else if(token == null){
                                     anotherUser = new OtherUser(description, image,profession, userName, agreeableness, openness, conscientiousness);
 
                                 }
+                                else{
+                                    anotherUser = new OtherUser(description, image,profession, userName, token, agreeableness, openness, conscientiousness);
+                                }
+
 
                                 finalUsers.add(anotherUser);
 

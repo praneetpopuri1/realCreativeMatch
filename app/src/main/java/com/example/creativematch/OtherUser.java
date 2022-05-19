@@ -10,6 +10,16 @@ public class OtherUser {
     String name;
     String description;
     String image;
+    String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     int agreeableness;
     int openness;
     int conscientiousness;
@@ -78,6 +88,17 @@ public class OtherUser {
         this.image = image;
         this.description = description;
 
+
+    }
+    public OtherUser(String image, String description,String profession, String name, String token, int agreeableness, int openness, int conscientiousness) {
+        this.profession = profession;
+        this.name = name;
+        this.agreeableness = agreeableness;
+        this.openness = openness;
+        this.conscientiousness = conscientiousness;
+        this.image = image;
+        this.description = description;
+        this.token = token;
 
     }
 

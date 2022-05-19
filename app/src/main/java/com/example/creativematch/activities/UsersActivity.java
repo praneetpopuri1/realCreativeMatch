@@ -12,12 +12,8 @@ import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.UsersAdapter;
 import com.example.creativematch.databinding.ActivityUsersBinding;
 import com.example.creativematch.listeners.UserListener;
-import com.example.creativematch.models.User;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UsersActivity extends AppCompatActivity implements UserListener {
 
@@ -38,7 +34,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
     private void setListeners(){
         binding.imageBack.setOnClickListener(v-> onBackPressed());
     }
-    /*
+
     private void setListView(ArrayList<OtherUser> users){
         UsersAdapter usersAdapter = new UsersAdapter(users, this);
         binding.usersRecycleView.setAdapter(usersAdapter);
@@ -95,9 +91,9 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
     }
 
     @Override
-    public void onUserClicked(User user) {
+    public void onUserClicked(OtherUser user) {
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-        intent.putExtra(Constants.KEY_USER, user);
+        intent.putExtra("OtherUser", user);
         startActivity(intent);
         finish();
     }

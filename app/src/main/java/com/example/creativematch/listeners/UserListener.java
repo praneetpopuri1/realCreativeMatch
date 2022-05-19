@@ -1,7 +1,7 @@
 package com.example.creativematch.listeners;
 
-import com.example.creativematch.models.User;
+import com.example.creativematch.OtherUser;
 
 public interface UserListener {
-    void onUserClicked(User user);
+    void onUserClicked(OtherUser user);
 }

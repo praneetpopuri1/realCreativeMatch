@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 
 import com.example.creativematch.models.User;
 
-public class OtherUser {
+import java.io.Serializable;
+
+public class OtherUser implements Serializable {
 
     String profession;
     String name;
+    String email;
     String description;
     String image;
     String token;
@@ -34,6 +37,7 @@ public class OtherUser {
         return "OtherUser{" +
                 "profession='" + profession + '\'' +
                 ", name='" + name + '\'' +
+                ", email" + email +'\'' +
                 ", agreeableness=" + agreeableness +
                 ", openness=" + openness +
                 ", conscientiousness=" + conscientiousness +
@@ -63,6 +67,11 @@ public class OtherUser {
     public String getName() {
         return name;
     }
+
+    public String getEmail(){
+        return email;
+    }
+
     public OtherUser(String profession, String name) {
         this.profession = profession;
         this.name = name;
@@ -72,6 +81,7 @@ public class OtherUser {
     public OtherUser(String profession, String name, int agreeableness, int openness, int conscientiousness) {
         this.profession = profession;
         this.name = name;
+        this.email = email;
         this.agreeableness = agreeableness;
         this.openness = openness;
         this.conscientiousness = conscientiousness;
@@ -82,6 +92,7 @@ public class OtherUser {
     public OtherUser(String image, String description,String profession, String name, int agreeableness, int openness, int conscientiousness) {
         this.profession = profession;
         this.name = name;
+        this.email = email;
         this.agreeableness = agreeableness;
         this.openness = openness;
         this.conscientiousness = conscientiousness;
@@ -93,6 +104,7 @@ public class OtherUser {
     public OtherUser(String image, String description,String profession, String name, String token, int agreeableness, int openness, int conscientiousness) {
         this.profession = profession;
         this.name = name;
+        this.email = email;
         this.agreeableness = agreeableness;
         this.openness = openness;
         this.conscientiousness = conscientiousness;

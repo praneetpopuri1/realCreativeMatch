@@ -9,18 +9,20 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.creativematch.OtherUser;
 import com.example.creativematch.databinding.ItemContainerUserBinding;
 import com.example.creativematch.listeners.UserListener;
 import com.example.creativematch.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>{
 
-    private final List<User> users;
+    private final ArrayList<OtherUser> users;
     private final UserListener userListener;
 
-    public UsersAdapter(List<User> users, UserListener userListener){
+    public UsersAdapter(ArrayList<OtherUser> users, UserListener userListener){
         this.users = users;
         this.userListener=userListener;
     }
@@ -55,10 +57,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
             binding = itemContainerUserBinding;
         }
 
-        void setUserData(User user){
-            binding.textName.setText(user.name);
-            binding.textEmail.setText(user.email);
-            binding.imageProfile.setImageBitmap(getUserImage(user.image));
+        void setUserData(OtherUser user){
+            binding.textName.setText(user.getName());
+            binding.textEmail.setText(user.getEmail());
+            binding.imageProfile.setImageBitmap(getUserImage(user.getImage()));
             binding.getRoot().setOnClickListener(view -> userListener.onUserClicked(user));
         }
     }

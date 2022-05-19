@@ -3,8 +3,11 @@ package com.example.creativematch.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.example.creativematch.R;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,9 +39,16 @@ public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
 
         ViewPagerItem viewPagerItem = viewPagerItemArrayList.get(position);
 
-        holder.imageView.setImageResource(viewPagerItem.imageID);
-        holder.tcHeading.setText(viewPagerItem.heading);
-        holder.tvDesc.setText(viewPagerItem.description);
+        holder.imageView.setImageDrawable(viewPagerItem.imageID);
+        holder.tcName.setText(viewPagerItem.name);
+        holder.tvPro.setText(viewPagerItem.profession);
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //set your object's last status
+                viewPagerItem.setChecked(isChecked);
+            }
+        });
 
 
     }
@@ -51,14 +61,16 @@ public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         ImageView imageView;
-        TextView tcHeading, tvDesc;
+        TextView tcName, tvPro;
+        CheckBox checkBox;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             imageView = itemView.findViewById(R.id.ivimage);
-            tcHeading = itemView.findViewById(R.id.tvHeading);
-            tvDesc = itemView.findViewById(R.id.tvDesc);
+            tcName = itemView.findViewById(R.id.tvName);
+            tvPro = itemView.findViewById(R.id.tvProfession);
+            checkBox = (CheckBox) itemView.findViewById(R.id.checkBox2);
         }
     }
 }

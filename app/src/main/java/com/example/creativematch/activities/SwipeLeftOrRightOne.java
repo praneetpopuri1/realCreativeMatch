@@ -1,16 +1,29 @@
 package com.example.creativematch.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.R;
+import com.example.creativematch.Utilities.Constants;
+import com.example.creativematch.adapters.VPAdapter;
 import com.example.creativematch.firebase.FirebaseHelper;
+import com.example.creativematch.models.ViewPagerItem;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.stream.IntStream;
 
 public class SwipeLeftOrRightOne extends AppCompatActivity {
 
@@ -19,6 +32,8 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
     ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
     public int j = 80;
     public int r = 0;
+    ViewPager2 viewPager2;
+    ArrayList<ViewPagerItem> viewPagerItemArrayList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +50,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
             public void onCallback(ArrayList<Integer> personality) {
                 Log.i(TAG, "Inside getRandomUsers, onCallBack " + personality.toString());
 
+                Button button = (Button) findViewById(R.id.submitButton);
                 firebaseHelper.queerySearch(personality.get(0), personality.get(1), personality.get(2),
                         new FirebaseHelper.FirestoreCallbackOU() {
                             @Override
@@ -57,6 +73,8 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                                                             @Override
                                                             public void onCallback(ArrayList<String> profession) {
                                                                 otherUsers =  fillUsers(profession.get(0), otherUsers);
+                                                                populateViewPager(otherUsers);
+
 
                                                             }
                                                         });
@@ -68,7 +86,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                                                             @Override
                                                             public void onCallback(ArrayList<String> profession) {
                                                                 otherUsers =  fillUsers(profession.get(0), otherUsers);
-
+                                                                populateViewPager(otherUsers);
 
                                                             }
                                                         });
@@ -86,7 +104,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                                         public void onCallback(ArrayList<String> profession) {
 
                                             otherUsers = fillUsers(profession.get(0),otherUsers);
-
+                                            populateViewPager(otherUsers);
 
 
                                         }
@@ -147,6 +165,44 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
         }
         return otherUsers;
 
+    }
+    public void populateViewPager(ArrayList<OtherUser> otherUsers){
+        viewPagerItemArrayList = new ArrayList<>();
+        for (OtherUser user: otherUsers) {
+            byte[] bytes = Base64.decode(user.getImage(), Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+            Drawable d = new BitmapDrawable(getResources(),bitmap );
+            ViewPagerItem viewPagerItem = new ViewPagerItem(d,user.getName(),user.getProfession());
+            viewPagerItemArrayList.add(viewPagerItem);
+
+
+        }
+        VPAdapter vpAdapter = new VPAdapter(viewPagerItemArrayList);
+
+        viewPager2.setAdapter(vpAdapter);
+
+        viewPager2.setClipToPadding(false);
+
+        viewPager2.setClipChildren(false);
+
+        viewPager2.setOffscreenPageLimit(2);
+
+        viewPager2.getChildAt(0).setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+
+    }
+
+    public void submitButton(Button button, ArrayList<OtherUser> otherUsers) {
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ArrayList<OtherUser> finalScreening = new ArrayList<>();
+                for (int i = 0; i < viewPagerItemArrayList.size(); i++) {
+                    if (viewPagerItemArrayList.get(i).isChecked()) {
+                        finalScreening.add(otherUsers.get(i));
+                    }
+                }
+            }
+        });
     }
 
 }

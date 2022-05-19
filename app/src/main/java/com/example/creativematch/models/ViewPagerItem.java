@@ -1,13 +1,27 @@
 package com.example.creativematch.models;
 
-public class ViewPagerItem {
-    int imageID;
-    String heading, description;
+import android.graphics.drawable.Drawable;
+import android.widget.CheckBox;
 
-    public ViewPagerItem(int imageID, String heading, String description) {
+public class ViewPagerItem {
+    public Drawable imageID;
+    public String name;
+    public String profession;
+    boolean isChecked;
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public ViewPagerItem(Drawable imageID, String name, String profession) {
         this.imageID = imageID;
-        this.heading = heading;
-        this.description = description;
+        this.name = name;
+        this.profession = profession;
+        isChecked = false;
     }
 
 }

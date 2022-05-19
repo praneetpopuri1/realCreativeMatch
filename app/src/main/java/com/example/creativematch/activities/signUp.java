@@ -23,7 +23,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 public class SignUp extends AppCompatActivity {
 
     public static FirebaseHelper firebaseHelper;
-    public final String TAG = "Denna";
+    public final static String TAG = "Denna";
     private EditText nameET, emailET, passwordET;
 
     @Override

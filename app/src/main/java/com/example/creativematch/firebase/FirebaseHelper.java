@@ -84,7 +84,7 @@ public class FirebaseHelper {
     return autoId.toString();
 }
 
-    public void addUserToFirestore(String name, String newUID) {
+    public void addUserToFirestore(String name, String token, String newUID) {
     /*
          This will add a document with the uid of the current user to the collection called "users"
           For this we will create a Hash map since there are only two fields - a name and athe uid value
@@ -97,6 +97,8 @@ public class FirebaseHelper {
         // the parameter value of name is passed in to be the value assigned to name in firestore
         Map<String, Object> fName = new HashMap<>();
         fName.put("name", name);
+        fName.put("token", token);
+
 
         // this will create a new document in the collection "users" and assign it a docID that is = to newUID
         db.collection("users").document(newUID)

@@ -81,8 +81,5 @@ public class OtherUser {
 
     }
 
-    public User conversionTherapy(){
-        User 
-    }
 
 }

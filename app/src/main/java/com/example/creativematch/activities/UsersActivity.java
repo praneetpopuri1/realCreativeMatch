@@ -32,13 +32,13 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
-        setListView(users);
+        //setListView(users);
     }
 
     private void setListeners(){
         binding.imageBack.setOnClickListener(v-> onBackPressed());
     }
-
+    /*
     private void setListView(ArrayList<OtherUser> users){
         UsersAdapter usersAdapter = new UsersAdapter(users, this);
         binding.usersRecycleView.setAdapter(usersAdapter);

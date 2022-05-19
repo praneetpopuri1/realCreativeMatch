@@ -86,5 +86,5 @@ public class MainPage extends AppCompatActivity {
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
     }
 
-    private void
+    // private void
 }

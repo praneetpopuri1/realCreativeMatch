@@ -14,6 +14,8 @@ import com.example.creativematch.databinding.ActivityUsersBinding;
 import com.example.creativematch.listeners.UserListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class UsersActivity extends AppCompatActivity implements UserListener {
 
@@ -94,6 +96,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
 
     @Override
     public void onUserClicked(OtherUser user) {
+
 
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
         intent.putExtra("OtherUser", user);

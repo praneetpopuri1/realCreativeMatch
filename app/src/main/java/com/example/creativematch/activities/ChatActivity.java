@@ -137,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
     private String getReadableDateTime(Date date){
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
     }
-
+    /*
     private void updateConversion(String message){
         DocumentReference documentReference =
                 database.collection(Constants.KEY_COLLECTION_CONVERSATIONS).document(conversionId);
@@ -146,7 +146,7 @@ public class ChatActivity extends AppCompatActivity {
                 Constants.KEY_TIMESTAMP, new
         )
     }
-
+       */
     private void addConversion(HashMap<String, Object> conversion){
         database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .add(conversion)
@@ -167,16 +167,20 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void checkForConversionRemotely(String senderId, String receiverId){
-        database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
+        /* database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .whereEqualTo(Constants.KEY_SENDER_ID, senderId)
                 .whereEqualTo(Constants.KEY_RECEIVER_ID, receiverId)
                 .get().addOnCompleteListener(conversionOnCompleteListener);
-    }
 
+         */
+    }
+    /*
     private final OnCompleteListener<QuerySnapshot> conversionOnCompleteListener = task->{
         if (task.isSuccessful() && task.getResult()!=null && task.getResult().getDocuments().size() > 0){
             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
             conversionId = documentSnapshot.getId();
         }
     }
+
+     */
 }

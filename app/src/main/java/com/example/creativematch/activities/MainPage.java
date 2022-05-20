@@ -94,6 +94,7 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
+
         });
         binding.imageSignOut.setOnClickListener(v->signOut());
 
@@ -181,6 +182,11 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
                 .addOnFailureListener(e -> showToast("Unable to update token"));
     }
 
+    private void onSettingsClicked(){
+        binding.settingsButton.setOnClickListener(v ->
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class)));
+    }
+
     private void signOut(){
         showToast("signing out...");
         FirebaseFirestore database = FirebaseFirestore.getInstance();
@@ -196,11 +202,6 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
                     startActivity(new Intent(getApplicationContext(), SignIn.class));
                 })
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
-    }
-
-    private void onSettingsClicked(){
-        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
-        startActivity(intent);
     }
 
     @Override

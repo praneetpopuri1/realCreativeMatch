@@ -19,7 +19,7 @@ import java.util.Random;
 public class SurveyActivity extends AppCompatActivity {
     RadioGroup radioGroupOne;
     private int openness, agreeableness, conscientiousness;
-    public static FirebaseHelper firebaseHelper;
+    public FirebaseHelper firebaseHelper;
     public final String TAG = "Denna";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class SurveyActivity extends AppCompatActivity {
             profession = "computer programmer";
         }
         Log.i(TAG, "The profession is: " + profession);
-        //firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
+        firebaseHelper.addPersonalityData(profession, openness, agreeableness, conscientiousness, user.getUid());
         Intent intent = new Intent(SurveyActivity.this, ProfileSetUpActivity.class);
         startActivity(intent);
 

@@ -43,14 +43,22 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
     @Override
     public void onBindViewHolder(@NonNull UsersAdapter.UserViewHolder holder, int position) {
+        OtherUser user = users.get(position);
         holder.setUserData(users.get(position));
+        holder.checkBox.setOnCheckedChangeListener(null);
+
+        //if true, your checkbox will be selected, else unselected
+        holder.checkBox.setChecked(users.get(position).isChecked());
+
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 //set your object's last status
-                users.get(position).setChecked(isChecked);
+                user.setChecked(isChecked);
             }
         });
+
+
     }
 
     @Override

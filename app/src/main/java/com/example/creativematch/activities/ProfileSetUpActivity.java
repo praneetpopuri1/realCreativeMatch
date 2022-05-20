@@ -47,6 +47,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityProfileSetUpBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        firebaseHelper = new FirebaseHelper();
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
     }

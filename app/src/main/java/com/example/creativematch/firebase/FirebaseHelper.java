@@ -20,8 +20,10 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class FirebaseHelper {
@@ -97,13 +99,12 @@ public class FirebaseHelper {
         // the key "name" is tje key that is used to label the data fireStore
         // the parameter value of name is passed in to be the value assigned to name in firestore
 
-        String [] otherUsersUIDs = new String [0];
+        List<String> uidList = new ArrayList<String>(0);
         Map<String, Object> docData = new HashMap<>();
         docData.put("name", name);
         docData.put("token", token);
         docData.put("UID", newUID);
-        docData.put("otherUsersUIDs", otherUsersUIDs);
-
+        docData.put("uidList", uidList);
 
         // this will create a new document in the collection "users" and assign it a docID that is = to newUID
         db.collection("users").document(newUID)

@@ -27,12 +27,28 @@ public class BioPage extends AppCompatActivity {
         otherUser = (OtherUser) getIntent().getSerializableExtra("OtherUser");
         binding.NameID.setText(otherUser.getName());
         binding.imageView.setImageBitmap(getUserImage(otherUser.getImage()));
-        Intent intent = new Intent(this, ChatActivity.class);
-
+        setListeners();
     }
 
     private Bitmap getUserImage(String encodedImage){
         byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    private void setListeners(){
+        binding.Like.setOnClickListener(v->Like());
+        binding.Dislike.setOnClickListener(v->Dislike());
+    }
+
+    private void Like(){
+        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+        intent.putExtra("OtherUser", otherUser);
+        startActivity(intent);
+        finish();
+    }
+
+    private void Dislike(){
+        Intent intent = new Intent(this, UsersActivity.class);
+        startActivity(intent);
     }
 }

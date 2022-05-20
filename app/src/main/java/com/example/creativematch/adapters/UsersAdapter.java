@@ -1,18 +1,25 @@
 package com.example.creativematch.adapters;
 
+import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.content.Context;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.R;
+import com.example.creativematch.activities.UsersActivity;
 import com.example.creativematch.databinding.ItemContainerUserBinding;
 import com.example.creativematch.listeners.UserListener;
 import com.example.creativematch.models.User;
@@ -59,6 +66,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         });
 
 
+
     }
 
     @Override
@@ -80,13 +88,24 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         void setUserData(OtherUser user){
             binding.textName.setText(user.getName());
             binding.textEmail.setText(user.getEmail());
-            binding.imageProfile.setImageBitmap(getUserImage(user.getImage()));
+            Bitmap bitmap = getUserImage(user.getImage());
+            if(bitmap == null){
+                binding.imageProfile.setImageResource(R.drawable.featured);
+            }
+            else{
+                binding.imageProfile.setImageBitmap(bitmap);
+            }
             binding.getRoot().setOnClickListener(view -> userListener.onUserClicked(user));
         }
     }
 
     private Bitmap getUserImage(String encodedImage){
-        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        if( encodedImage == null) {
+            return null;
+        }
+        else{
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
     }
 }

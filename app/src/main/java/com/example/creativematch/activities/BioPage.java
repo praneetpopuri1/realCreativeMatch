@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Base64;
 
 import com.example.creativematch.OtherUser;
+import com.example.creativematch.R;
 import com.example.creativematch.databinding.ActivityBioPageBinding;
 import com.example.creativematch.databinding.ActivityUsersBinding;
 
@@ -26,13 +27,24 @@ public class BioPage extends AppCompatActivity {
         setContentView(binding.getRoot());
         otherUser = (OtherUser) getIntent().getSerializableExtra("OtherUser");
         binding.NameID.setText(otherUser.getName());
-        binding.imageView.setImageBitmap(getUserImage(otherUser.getImage()));
+        Bitmap bitmap = getUserImage(otherUser.getImage());
+        if(bitmap == null){
+            binding.imageView.setImageResource(R.drawable.featured);
+        }
+        else{
+            binding.imageView.setImageBitmap(bitmap);
+        }
         setListeners();
     }
 
     private Bitmap getUserImage(String encodedImage){
-        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        if( encodedImage == null) {
+            return null;
+        }
+        else{
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
     }
 
     private void setListeners(){
@@ -50,5 +62,6 @@ public class BioPage extends AppCompatActivity {
     private void Dislike(){
         Intent intent = new Intent(this, UsersActivity.class);
         startActivity(intent);
+        finish();
     }
 }

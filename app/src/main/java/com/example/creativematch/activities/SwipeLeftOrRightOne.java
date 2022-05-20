@@ -174,6 +174,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                 l++;
             }
         }
+        Log.i("Denna", "the amount of users: " + otherUsers.size() + "the users that will be displayed are: " + otherUsers.toString());
         return otherUsers;
 
     }

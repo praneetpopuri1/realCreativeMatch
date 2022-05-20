@@ -26,7 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     boolean isChecked = false;
     private FirebaseFirestore db;
-    public final static String TAG = "Denna";
+    public final String TAG = "Denna";
     private FirebaseHelper firebaseHelper;
 
     @Override

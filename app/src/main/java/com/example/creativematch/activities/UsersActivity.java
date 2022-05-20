@@ -37,7 +37,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
     public int j = 80;
     public int r = 0;
     ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
-    public static FirebaseHelper firebaseHelper;
+    public FirebaseHelper firebaseHelper;
 
 
 
@@ -47,6 +47,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
         binding = ActivityUsersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         firebaseHelper = new FirebaseHelper();
+        db = FirebaseFirestore.getInstance();
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
@@ -151,11 +152,12 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                         finalScreening.add(otherUsers.get(i));
                     }
                 }
-                DocumentReference personalityRef = db.collection("users").document(user.getUid());
+                Log.d(TAG, "onClick: user's uid = " + user.getUid());
+
                 for (int i = 0; i < finalScreening.size() - 1; i++) {
-                    personalityRef.update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(i).getUID()));
+                    db.collection("users").document(user.getUid()).update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(i).getUID()));
                 }
-                personalityRef.update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(otherUsers.size() - 1).getUID()))
+                db.collection("users").document(user.getUid()).update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(finalScreening.size() - 1).getUID()))
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
@@ -177,7 +179,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
         });
     }
     public void nextActivity(){
-        Intent intent=new Intent(this, UsersActivity.class);
+        Intent intent=new Intent(this, MainPage.class);
         startActivity(intent);
     }
     /*

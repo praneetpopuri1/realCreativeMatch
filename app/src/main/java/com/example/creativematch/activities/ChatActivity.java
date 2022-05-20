@@ -7,8 +7,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.ImageSwitcher;
+import android.widget.ImageView;
 
 import com.example.creativematch.OtherUser;
+import com.example.creativematch.R;
 import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.ChatAdapter;
@@ -47,12 +50,32 @@ public class ChatActivity extends AppCompatActivity {
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         setListeners();
-        loadReceiverDetails();
+        receiverUser = (OtherUser) getIntent().getSerializableExtra("OtherUser");
+        binding.textName.setText(receiverUser.getName());
         init();
         listenMessages();
     }
 
     private void init(){
+
+
+        if(getBitmapFromEncodedString(receiverUser.getImage()) == null){
+            ImageView imageView = new ImageView(this);
+            imageView.setImageResource(R.drawable.featured);
+            Bitmap bmap = imageView.getDrawingCache();
+            chatAdapter = new ChatAdapter(
+                    chatMessages,
+                    bmap,
+                    " "
+            );
+        }
+        else{
+            chatAdapter = new ChatAdapter(
+                    chatMessages,
+                    getBitmapFromEncodedString(receiverUser.getImage()),
+                    " "
+            );
+        }
         preferenceManager = new PreferenceManager(getApplicationContext());
         chatMessages = new ArrayList<>();
         chatAdapter = new ChatAdapter(
@@ -135,13 +158,17 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     private Bitmap getBitmapFromEncodedString(String encodedImage){
-        byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        if( encodedImage == null) {
+            return null;
+        }
+        else{
+            byte[] bytes = Base64.decode(encodedImage, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        }
     }
 
     private void loadReceiverDetails(){
-        receiverUser = (OtherUser) getIntent().getSerializableExtra(Constants.KEY_USER);
-        binding.textName.setText(receiverUser.getName());
+
     }
 
     private void setListeners(){

@@ -1,5 +1,7 @@
 package com.example.creativematch.activities;
 
+import static com.example.creativematch.activities.ListView.swipeLeftOrRightOne;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.creativematch.OtherUser;
+import com.example.creativematch.R;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.UsersAdapter;
 import com.example.creativematch.databinding.ActivityUsersBinding;
@@ -31,6 +34,9 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
     private ArrayList<OtherUser> users = new ArrayList<OtherUser>();
     public final String TAG = "Denna";
     private FirebaseFirestore db;
+    public int j = 80;
+    public int r = 0;
+    ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
     public static FirebaseHelper firebaseHelper;
 
 
@@ -40,14 +46,89 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
         super.onCreate(savedInstanceState);
         binding = ActivityUsersBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        users = (ArrayList<OtherUser>) getIntent().getSerializableExtra("Users");
-        db = FirebaseFirestore.getInstance();
         firebaseHelper = new FirebaseHelper();
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
         preferenceManager = new PreferenceManager(getApplicationContext());
         setListeners();
-        setRecyclerView(users);
-        submitButton()
+        //getRandomUsers();
+
+        firebaseHelper.getPersonality(user.getUid(), new FirebaseHelper.FirestoreCallbackP() {
+            @Override
+            public void onCallback(ArrayList<Integer> personality) {
+                Log.i(TAG, "Inside getRandomUsers, onCallBack " + personality.toString());
+
+                firebaseHelper.queerySearch(personality.get(0), personality.get(1), personality.get(2),
+                        new FirebaseHelper.FirestoreCallbackOU() {
+                            @Override
+                            public void onCallback(ArrayList<OtherUser> listUsers) {
+
+                                Log.i(TAG, "Inside getRandomUsers, onCallBack the length of the array: " + listUsers.size() + " these are the users themselves " + listUsers.toString());
+                                otherUsers.addAll(listUsers);
+                                Button button = (Button) findViewById(R.id.submitButtonRecyclerView);
+                                if(otherUsers.size() < 20) {
+                                    firebaseHelper.paginateQueery(personality.get(0), personality.get(1), personality.get(2), j,
+                                            new FirebaseHelper.FirestoreCallbackOU() {
+                                                @Override
+                                                public void onCallback(ArrayList<OtherUser> listUsers) {
+                                                    otherUsers = listUsers;
+                                                    Log.i(TAG, "Inside getRandomUsers, paginateQueery retrieves an array with length of: " + otherUsers.size() + " these are the users themselves " + otherUsers.toString());
+
+                                                    if (otherUsers.size() < 20) {
+                                                        j += 20;
+                                                        r++;
+                                                        firebaseHelper.getProfession(user.getUid(), new FirebaseHelper.FirestoreCallbackPro() {
+                                                            @Override
+                                                            public void onCallback(ArrayList<String> profession) {
+                                                                otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
+                                                                setRecyclerView(otherUsers);
+                                                                loading(false);
+                                                                button.setVisibility(View.VISIBLE);
+                                                                submitButton(button, otherUsers ,user);
+                                                            }
+                                                        });
+
+                                                    }
+                                                    else{
+
+                                                        firebaseHelper.getProfession(user.getUid(), new FirebaseHelper.FirestoreCallbackPro() {
+                                                            @Override
+                                                            public void onCallback(ArrayList<String> profession) {
+                                                                otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
+                                                                setRecyclerView(otherUsers);
+                                                                loading(false);
+                                                                button.setVisibility(View.VISIBLE);
+                                                                submitButton(button, otherUsers ,user);
+                                                            }
+                                                        });
+
+                                                    }
+                                                }
+
+                                            });
+                                }
+                                else{
+
+                                    firebaseHelper.getProfession(user.getUid(), new FirebaseHelper.FirestoreCallbackPro() {
+                                        @Override
+                                        public void onCallback(ArrayList<String> profession) {
+
+                                            otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
+                                            setRecyclerView(otherUsers);
+                                            loading(false);
+                                            button.setVisibility(View.VISIBLE);
+                                            submitButton(button, otherUsers ,user);
+                                        }
+                                    });
+
+                                }
+                            }
+                        } );
+
+            }
+        });
+
+
+
     }
 
     private void setListeners(){
@@ -94,6 +175,10 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
 
             }
         });
+    }
+    public void nextActivity(){
+        Intent intent=new Intent(this, UsersActivity.class);
+        startActivity(intent);
     }
     /*
     private void getUsers(){

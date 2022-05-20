@@ -41,6 +41,16 @@ public class OtherUser implements Serializable {
         this.openness = openness;
         this.conscientiousness = conscientiousness;
     }
+    public OtherUser(String profession, String name, String image, String token, String UID, int agreeableness, int openness, int conscientiousness) {
+        this.profession = profession;
+        this.name = name;
+        this.image = image;
+        this.token = token;
+        this.UID = UID;
+        this.agreeableness = agreeableness;
+        this.openness = openness;
+        this.conscientiousness = conscientiousness;
+    }
 
     public String getToken() {
         return token;
@@ -110,36 +120,20 @@ public class OtherUser implements Serializable {
     public OtherUser(String profession, String name, int agreeableness, int openness, int conscientiousness) {
         this.profession = profession;
         this.name = name;
-        this.email = email;
         this.agreeableness = agreeableness;
         this.openness = openness;
         this.conscientiousness = conscientiousness;
-
-
 
     }
     public OtherUser(String image, String description,String profession, String name, int agreeableness, int openness, int conscientiousness) {
         this.profession = profession;
         this.name = name;
-        this.email = email;
         this.agreeableness = agreeableness;
         this.openness = openness;
         this.conscientiousness = conscientiousness;
         this.image = image;
         this.description = description;
 
-
-    }
-    public OtherUser(String image, String description,String profession, String name, String token, int agreeableness, int openness, int conscientiousness) {
-        this.profession = profession;
-        this.name = name;
-        this.email = email;
-        this.agreeableness = agreeableness;
-        this.openness = openness;
-        this.conscientiousness = conscientiousness;
-        this.image = image;
-        this.description = description;
-        this.token = token;
 
     }
 

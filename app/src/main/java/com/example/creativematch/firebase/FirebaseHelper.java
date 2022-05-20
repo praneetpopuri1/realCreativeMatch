@@ -20,9 +20,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 
 public class FirebaseHelper {
@@ -35,6 +34,8 @@ public class FirebaseHelper {
     ArrayList<OtherUser> similarUsers = new ArrayList<OtherUser>();
     private boolean isFirstCall = false;
     ArrayList<String> professionArray = new ArrayList<String>();
+    ArrayList<String> UIDs = new ArrayList<String>();
+    ArrayList<OtherUser> messagingUsers = new ArrayList<OtherUser>();
 
 
     public FirebaseHelper() {
@@ -316,7 +317,7 @@ public class FirebaseHelper {
 
 
        public void getPersonality(String uid, FirestoreCallbackP firestoreCallbackP){
-        personalityArray.clear();
+           personalityArray.clear();
            DocumentReference docRef = db.collection("users").document(uid);
            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
@@ -325,11 +326,11 @@ public class FirebaseHelper {
                    Log.d(TAG, "on complete ran inside get personality");
                    if (task.isSuccessful()) {
                        DocumentSnapshot document = task.getResult();
-                                personalityArray.add(document.getLong("agreeableness").intValue());
+                       personalityArray.add(document.getLong("agreeableness").intValue());
                                 //Log.d(TAG, document.getData().toString());
-                                personalityArray.add(document.getLong("openness").intValue());
+                       personalityArray.add(document.getLong("openness").intValue());
                                 //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
-                                personalityArray.add(document.getLong("conscientiousness").intValue());
+                       personalityArray.add(document.getLong("conscientiousness").intValue());
                                 Log.d(TAG, "the personality of the users are: " + personalityArray);
                        firestoreCallbackP.onCallback(personalityArray);
                    } else {
@@ -339,6 +340,75 @@ public class FirebaseHelper {
            });
            Log.d(TAG, "the personality of the users end of method are: " + personalityArray.toString());
        }
+
+    public void getUIDs(String uid, FirestoreCallbackUID firestoreCallbackUID){
+        UIDs.clear();
+        DocumentReference docRef = db.collection("users").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Log.d(TAG, "on complete ran inside get personality");
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    String[] uids = document.toObject(String[].class);
+                    Collections.addAll(UIDs, uids);
+                    Log.d(TAG, "the personality of the users are: " + UIDs);
+                    firestoreCallbackUID.onCallback(UIDs);
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+        Log.d(TAG, "the personality of the users end of method are: " + personalityArray.toString());
+    }
+
+    public void getOtherUsersUID(String[] uids, FirestoreCallbackMU firestoreCallbackMU){
+        messagingUsers.clear();
+        for (int i = 0; i < uids.length - 1; i++) {
+            DocumentReference docRef = db.collection("users").document(uids[uids.length-1]);
+            DocumentSnapshot document = docRef.get().getResult();
+            String userName = document.getString("name");
+            String profession = document.getString("profession");
+            String image = document.getString(Constants.KEY_IMAGE);
+            String token = document.getString("token");
+            String UID = document.getString("uid");
+            int agreeableness = document.getLong("agreeableness").intValue();
+            //Log.d(TAG, document.getData().toString());
+            int openness = document.getLong("openness").intValue();
+            //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+            int conscientiousness =  document.getLong("conscientiousness").intValue();
+            OtherUser anotherUser = new OtherUser(profession, userName, image, token, UID, agreeableness, openness, conscientiousness);
+            messagingUsers.add(anotherUser);
+        }
+        DocumentReference docRef = db.collection("users").document(uids[uids.length-1]);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Log.d(TAG, "on complete ran inside get personality");
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    String userName = document.getString("name");
+                    String profession = document.getString("profession");
+                    String image = document.getString(Constants.KEY_IMAGE);
+                    String token = document.getString("token");
+                    String UID = document.getString("uid");
+                    int agreeableness = document.getLong("agreeableness").intValue();
+                    //Log.d(TAG, document.getData().toString());
+                    int openness = document.getLong("openness").intValue();
+                    //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+                    int conscientiousness =  document.getLong("conscientiousness").intValue();
+                    OtherUser anotherUser = new OtherUser(profession, userName, image, token, UID, agreeableness, openness, conscientiousness);
+                    messagingUsers.add(anotherUser);
+                    firestoreCallbackMU.onCallback(messagingUsers);
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+        Log.d(TAG, "the personality of the users end of method are: " + personalityArray.toString());
+    }
 
     public ArrayList<Integer> getPersonalityArray() {
         return personalityArray;
@@ -469,8 +539,14 @@ public class FirebaseHelper {
     public interface FirestoreCallbackP {
         void onCallback (ArrayList<Integer> personality);
     }
+    public interface FirestoreCallbackMU {
+        void onCallback (ArrayList<OtherUser> messagedUsers);
+    }
     public interface FirestoreCallbackPro {
         void onCallback (ArrayList<String> profession);
+    }
+    public interface FirestoreCallbackUID {
+        void onCallback (ArrayList<String> UID);
     }
 
 

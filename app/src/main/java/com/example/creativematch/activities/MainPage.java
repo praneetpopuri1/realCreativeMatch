@@ -165,6 +165,11 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
                 .addOnFailureListener(e -> showToast("Unable to sign out"));
     }
 
+    private void onSettingsClicked(){
+        Intent intent = new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivity(intent);
+    }
+
     @Override
     public void onConversionClicked(OtherUser user) {
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);

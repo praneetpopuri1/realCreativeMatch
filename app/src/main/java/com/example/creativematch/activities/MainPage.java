@@ -12,19 +12,26 @@ import android.widget.Toast;
 
 import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
+import com.example.creativematch.adapters.RecentConversationsAdapter;
 import com.example.creativematch.databinding.ActivityMainBinding;
 import com.example.creativematch.databinding.ActivityMainPage2Binding;
+import com.example.creativematch.models.ChatMessage;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainPage extends AppCompatActivity {
 
     private ActivityMainPage2Binding binding;
     private PreferenceManager preferenceManager;
+    private List<ChatMessage> conversations;
+    private RecentConversationsAdapter conversationsAdapter;
+    private FirebaseFirestore database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +39,17 @@ public class MainPage extends AppCompatActivity {
         binding = ActivityMainPage2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         preferenceManager = new PreferenceManager(getApplicationContext());
+        init();
         loadUserDetails();
         getToken();
         setListeners();
+    }
+
+    private void init(){
+        conversations = new ArrayList<>();
+        conversationsAdapter = new RecentConversationsAdapter(conversations);
+        binding.conversationsRecyclerView.setAdapter(conversationsAdapter);
+        database = FirebaseFirestore.getInstance();
     }
 
     private void setListeners(){

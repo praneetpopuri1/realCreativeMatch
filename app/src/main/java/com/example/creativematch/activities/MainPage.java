@@ -96,6 +96,8 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
             }
 
         });
+        binding.settingsButton.setOnClickListener(v ->
+                startActivity(new Intent(getApplicationContext(), SettingsActivity.class)));
         binding.imageSignOut.setOnClickListener(v->signOut());
 
     }

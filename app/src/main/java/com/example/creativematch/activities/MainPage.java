@@ -24,6 +24,7 @@ import com.example.creativematch.listeners.ConversionListener;
 import com.example.creativematch.models.ChatMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -44,13 +45,16 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
     private PreferenceManager preferenceManager;
     private List<ChatMessage> conversations;
     private RecentConversationsAdapter conversationsAdapter;
+    public static FirebaseHelper firebaseHelper;
     private FirebaseFirestore database;
+    public final String TAG = "Denna";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainPage2Binding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        firebaseHelper = new FirebaseHelper();
         preferenceManager = new PreferenceManager(getApplicationContext());
         init();
         loadUserDetails();
@@ -67,34 +71,34 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
     }
 
     private void setListeners(){
-        if(){
-
-        }
-        binding.imageSignOut.setOnClickListener(v->signOut());
-        binding.fabNewChat.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
-    }
-
-    public void getPersonality(String uid, FirebaseHelper.FirestoreCallbackP firestoreCallbackP){
-        Boolean isSwipe=false;
-        DocumentReference docRef = db.collection("users").document(uid);
+        FirebaseUser usersAuth = firebaseHelper.getmAuth().getCurrentUser();
+        DocumentReference docRef = database.collection("users").document(usersAuth.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
 
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
+                    Boolean isSwipe;
                     DocumentSnapshot document = task.getResult();
-                    personalityArray.add(document.getLong("agreeableness").intValue());
+                    isSwipe = document.getBoolean("Preference");
+                    if(!isSwipe){
+                        binding.fabNewChat.setOnClickListener(v ->
+                                startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
+                    }
+                    else{
+                        binding.fabNewChat.setOnClickListener(v ->
+                                startActivity(new Intent(getApplicationContext(), SwipeLeftOrRightOne.class)));
+                    }
                     //Log.d(TAG, document.getData().toString());
-                    Log.d(TAG, "the personality of the users are: " + personalityArray);
-                    firestoreCallbackP.onCallback(personalityArray);
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
             }
         });
-        Log.d(TAG, "the personality of the users end of method are: " + personalityArray.toString());
+        binding.imageSignOut.setOnClickListener(v->signOut());
+
     }
+
 
     private void loadUserDetails(){
         binding.textName.setText(preferenceManager.getString(Constants.KEY_NAME));

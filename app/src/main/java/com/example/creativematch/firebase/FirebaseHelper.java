@@ -104,6 +104,7 @@ public class FirebaseHelper {
         docData.put("name", name);
         docData.put("token", token);
         docData.put("UID", newUID);
+        docData.put("Preference", false);
         docData.put("uidList", uidList);
 
         // this will create a new document in the collection "users" and assign it a docID that is = to newUID

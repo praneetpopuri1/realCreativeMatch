@@ -99,7 +99,7 @@ public class FirebaseHelper {
         // the key "name" is tje key that is used to label the data fireStore
         // the parameter value of name is passed in to be the value assigned to name in firestore
 
-        List<String> uidList = new ArrayList<String>();
+        List<String> uidList = new ArrayList<String>(0);
         Map<String, Object> docData = new HashMap<>();
         docData.put("name", name);
         docData.put("token", token);

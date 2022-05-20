@@ -26,6 +26,8 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class UsersActivity extends AppCompatActivity implements UserListener {
 
@@ -153,11 +155,17 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                     }
                 }
                 Log.d(TAG, "onClick: user's uid = " + user.getUid());
-
-                for (int i = 0; i < finalScreening.size() - 1; i++) {
-                    db.collection("users").document(user.getUid()).update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(i).getUID()));
+                String [] UIDs = new String[finalScreening.size()];
+                for (int i = 0; i < finalScreening.size(); i++) {
+                    if (finalScreening.get(i).getUID() == null){
+                        finalScreening.get(i).setUID("123456789");
+                    }
+                    UIDs[i] = finalScreening.get(i).getUID();
                 }
-                db.collection("users").document(user.getUid()).update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(finalScreening.size() - 1).getUID()))
+                Log.d(TAG, "Final Screening UIDs are: " + UIDs.toString());
+                List<String> UIDList = Arrays.asList(UIDs);
+
+                db.collection("users").document(user.getUid()).update("uidList",  UIDList)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {

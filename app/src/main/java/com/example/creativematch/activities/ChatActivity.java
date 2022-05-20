@@ -71,6 +71,21 @@ public class ChatActivity extends AppCompatActivity {
         message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
         message.put(Constants.KEY_TIMESTAMP, new Date());
         database.collection(Constants.KEY_COLLECTION_USERS).add(message);
+        if (conversionId != null){
+            updateConversion(binding.inputMessage.getText().toString());
+        }
+        else{
+            HashMap<String, Object> conversion = new HashMap<>();
+            conversion.put(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.Key_USER_ID));
+            conversion.put(Constants.KEY_SENDER_NAME, preferenceManager.getString(Constants.KEY_NAME));
+            conversion.put(Constants.KEY_SENDER_IMAGE, preferenceManager.getString(Constants.KEY_IMAGE));
+            conversion.put(Constants.KEY_RECEIVER_ID, receiverUser.getUID());
+            conversion.put(Constants.KEY_RECEIVER_NAME, receiverUser.getName());
+            conversion.put(Constants.KEY_RECEIVER_IMAGE, receiverUser.getImage());
+            conversion.put(Constants.KEY_LAST_MESSAGE, binding.inputMessage.getText().toString());
+            conversion.put(Constants.KEY_TIMESTAMP, new Date());
+            addConversion(conversion);
+        }
         binding.inputMessage.setText(null);
     }
 
@@ -137,16 +152,16 @@ public class ChatActivity extends AppCompatActivity {
     private String getReadableDateTime(Date date){
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
     }
-    /*
+
     private void updateConversion(String message){
         DocumentReference documentReference =
                 database.collection(Constants.KEY_COLLECTION_CONVERSATIONS).document(conversionId);
         documentReference.update(
                 Constants.KEY_LAST_MESSAGE, message,
-                Constants.KEY_TIMESTAMP, new
-        )
+                Constants.KEY_TIMESTAMP, new Date()
+        );
     }
-       */
+
     private void addConversion(HashMap<String, Object> conversion){
         database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .add(conversion)
@@ -167,20 +182,18 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void checkForConversionRemotely(String senderId, String receiverId){
-        /* database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
+         database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .whereEqualTo(Constants.KEY_SENDER_ID, senderId)
                 .whereEqualTo(Constants.KEY_RECEIVER_ID, receiverId)
                 .get().addOnCompleteListener(conversionOnCompleteListener);
 
-         */
+
     }
-    /*
+
     private final OnCompleteListener<QuerySnapshot> conversionOnCompleteListener = task->{
         if (task.isSuccessful() && task.getResult()!=null && task.getResult().getDocuments().size() > 0){
             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
             conversionId = documentSnapshot.getId();
         }
-    }
-
-     */
+    };
 }

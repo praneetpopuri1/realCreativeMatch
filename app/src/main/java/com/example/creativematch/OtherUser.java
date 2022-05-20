@@ -52,6 +52,14 @@ public class OtherUser implements Serializable {
         this.conscientiousness = conscientiousness;
     }
 
+    public OtherUser(){
+        this.profession="";
+        this.name = "";
+        this.image = "";
+        this.token = "";
+        this.UID = "";
+    }
+
     public String getToken() {
         return token;
     }
@@ -109,6 +117,42 @@ public class OtherUser implements Serializable {
 
     public String getEmail(){
         return email;
+    }
+
+    public void setProfession(String profession) {
+        this.profession = profession;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
+    public void setAgreeableness(int agreeableness) {
+        this.agreeableness = agreeableness;
+    }
+
+    public void setOpenness(int openness) {
+        this.openness = openness;
+    }
+
+    public void setConscientiousness(int conscientiousness) {
+        this.conscientiousness = conscientiousness;
     }
 
     public OtherUser(String profession, String name) {

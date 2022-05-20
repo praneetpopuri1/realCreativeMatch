@@ -1,5 +1,6 @@
 package com.example.creativematch.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,10 +19,14 @@ import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.RecentConversationsAdapter;
 import com.example.creativematch.databinding.ActivityMainBinding;
 import com.example.creativematch.databinding.ActivityMainPage2Binding;
+import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.listeners.ConversionListener;
 import com.example.creativematch.models.ChatMessage;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,10 +67,33 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
     }
 
     private void setListeners(){
+        if(){
 
+        }
         binding.imageSignOut.setOnClickListener(v->signOut());
         binding.fabNewChat.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), UsersActivity.class)));
+    }
+
+    public void getPersonality(String uid, FirebaseHelper.FirestoreCallbackP firestoreCallbackP){
+        Boolean isSwipe=false;
+        DocumentReference docRef = db.collection("users").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    personalityArray.add(document.getLong("agreeableness").intValue());
+                    //Log.d(TAG, document.getData().toString());
+                    Log.d(TAG, "the personality of the users are: " + personalityArray);
+                    firestoreCallbackP.onCallback(personalityArray);
+                } else {
+                    Log.d(TAG, "get failed with ", task.getException());
+                }
+            }
+        });
+        Log.d(TAG, "the personality of the users end of method are: " + personalityArray.toString());
     }
 
     private void loadUserDetails(){

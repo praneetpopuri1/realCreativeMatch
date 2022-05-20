@@ -77,7 +77,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         user.put(Constants.KEY_DESCRIPTION, binding.Description.getText().toString());
         user.put(Constants.KEY_IMAGE, encodedImage);
         database.collection("users").document(usersAuth.getUid())
-                .set(user)
+                .update(user)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -87,6 +87,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
                         Log.d(TAG, "sucessfully put user information into account");
                         Intent intent = new Intent(getApplicationContext(), MainPage.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
 
                     }
                 })

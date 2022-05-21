@@ -328,8 +328,9 @@ public class FirebaseHelper {
                    Log.d(TAG, "on complete ran inside get personality");
                    if (task.isSuccessful()) {
                        DocumentSnapshot document = task.getResult();
+                       Log.d(TAG, document.getData().toString());
                        personalityArray.add(document.getLong("agreeableness").intValue());
-                                //Log.d(TAG, document.getData().toString());
+
                        personalityArray.add(document.getLong("openness").intValue());
                                 //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
                        personalityArray.add(document.getLong("conscientiousness").intValue());
@@ -340,7 +341,6 @@ public class FirebaseHelper {
                    }
                }
            });
-           Log.d(TAG, "the personality of the users end of method are: " + personalityArray.toString());
        }
 
     public void getUIDs(String uid, FirestoreCallbackUID firestoreCallbackUID){

@@ -1,11 +1,5 @@
 package com.example.creativematch.activities;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,16 +11,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.creativematch.R;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.databinding.ActivityProfileSetUpBinding;
-import com.github.javafaker.Bool;
+import com.example.creativematch.firebase.FirebaseHelper;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.example.creativematch.firebase.FirebaseHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -75,6 +72,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         HashMap<String, Object> user = new HashMap<>();
         user.put(Constants.KEY_DESCRIPTION, binding.Description.getText().toString());
+        user.put("Profession", binding.interestTextView.getText().toString());
         user.put(Constants.KEY_IMAGE, encodedImage);
         database.collection("users").document(usersAuth.getUid())
                 .update(user)

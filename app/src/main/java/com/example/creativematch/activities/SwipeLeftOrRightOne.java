@@ -1,9 +1,5 @@
 package com.example.creativematch.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -15,24 +11,24 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager2.widget.ViewPager2;
+
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.R;
-import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.adapters.VPAdapter;
 import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.models.ViewPagerItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
-import java.util.stream.IntStream;
 
 public class SwipeLeftOrRightOne extends AppCompatActivity {
 
@@ -49,7 +45,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_swipe_left_or_right_one);
-
+        viewPager2 = findViewById(R.id.viewpager);
         db = FirebaseFirestore.getInstance();
         firebaseHelper = new FirebaseHelper();
         FirebaseUser user = firebaseHelper.getmAuth().getCurrentUser();
@@ -181,11 +177,20 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
     public void populateViewPager(ArrayList<OtherUser> otherUsers){
         viewPagerItemArrayList = new ArrayList<>();
         for (OtherUser user: otherUsers) {
-            byte[] bytes = Base64.decode(user.getImage(), Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-            Drawable d = new BitmapDrawable(getResources(),bitmap );
+            Bitmap bitmap;
+            Drawable d;
+            if( user.getImage() == null) {
+                d = getResources().getDrawable(R.drawable.featured);
+            }
+            else{
+                byte[] bytes = Base64.decode(user.getImage(), Base64.DEFAULT);
+                bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                d = new BitmapDrawable(getResources(),bitmap);
+            }
+
             ViewPagerItem viewPagerItem = new ViewPagerItem(d,user.getName(),user.getProfession());
             viewPagerItemArrayList.add(viewPagerItem);
+            Log.d(TAG, "in populateViewPager the viewPagerItemArrayList is: " + viewPagerItem.toString());
 
 
         }
@@ -214,18 +219,23 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                         finalScreening.add(otherUsers.get(i));
                     }
                 }
-                DocumentReference personalityRef = db.collection("users").document(user.getUid());
-                for (int i = 0; i < finalScreening.size() - 1; i++) {
-                    personalityRef.update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(i).getUID()));
-                }
-                personalityRef.update("otherUsersUIDs",  FieldValue.arrayUnion(finalScreening.get(viewPagerItemArrayList.size() - 1).getUID()))
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "DocumentSnapshot successfully written!");
-                        nextActivity();
+                String [] UIDs = new String[finalScreening.size()];
+                for (int i = 0; i < finalScreening.size(); i++) {
+                    if (finalScreening.get(i).getUID() == null){
+                        finalScreening.get(i).setUID("123456789");
                     }
-                })
+                    UIDs[i] = finalScreening.get(i).getUID();
+                }
+                List<String> UIDList = Arrays.asList(UIDs);
+
+                db.collection("users").document(user.getUid()).update("uidList",  UIDList)
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                nextActivity();
+                            }
+                        })
                         .addOnFailureListener(new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {

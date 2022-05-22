@@ -38,6 +38,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
     public int r = 0;
     ArrayList<OtherUser> otherUsers = new ArrayList<OtherUser>();
     public FirebaseHelper firebaseHelper;
+    int place= 0;
 
 
 
@@ -150,6 +151,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                 for (int i = 0; i < otherUsers.size(); i++) {
                     if (otherUsers.get(i).isChecked()) {
                         finalScreening.add(otherUsers.get(i));
+                        place=i;
                     }
                 }
                 for (int i = 0; i < finalScreening.size(); i++) {
@@ -170,7 +172,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully written!");
-                                    nextActivity();
+                                    nextActivity(otherUsers.get(place));
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
@@ -181,14 +183,15 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                             });
                 }
 
-                nextActivity();
+                nextActivity(otherUsers.get(place));
 
 
             }
         });
     }
-    public void nextActivity(){
-        Intent intent=new Intent(this, MainPage.class);
+    public void nextActivity(OtherUser user){
+        Intent intent=new Intent(this, BioPage.class);
+        intent.putExtra("OtherUser", user);
         startActivity(intent);
     }
     /*

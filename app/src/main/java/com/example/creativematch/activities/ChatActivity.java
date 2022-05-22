@@ -141,7 +141,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatMessages.add(chatMessage);
                 }
             }
-            Collections.sort(chatMessages, (obj1, obj2) ->obj1.dateObject.compareTo(obj2.dateObject));
+            Collections.sort(chatMessages, (obj1, obj2) -> obj1.dateObject.compareTo(obj2.dateObject);
             if (count==0){
                 chatAdapter.notifyDataSetChanged();
             }
@@ -212,7 +212,8 @@ public class ChatActivity extends AppCompatActivity {
          database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .whereEqualTo(Constants.KEY_SENDER_ID, senderId)
                 .whereEqualTo(Constants.KEY_RECEIVER_ID, receiverId)
-                .get().addOnCompleteListener(conversionOnCompleteListener);
+                .get()
+                 .addOnCompleteListener(conversionOnCompleteListener);
 
 
     }

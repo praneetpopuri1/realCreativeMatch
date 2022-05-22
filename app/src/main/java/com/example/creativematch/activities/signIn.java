@@ -57,7 +57,7 @@ public class SignIn extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
-                                firebaseHelper.updateUid(firebaseHelper.getmAuth().getCurrentUser().getUid());
+
                                 Log.i(TAG, email + " logged in");
 
 

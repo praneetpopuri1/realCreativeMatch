@@ -1,8 +1,5 @@
 package com.example.creativematch.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,11 +7,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.creativematch.firebase.FirebaseHelper;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.creativematch.R;
+import com.example.creativematch.Utilities.Constants;
+import com.example.creativematch.Utilities.PreferenceManager;
+import com.example.creativematch.firebase.FirebaseHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,6 +25,7 @@ public class SignUp extends AppCompatActivity {
     public static FirebaseHelper firebaseHelper;
     public final static String TAG = "Denna";
     private EditText nameET, emailET, passwordET;
+    private PreferenceManager preferenceManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +40,12 @@ public class SignUp extends AppCompatActivity {
         nameET = findViewById(R.id.usernameET);
         emailET = findViewById(R.id.emailET);
         passwordET = findViewById(R.id.passwordET);
-
+        preferenceManager = new PreferenceManager(getApplicationContext());
         // Get user data
         String name = nameET.getText().toString();
         String email = emailET.getText().toString();
         String password = passwordET.getText().toString();
+        preferenceManager.putString(Constants.KEY_NAME, name);
         Log.i(TAG, name + " " + email + " " + password);
 
         // verify all user data is entered

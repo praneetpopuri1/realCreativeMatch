@@ -1,14 +1,13 @@
 package com.example.creativematch.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.R;
@@ -17,7 +16,6 @@ import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.ChatAdapter;
 import com.example.creativematch.databinding.ActivityChatBinding;
 import com.example.creativematch.models.ChatMessage;
-import com.example.creativematch.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
@@ -141,7 +139,7 @@ public class ChatActivity extends AppCompatActivity {
                     chatMessages.add(chatMessage);
                 }
             }
-            Collections.sort(chatMessages, (obj1, obj2) -> obj1.dateObject.compareTo(obj2.dateObject);
+            Collections.sort(chatMessages, (obj1, obj2) -> obj1.dateObject.compareTo(obj2.dateObject));
             if (count==0){
                 chatAdapter.notifyDataSetChanged();
             }

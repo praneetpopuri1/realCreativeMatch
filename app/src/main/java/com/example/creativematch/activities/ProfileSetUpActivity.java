@@ -72,7 +72,7 @@ public class ProfileSetUpActivity extends AppCompatActivity {
         FirebaseFirestore database = FirebaseFirestore.getInstance();
         HashMap<String, Object> user = new HashMap<>();
         user.put(Constants.KEY_DESCRIPTION, binding.Description.getText().toString());
-        user.put("Profession", binding.interestTextView.getText().toString());
+        user.put("Profession", binding.workText.getText().toString());
         user.put(Constants.KEY_IMAGE, encodedImage);
         database.collection("users").document(usersAuth.getUid())
                 .update(user)

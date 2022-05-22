@@ -2,14 +2,14 @@ package com.example.creativematch.activities;
 
 import static com.example.creativematch.activities.ListView.swipeLeftOrRightOne;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.R;
@@ -21,13 +21,11 @@ import com.example.creativematch.listeners.UserListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Random;
 
 public class UsersActivity extends AppCompatActivity implements UserListener {
 
@@ -154,33 +152,36 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                         finalScreening.add(otherUsers.get(i));
                     }
                 }
-                Log.d(TAG, "onClick: user's uid = " + user.getUid());
-                String [] UIDs = new String[finalScreening.size()];
                 for (int i = 0; i < finalScreening.size(); i++) {
-                    if (finalScreening.get(i).getUID() == null){
-                        finalScreening.get(i).setUID("123456789");
+                    if (finalScreening.get(i).getUID() == null) {
+                        Random rand = new Random();
+                        int upperbound = 10000;
+
+                        int int_random = rand.nextInt(upperbound);
+                        finalScreening.get(i).setUID(String.valueOf(int_random));
                     }
-                    UIDs[i] = finalScreening.get(i).getUID();
                 }
-                Log.d(TAG, "Final Screening UIDs are: " + UIDs.toString());
-                List<String> UIDList = Arrays.asList(UIDs);
+                // the earlier code sends all of the uid's execpt for the last one aschynoursly the following code waits for the final one to send this is done
+                // because the xml on the next needs to have the users so if I dont wait for it there will be nothing to call.
+                // I do this method of sending code instead of making every
+                if(finalScreening.size() > 0) {
+                    db.collection("users").document(user.getUid()).update("uidList", FieldValue.arrayUnion(finalScreening.get(finalScreening.size() - 1).getUID()))
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    nextActivity();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
+                }
 
-                db.collection("users").document(user.getUid()).update("uidList",  UIDList)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully written!");
-                                nextActivity();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error writing document", e);
-                            }
-                        });
-
-
+                nextActivity();
 
 
             }

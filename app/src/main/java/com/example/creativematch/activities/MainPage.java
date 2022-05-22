@@ -1,8 +1,5 @@
 package com.example.creativematch.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,12 +9,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.RecentConversationsAdapter;
-import com.example.creativematch.databinding.ActivityMainBinding;
 import com.example.creativematch.databinding.ActivityMainPage2Binding;
 import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.listeners.ConversionListener;
@@ -31,6 +30,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -115,8 +115,8 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
     }
 
     private void listenConversations(){
-        database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
-                .whereEqualTo(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.Key_USER_ID))
+        database.collection(Constants.KEY_COLLECTION_USERS)
+                .document(preferenceManager.getString(Constants.Key_USER_ID))
                 .addSnapshotListener(eventListener);
         database.collection(Constants.KEY_COLLECTION_CONVERSATIONS)
                 .whereEqualTo(Constants.KEY_RECEIVER_ID, preferenceManager.getString(Constants.Key_USER_ID))
@@ -124,49 +124,50 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
     }
 
     //slightly different from tutorial 24:30 vid 10 check if error
-    private final EventListener<QuerySnapshot> eventListener = ((value, error) -> {
-        if (error!= null){
-            return;
-        }
-        if (value!= null){
-            for (DocumentChange documentChange : value.getDocumentChanges()){
-                if(documentChange.getType()==DocumentChange.Type.ADDED){
-                    String senderId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
-                    String receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
-                    ChatMessage chatMessage = new ChatMessage();
-                    chatMessage.senderId = senderId;
-                    chatMessage.receiverId = receiverId;
-                    if(preferenceManager.getString(Constants.Key_USER_ID).equals(senderId)){
-                        chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_RECEIVER_IMAGE);
-                        chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_RECEIVER_NAME);
-                        chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
-                    }
-                    else {
-                        chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_SENDER_IMAGE);
-                        chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_SENDER_NAME);
-                        chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
-                    }
-                    chatMessage.message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
-                    chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
-                    conversations.add(chatMessage);
-                }
-                else if (documentChange.getType()== DocumentChange.Type.MODIFIED){
-                    for (int i = 0; i < conversations.size(); i++){
+    private final EventListener<DocumentSnapshot> eventListener = (new EventListener<DocumentSnapshot>() {
+        @Override
+        public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+            if (error != null) {
+                return;
+            }
+            if (value != null) {
+                for (DocumentChange documentChange : value.getDocument()) {
+                    if (documentChange.getType() == DocumentChange.Type.ADDED) {
                         String senderId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
                         String receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
-                        if(conversations.get(i).senderId.equals(senderId)&& conversations.get(i).receiverId.equals(receiverId)){
-                            conversations.get(i).message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
-                            conversations.get(i).dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
-                            break;
+                        ChatMessage chatMessage = new ChatMessage();
+                        chatMessage.senderId = senderId;
+                        chatMessage.receiverId = receiverId;
+                        if (preferenceManager.getString(Constants.Key_USER_ID).equals(senderId)) {
+                            chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_RECEIVER_IMAGE);
+                            chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_RECEIVER_NAME);
+                            chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
+                        } else {
+                            chatMessage.conversionImage = documentChange.getDocument().getString(Constants.KEY_SENDER_IMAGE);
+                            chatMessage.conversionName = documentChange.getDocument().getString(Constants.KEY_SENDER_NAME);
+                            chatMessage.conversionId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
+                        }
+                        chatMessage.message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
+                        chatMessage.dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
+                        conversations.add(chatMessage);
+                    } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
+                        for (int i = 0; i < conversations.size(); i++) {
+                            String senderId = documentChange.getDocument().getString(Constants.KEY_SENDER_ID);
+                            String receiverId = documentChange.getDocument().getString(Constants.KEY_RECEIVER_ID);
+                            if (conversations.get(i).senderId.equals(senderId) && conversations.get(i).receiverId.equals(receiverId)) {
+                                conversations.get(i).message = documentChange.getDocument().getString(Constants.KEY_LAST_MESSAGE);
+                                conversations.get(i).dateObject = documentChange.getDocument().getDate(Constants.KEY_TIMESTAMP);
+                                break;
+                            }
                         }
                     }
                 }
+                Collections.sort(conversations, (obj1, obj2) -> obj2.dateObject.compareTo(obj1.dateObject));
+                conversationsAdapter.notifyDataSetChanged();
+                binding.conversationsRecyclerView.smoothScrollToPosition(0);
+                binding.conversationsRecyclerView.setVisibility(View.VISIBLE);
+                binding.progressBar.setVisibility(View.GONE);
             }
-            Collections.sort(conversations, (obj1, obj2)->obj2.dateObject.compareTo(obj1.dateObject));
-            conversationsAdapter.notifyDataSetChanged();
-            binding.conversationsRecyclerView.smoothScrollToPosition(0);
-            binding.conversationsRecyclerView.setVisibility(View.VISIBLE);
-            binding.progressBar.setVisibility(View.GONE);
         }
     });
 

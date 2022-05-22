@@ -23,11 +23,10 @@ import com.example.creativematch.models.ViewPagerItem;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Random;
 
 public class SwipeLeftOrRightOne extends AppCompatActivity {
@@ -219,39 +218,43 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                         finalScreening.add(otherUsers.get(i));
                     }
                 }
-                String [] UIDs = new String[finalScreening.size()];
                 for (int i = 0; i < finalScreening.size(); i++) {
                     if (finalScreening.get(i).getUID() == null){
-                        finalScreening.get(i).setUID("123456789");
+                        Random rand = new Random();
+                        int upperbound = 10000;
+
+                        int int_random = rand.nextInt(upperbound);
+                        finalScreening.get(i).setUID(String.valueOf(int_random));
                     }
-                    UIDs[i] = finalScreening.get(i).getUID();
+                    db.collection("users").document(user.getUid()).update("uidList", FieldValue.arrayUnion(finalScreening.get(i).getUID()));
                 }
-                List<String> UIDList = Arrays.asList(UIDs);
 
-                db.collection("users").document(user.getUid()).update("uidList",  UIDList)
-                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                Log.d(TAG, "DocumentSnapshot successfully written!");
-                                nextActivity();
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.w(TAG, "Error writing document", e);
-                            }
-                        });
+                if(finalScreening.size() > 0){
+                    Log.d(TAG, "the uid of the last user picked is: " + finalScreening.get(finalScreening.size() - 1).getUID());
+                    db.collection("users").document(user.getUid()).update("uidList", FieldValue.arrayUnion(finalScreening.get(finalScreening.size() - 1).getUID()))
+                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                                    nextActivity();
+                                }
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.w(TAG, "Error writing document", e);
+                                }
+                            });
+                }
 
-
-
+                nextActivity();
 
             }
         });
     }
 
     public void nextActivity(){
-        Intent intent=new Intent(this, UsersActivity.class);
+        Intent intent=new Intent(this, MainPage.class);
         startActivity(intent);
     }
 

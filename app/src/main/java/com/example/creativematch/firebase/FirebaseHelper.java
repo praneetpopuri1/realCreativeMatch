@@ -3,6 +3,7 @@ package com.example.creativematch.firebase;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.Utilities.Constants;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,7 +21,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -365,7 +365,7 @@ public class FirebaseHelper {
         Log.d(TAG, "the personality of the users end of method are: " + personalityArray.toString());
     }
 
-    public void getOtherUsersUID(String[] uids, FirestoreCallbackMU firestoreCallbackMU){
+    public void getFriends(String[] uids, FirestoreCallbackMU firestoreCallbackMU){
         messagingUsers.clear();
         for (int i = 0; i < uids.length - 1; i++) {
             DocumentReference docRef = db.collection("users").document(uids[uids.length-1]);

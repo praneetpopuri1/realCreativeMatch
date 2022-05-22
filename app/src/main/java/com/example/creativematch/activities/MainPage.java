@@ -36,6 +36,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -162,7 +163,13 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
                         }
                     }
                 }
-                Collections.sort(conversations, (obj1, obj2) -> obj2.dateObject.compareTo(obj1.dateObject));
+                Collections.sort(conversations,
+                        new Comparator<ChatMessage>() {
+                            @Override
+                            public int compare(ChatMessage obj1, ChatMessage obj2) {
+                                return obj2.dateObject.compareTo(obj1.dateObject);
+                            }
+                        });
                 conversationsAdapter.notifyDataSetChanged();
                 binding.conversationsRecyclerView.smoothScrollToPosition(0);
                 binding.conversationsRecyclerView.setVisibility(View.VISIBLE);

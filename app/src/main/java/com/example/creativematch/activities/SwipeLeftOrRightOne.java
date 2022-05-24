@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -19,17 +18,15 @@ import com.example.creativematch.OtherUser;
 import com.example.creativematch.R;
 import com.example.creativematch.adapters.VPAdapter;
 import com.example.creativematch.firebase.FirebaseHelper;
+import com.example.creativematch.listeners.UserListener;
 import com.example.creativematch.models.ViewPagerItem;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-public class SwipeLeftOrRightOne extends AppCompatActivity {
+public class SwipeLeftOrRightOne extends AppCompatActivity implements UserListener {
 
     public static FirebaseHelper firebaseHelper;
     public final String TAG = "Denna";
@@ -79,7 +76,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                                                             public void onCallback(ArrayList<String> profession) {
                                                                 otherUsers =  fillUsers(profession.get(0), otherUsers);
                                                                 populateViewPager(otherUsers);
-                                                                submitButton(button, otherUsers, user);
+                                                                //submitButton(button, otherUsers, user);
 
                                                             }
                                                         });
@@ -92,7 +89,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
                                                             public void onCallback(ArrayList<String> profession) {
                                                                 otherUsers =  fillUsers(profession.get(0), otherUsers);
                                                                 populateViewPager(otherUsers);
-                                                                submitButton(button, otherUsers, user);
+                                                                //submitButton(button, otherUsers, user);
 
                                                             }
                                                         });
@@ -111,7 +108,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
 
                                             otherUsers = fillUsers(profession.get(0),otherUsers);
                                             populateViewPager(otherUsers);
-                                            submitButton(button, otherUsers, user);
+                                            //submitButton(button, otherUsers, user);
 
                                         }
                                     });
@@ -193,7 +190,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
 
 
         }
-        VPAdapter vpAdapter = new VPAdapter(viewPagerItemArrayList);
+        VPAdapter vpAdapter = new VPAdapter(viewPagerItemArrayList, this);
 
         viewPager2.setAdapter(vpAdapter);
 
@@ -207,7 +204,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
 
 
     }
-
+    /*
     public void submitButton(@NonNull Button button, ArrayList<OtherUser> otherUsers, FirebaseUser user) {
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -253,9 +250,22 @@ public class SwipeLeftOrRightOne extends AppCompatActivity {
         });
     }
 
+
     public void nextActivity(){
         Intent intent=new Intent(this, MainPage.class);
         startActivity(intent);
     }
 
+     */
+
+    @Override
+    public void onUserClicked(OtherUser user) {
+    }
+
+    @Override
+    public void onUserClicked(int userSelected) {
+        Intent intent=new Intent(this, ChatActivity.class);
+        intent.putExtra("OtherUser", otherUsers.get(userSelected));
+        startActivity(intent);
+    }
 }

@@ -64,14 +64,14 @@ public class ChatActivity extends AppCompatActivity {
             chatAdapter = new ChatAdapter(
                     chatMessages,
                     bmap,
-                    " "
+                    preferenceManager.getString(Constants.Key_USER_ID)
             );
         }
         else{
             chatAdapter = new ChatAdapter(
                     chatMessages,
                     getBitmapFromEncodedString(receiverUser.getImage()),
-                    " "
+                    preferenceManager.getString(Constants.Key_USER_ID)
             );
         }
         preferenceManager = new PreferenceManager(getApplicationContext());

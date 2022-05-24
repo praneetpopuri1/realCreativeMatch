@@ -3,15 +3,15 @@ package com.example.creativematch.adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.creativematch.R;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.creativematch.R;
+import com.example.creativematch.listeners.UserListener;
 import com.example.creativematch.models.ViewPagerItem;
 
 import java.util.ArrayList;
@@ -19,9 +19,11 @@ import java.util.ArrayList;
 
 public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
     ArrayList<ViewPagerItem> viewPagerItemArrayList;
+    private final UserListener userListener;
 
-    public VPAdapter(ArrayList<ViewPagerItem> viewPagerItemArrayList) {
+    public VPAdapter(ArrayList<ViewPagerItem> viewPagerItemArrayList, UserListener userListener) {
         this.viewPagerItemArrayList = viewPagerItemArrayList;
+        this.userListener = userListener;
     }
 
     @NonNull
@@ -42,6 +44,7 @@ public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
         holder.imageView.setImageDrawable(viewPagerItem.imageID);
         holder.tcName.setText(viewPagerItem.name);
         holder.tvPro.setText(viewPagerItem.profession);
+        /*
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -49,6 +52,9 @@ public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
                 viewPagerItem.setChecked(isChecked);
             }
         });
+
+         */
+        holder.layout.setOnClickListener(view -> userListener.onUserClicked(position));
 
 
     }
@@ -62,7 +68,8 @@ public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
 
         ImageView imageView;
         TextView tcName, tvPro;
-        CheckBox checkBox;
+        //CheckBox checkBox;
+        ConstraintLayout layout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,7 +77,8 @@ public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
             imageView = itemView.findViewById(R.id.ivimage);
             tcName = itemView.findViewById(R.id.tvName);
             tvPro = itemView.findViewById(R.id.tvProfession);
-            checkBox = (CheckBox) itemView.findViewById(R.id.checkBox2);
+            layout = itemView.findViewById(R.id.viewPager);
+            //checkBox = (CheckBox) itemView.findViewById(R.id.checkBox2);
         }
     }
 }

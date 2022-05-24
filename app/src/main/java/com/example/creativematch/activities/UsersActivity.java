@@ -6,26 +6,19 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.creativematch.OtherUser;
-import com.example.creativematch.R;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.UsersAdapter;
 import com.example.creativematch.databinding.ActivityUsersBinding;
 import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.listeners.UserListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 public class UsersActivity extends AppCompatActivity implements UserListener {
 
@@ -66,7 +59,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
 
                                 Log.i(TAG, "Inside getRandomUsers, onCallBack the length of the array: " + listUsers.size() + " these are the users themselves " + listUsers.toString());
                                 otherUsers.addAll(listUsers);
-                                Button button = (Button) findViewById(R.id.submitButtonRecyclerView);
+                                //Button button = (Button) findViewById(R.id.submitButtonRecyclerView);
                                 if(otherUsers.size() < 20) {
                                     firebaseHelper.paginateQueery(personality.get(0), personality.get(1), personality.get(2), j,
                                             new FirebaseHelper.FirestoreCallbackOU() {
@@ -84,8 +77,8 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                                                                 otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
                                                                 setRecyclerView(otherUsers);
                                                                 loading(false);
-                                                                button.setVisibility(View.VISIBLE);
-                                                                submitButton(button, otherUsers ,user);
+                                                                //button.setVisibility(View.VISIBLE);
+                                                                //submitButton(button, otherUsers ,user);
                                                             }
                                                         });
 
@@ -98,8 +91,8 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                                                                 otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
                                                                 setRecyclerView(otherUsers);
                                                                 loading(false);
-                                                                button.setVisibility(View.VISIBLE);
-                                                                submitButton(button, otherUsers ,user);
+                                                                //button.setVisibility(View.VISIBLE);
+                                                                //submitButton(button, otherUsers ,user);
                                                             }
                                                         });
 
@@ -117,8 +110,8 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
                                             otherUsers =  swipeLeftOrRightOne.fillUsers(profession.get(0), otherUsers);
                                             setRecyclerView(otherUsers);
                                             loading(false);
-                                            button.setVisibility(View.VISIBLE);
-                                            submitButton(button, otherUsers ,user);
+                                            //button.setVisibility(View.VISIBLE);
+                                            //submitButton(button, otherUsers ,user);
                                         }
                                     });
 
@@ -142,7 +135,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
         binding.usersRecycleView.setAdapter(usersAdapter);
         binding.usersRecycleView.setVisibility(View.VISIBLE);
     }
-
+    /*
     public void submitButton(@NonNull Button button, ArrayList<OtherUser> otherUsers, FirebaseUser user) {
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +182,7 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
             }
         });
     }
+     */
     public void nextActivity(OtherUser user){
         Intent intent=new Intent(this, BioPage.class);
         intent.putExtra("OtherUser", user);
@@ -252,5 +246,10 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
         intent.putExtra("OtherUser", user);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onUserClicked(int userSelected) {
+
     }
 }

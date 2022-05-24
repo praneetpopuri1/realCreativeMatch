@@ -1,36 +1,29 @@
 package com.example.creativematch.adapters;
 
-import android.app.WallpaperManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.content.Context;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.R;
-import com.example.creativematch.activities.UsersActivity;
 import com.example.creativematch.databinding.ItemContainerUserBinding;
 import com.example.creativematch.listeners.UserListener;
-import com.example.creativematch.models.User;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHolder>{
 
     private final ArrayList<OtherUser> users;
     private final UserListener userListener;
+    public final String TAG = "Denna";
+
 
     public UsersAdapter(ArrayList<OtherUser> users, UserListener userListener){
         this.users = users;
@@ -50,8 +43,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
     @Override
     public void onBindViewHolder(@NonNull UsersAdapter.UserViewHolder holder, int position) {
-        OtherUser user = users.get(position);
         holder.setUserData(users.get(position));
+        /*
+        OtherUser user = users.get(position);
+
         holder.checkBox.setOnCheckedChangeListener(null);
 
         //if true, your checkbox will be selected, else unselected
@@ -64,6 +59,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
                 user.setChecked(isChecked);
             }
         });
+         */
 
 
 
@@ -87,8 +83,10 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
 
         void setUserData(OtherUser user){
             binding.textName.setText(user.getName());
-            binding.textEmail.setText(user.getEmail());
+            Log.d(TAG, "the users name is setUserData is: " + user.getName());
+            binding.textProfession.setText(user.getProfession());
             Bitmap bitmap = getUserImage(user.getImage());
+            Log.d(TAG, "the users image is setUserData is: " + user.getImage());
             if(bitmap == null){
                 binding.imageProfile.setImageResource(R.drawable.featured);
             }

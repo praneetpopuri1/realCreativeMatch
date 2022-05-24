@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.creativematch.OtherUser;
@@ -30,7 +29,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -181,10 +179,9 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
 
     private void updateToken (String token){
         FirebaseFirestore database = FirebaseFirestore.getInstance();
+        FirebaseUser usersAuth = firebaseHelper.getmAuth().getCurrentUser();
         DocumentReference documentReference =
-                database.collection(Constants.KEY_COLLECTION_USERS).document(
-                        preferenceManager.getString(Constants.Key_USER_ID)
-                );
+                database.collection(Constants.KEY_COLLECTION_USERS).document(usersAuth.getUid());
         documentReference.update(Constants.KEY_FCM_TOKEN, token)
                 .addOnFailureListener(e -> showToast("Unable to update token"));
     }

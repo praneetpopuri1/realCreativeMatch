@@ -1,8 +1,5 @@
 package com.example.creativematch.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,10 +7,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.creativematch.R;
 import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.firebase.FirebaseHelper;
-import com.example.creativematch.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -76,8 +76,8 @@ public class SignIn extends AppCompatActivity {
                                             DocumentSnapshot document = task.getResult();
                                             Log.d(TAG, document.getData().toString());
                                             preferenceManager.putString(Constants.KEY_IMAGE,document.getString(Constants.KEY_IMAGE));
-
-                                            preferenceManager.putString(Constants.KEY_IMAGE,document.getString(Constants.KEY_NAME));
+                                            preferenceManager.putString(Constants.Key_USER_ID,document.getString("UID"));
+                                            preferenceManager.putString(Constants.KEY_NAME,document.getString(Constants.KEY_NAME));
                                             //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
                                         } else {
                                             Log.d(TAG, "get failed with ", task.getException());

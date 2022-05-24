@@ -210,8 +210,10 @@ public class MainPage extends AppCompatActivity implements ConversionListener {
 
     @Override
     public void onConversionClicked(OtherUser user) {
+
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
         intent.putExtra(Constants.KEY_USER, user);
         startActivity(intent);
+        finish();
     }
 }

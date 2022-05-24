@@ -78,7 +78,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.UserViewHold
         UserViewHolder(ItemContainerUserBinding itemContainerUserBinding){
             super(itemContainerUserBinding.getRoot());
             binding = itemContainerUserBinding;
-            checkBox = (CheckBox) itemView.findViewById(R.id.RecyclerViewCheckBox);
+            //checkBox = (CheckBox) itemView.findViewById(R.id.RecyclerViewCheckBox);
         }
 
         void setUserData(OtherUser user){

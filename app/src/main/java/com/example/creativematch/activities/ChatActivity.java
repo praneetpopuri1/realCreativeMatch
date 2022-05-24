@@ -1,9 +1,11 @@
 package com.example.creativematch.activities;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -15,6 +17,7 @@ import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.ChatAdapter;
 import com.example.creativematch.databinding.ActivityChatBinding;
+import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.models.ChatMessage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentChange;
@@ -40,15 +43,19 @@ public class ChatActivity extends AppCompatActivity {
     private ChatAdapter chatAdapter;
     private PreferenceManager preferenceManager;
     private FirebaseFirestore database;
+    public final String TAG = "Denna";
     private String conversionId = null;
+    public FirebaseHelper firebaseHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        receiverUser = (OtherUser) getIntent().getSerializableExtra("otherUser");
         binding = ActivityChatBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        firebaseHelper = new FirebaseHelper();
         setListeners();
-        receiverUser = (OtherUser) getIntent().getSerializableExtra("OtherUser");
+        Log.d(TAG, "in chat activity onCreate otherUser is: " + receiverUser);
         binding.textName.setText(receiverUser.getName());
         init();
         listenMessages();
@@ -64,14 +71,14 @@ public class ChatActivity extends AppCompatActivity {
             chatAdapter = new ChatAdapter(
                     chatMessages,
                     bmap,
-                    preferenceManager.getString(Constants.Key_USER_ID)
+                    firebaseHelper.getmAuth().getUid()
             );
         }
         else{
             chatAdapter = new ChatAdapter(
                     chatMessages,
                     getBitmapFromEncodedString(receiverUser.getImage()),
-                    preferenceManager.getString(Constants.Key_USER_ID)
+                    firebaseHelper.getmAuth().getUid()
             );
         }
         preferenceManager = new PreferenceManager(getApplicationContext());
@@ -156,6 +163,7 @@ public class ChatActivity extends AppCompatActivity {
     };
 
     private Bitmap getBitmapFromEncodedString(String encodedImage){
+        Log.d(TAG, "the encoded image is : " + encodedImage);
         if( encodedImage == null) {
             return null;
         }
@@ -170,9 +178,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void setListeners(){
-        binding.imageBack.setOnClickListener(v->onBackPressed());
+        binding.imageBack.setOnClickListener(v-> startActivity(new Intent(getApplicationContext(), MainPage.class)));
         binding.layoutSend.setOnClickListener(v->sendMessage());
     }
+
 
     private String getReadableDateTime(Date date){
         return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);

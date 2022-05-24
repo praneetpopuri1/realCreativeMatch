@@ -1,9 +1,5 @@
 package com.example.creativematch;
 
-import androidx.annotation.NonNull;
-
-import com.example.creativematch.models.User;
-
 import java.io.Serializable;
 
 public class OtherUser implements Serializable {
@@ -76,13 +72,17 @@ public class OtherUser implements Serializable {
         return agreeableness;
     }
 
-    @NonNull
     @Override
     public String toString() {
         return "OtherUser{" +
                 "profession='" + profession + '\'' +
                 ", name='" + name + '\'' +
-                ", email" + email +'\'' +
+                ", email='" + email + '\'' +
+                ", description='" + description + '\'' +
+                ", image='" + image + '\'' +
+                ", token='" + token + '\'' +
+                ", UID='" + UID + '\'' +
+                ", isChecked=" + isChecked +
                 ", agreeableness=" + agreeableness +
                 ", openness=" + openness +
                 ", conscientiousness=" + conscientiousness +

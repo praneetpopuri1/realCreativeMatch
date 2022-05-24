@@ -1,19 +1,16 @@
 package com.example.creativematch.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.creativematch.OtherUser;
 import com.example.creativematch.R;
 import com.example.creativematch.databinding.ActivityBioPageBinding;
-import com.example.creativematch.databinding.ActivityUsersBinding;
-
-import java.util.ArrayList;
 
 public class BioPage extends AppCompatActivity {
 
@@ -55,7 +52,7 @@ public class BioPage extends AppCompatActivity {
 
     private void Like(){
         Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-        intent.putExtra("OtherUser", otherUser);
+        intent.putExtra("otherUser", otherUser);
         startActivity(intent);
         finish();
     }

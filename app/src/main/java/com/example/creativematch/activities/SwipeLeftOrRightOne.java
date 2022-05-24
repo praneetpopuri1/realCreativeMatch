@@ -260,6 +260,9 @@ public class SwipeLeftOrRightOne extends AppCompatActivity implements UserListen
 
     @Override
     public void onUserClicked(OtherUser user) {
+        Intent intent=new Intent(this, ChatActivity.class);
+        intent.putExtra("OtherUser", user);
+        startActivity(intent);
     }
 
     @Override

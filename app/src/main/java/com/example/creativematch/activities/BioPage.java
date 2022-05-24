@@ -27,6 +27,7 @@ public class BioPage extends AppCompatActivity {
         setContentView(binding.getRoot());
         otherUser = (OtherUser) getIntent().getSerializableExtra("OtherUser");
         binding.NameID.setText(otherUser.getName());
+        binding.UserBioID.setText(otherUser.getDescription())
         Bitmap bitmap = getUserImage(otherUser.getImage());
         if(bitmap == null){
             binding.imageView.setImageResource(R.drawable.featured);

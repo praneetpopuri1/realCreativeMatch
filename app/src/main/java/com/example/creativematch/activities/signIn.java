@@ -10,28 +10,37 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.creativematch.Utilities.Constants;
+import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.firebase.FirebaseHelper;
 import com.example.creativematch.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class SignIn extends AppCompatActivity {
 
     public static FirebaseHelper firebaseHelper;
     public final String TAG = "Denna";
     private EditText emailET, passwordET;
+    private FirebaseFirestore db;
+    private PreferenceManager preferenceManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         firebaseHelper = new FirebaseHelper();
+        db = FirebaseFirestore.getInstance();
     }
 
 
 
 
     public void signIn(View v) {
+        preferenceManager = new PreferenceManager(getApplicationContext());
         // Note we don't care what they entered for name here
         // it could be blank
         emailET = findViewById(R.id.emailET);
@@ -57,6 +66,24 @@ public class SignIn extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()){
+                                DocumentReference docRef = db.collection("users").document(firebaseHelper.getmAuth().getCurrentUser().getUid());
+                                docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        Log.d(TAG, "on complete ran inside get personality");
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            Log.d(TAG, document.getData().toString());
+                                            preferenceManager.putString(Constants.KEY_IMAGE,document.getString(Constants.KEY_IMAGE));
+
+                                            preferenceManager.putString(Constants.KEY_IMAGE,document.getString(Constants.KEY_NAME));
+                                            //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
+                                        } else {
+                                            Log.d(TAG, "get failed with ", task.getException());
+                                        }
+                                    }
+                                });
 
                                 Log.i(TAG, email + " logged in");
 

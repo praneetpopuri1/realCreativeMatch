@@ -78,6 +78,8 @@ public class SignIn extends AppCompatActivity {
                                             preferenceManager.putString(Constants.KEY_IMAGE,document.getString(Constants.KEY_IMAGE));
                                             preferenceManager.putString(Constants.Key_USER_ID,document.getString("UID"));
                                             preferenceManager.putString(Constants.KEY_NAME,document.getString(Constants.KEY_NAME));
+                                            Intent intent = new Intent(SignIn.this, MainPage.class);
+                                            startActivity(intent);
                                             //Log.d(TAG, "the openness of the users is: " + document.getString("openness"));
                                         } else {
                                             Log.d(TAG, "get failed with ", task.getException());
@@ -89,8 +91,7 @@ public class SignIn extends AppCompatActivity {
 
 
 
-                                Intent intent = new Intent(SignIn.this, MainPage.class);
-                                startActivity(intent);
+
                             }
                             else{
                                 Log.d(TAG, "sign In failed for " + email + " " + password);

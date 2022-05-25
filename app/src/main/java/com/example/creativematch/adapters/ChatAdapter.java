@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.creativematch.databinding.ItemContainerReceivedMessageBinding;
+import com.example.creativematch.databinding.ItemContainerSentMessageBinding;
 import com.example.creativematch.models.ChatMessage;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType==View_Type_Sent){
             return new SentMessageViewHolder(
-                    ItemContainerReceivedMessageBinding.inflate(
+                    ItemContainerSentMessageBinding.inflate(
                             LayoutInflater.from(parent.getContext()),
                             parent,
                             false
@@ -78,11 +79,11 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     static class SentMessageViewHolder extends RecyclerView.ViewHolder{
 
-        private final ItemContainerReceivedMessageBinding binding;
+        private final ItemContainerSentMessageBinding binding;
 
-        SentMessageViewHolder(ItemContainerReceivedMessageBinding  itemContainerReceivedMessageBinding){
-            super(itemContainerReceivedMessageBinding.getRoot());
-            binding = itemContainerReceivedMessageBinding;
+        SentMessageViewHolder(ItemContainerSentMessageBinding  itemContainerSentMessageBinding){
+            super(itemContainerSentMessageBinding.getRoot());
+            binding = itemContainerSentMessageBinding;
         }
 
         void setData(ChatMessage chatMessage){

@@ -7,12 +7,10 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.creativematch.OtherUser;
-import com.example.creativematch.R;
 import com.example.creativematch.Utilities.Constants;
 import com.example.creativematch.Utilities.PreferenceManager;
 import com.example.creativematch.adapters.ChatAdapter;
@@ -52,8 +50,11 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         receiverUser = (OtherUser) getIntent().getSerializableExtra("otherUser");
         binding = ActivityChatBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+        preferenceManager = new PreferenceManager(this);
         firebaseHelper = new FirebaseHelper();
+        preferenceManager.putString(Constants.Key_USER_ID, firebaseHelper.getmAuth().getUid());
+        loadReceiverDetails();
+        setContentView(binding.getRoot());
         setListeners();
         Log.d(TAG, "in chat activity onCreate otherUser is: " + receiverUser);
         binding.textName.setText(receiverUser.getName());
@@ -63,24 +64,6 @@ public class ChatActivity extends AppCompatActivity {
 
     private void init(){
 
-
-        if(getBitmapFromEncodedString(receiverUser.getImage()) == null){
-            ImageView imageView = new ImageView(this);
-            imageView.setImageResource(R.drawable.featured);
-            Bitmap bmap = imageView.getDrawingCache();
-            chatAdapter = new ChatAdapter(
-                    chatMessages,
-                    bmap,
-                    firebaseHelper.getmAuth().getUid()
-            );
-        }
-        else{
-            chatAdapter = new ChatAdapter(
-                    chatMessages,
-                    getBitmapFromEncodedString(receiverUser.getImage()),
-                    firebaseHelper.getmAuth().getUid()
-            );
-        }
         preferenceManager = new PreferenceManager(getApplicationContext());
         chatMessages = new ArrayList<>();
         chatAdapter = new ChatAdapter(
@@ -98,7 +81,7 @@ public class ChatActivity extends AppCompatActivity {
         message.put(Constants.KEY_RECEIVER_ID, receiverUser.getUID());
         message.put(Constants.KEY_MESSAGE, binding.inputMessage.getText().toString());
         message.put(Constants.KEY_TIMESTAMP, new Date());
-        database.collection(Constants.KEY_COLLECTION_USERS).add(message);
+        database.collection(Constants.KEY_COLLECTION_CHAT).add(message);
         if (conversionId != null){
             updateConversion(binding.inputMessage.getText().toString());
         }
@@ -118,7 +101,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void listenMessages(){
-        database.collection(Constants.KEY_COLLECTION_USERS)
+        database.collection(Constants.KEY_COLLECTION_CHAT)
                 .whereEqualTo(Constants.KEY_SENDER_ID, preferenceManager.getString(Constants.Key_USER_ID))
                 .whereEqualTo(Constants.KEY_RECEIVER_ID, receiverUser.getUID())
                 .addSnapshotListener(eventListener);
@@ -156,7 +139,7 @@ public class ChatActivity extends AppCompatActivity {
             }
             binding.chatRecyclerView.setVisibility(View.VISIBLE);
         }
-        binding.chatRecyclerView.setVisibility(View.GONE);
+        binding.progressBar.setVisibility(View.GONE);
         if(conversionId==null){
             checkForConversion();
         }
@@ -174,7 +157,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void loadReceiverDetails(){
-
+        receiverUser = (OtherUser) getIntent().getSerializableExtra(Constants.KEY_USER);
+        binding.textName.setText(receiverUser.getName());
     }
 
     private void setListeners(){
@@ -203,6 +187,7 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void checkForConversion(){
+        Log.d(TAG, " chat messages size is: "+ chatMessages.size());
         if (chatMessages.size()!= 0){
             checkForConversionRemotely(
                     preferenceManager.getString(Constants.Key_USER_ID),

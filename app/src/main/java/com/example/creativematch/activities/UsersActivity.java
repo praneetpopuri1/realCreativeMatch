@@ -250,6 +250,8 @@ public class UsersActivity extends AppCompatActivity implements UserListener {
 
     @Override
     public void onUserClicked(int userSelected) {
-
+        Intent intent=new Intent(this, ChatActivity.class);
+        intent.putExtra("OtherUser", otherUsers.get(userSelected));
+        startActivity(intent);
     }
 }

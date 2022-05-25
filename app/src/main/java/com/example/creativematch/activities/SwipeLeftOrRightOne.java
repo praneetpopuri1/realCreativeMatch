@@ -59,13 +59,17 @@ public class SwipeLeftOrRightOne extends AppCompatActivity implements UserListen
                             public void onCallback(ArrayList<OtherUser> listUsers) {
 
                                 Log.i(TAG, "Inside getRandomUsers, onCallBack the length of the array: " + listUsers.size() + " these are the users themselves " + listUsers.toString());
-                                otherUsers.addAll(listUsers);
+                                for (int i =0; i<listUsers.size()-1; i++) {
+                                    otherUsers.add(0, listUsers.get(i));
+                                }
                                 if(otherUsers.size() < 20) {
                                     firebaseHelper.paginateQueery(personality.get(0), personality.get(1), personality.get(2), j,
                                             new FirebaseHelper.FirestoreCallbackOU() {
                                                 @Override
                                                 public void onCallback(ArrayList<OtherUser> listUsers) {
-                                                    otherUsers = listUsers;
+                                                    for (int i =0; i<listUsers.size()-1; i++) {
+                                                        otherUsers.add(0, listUsers.get(i));
+                                                    }
                                                     Log.i(TAG, "Inside getRandomUsers, paginateQueery retrieves an array with length of: " + otherUsers.size() + " these are the users themselves " + otherUsers.toString());
 
                                                     if (otherUsers.size() < 20) {
@@ -95,6 +99,9 @@ public class SwipeLeftOrRightOne extends AppCompatActivity implements UserListen
                                                         });
 
                                                     }
+                                                    for (int i =0; i<listUsers.size()-1; i++) {
+                                                        otherUsers.add(0, listUsers.get(i));
+                                                    }
                                                 }
 
                                             });
@@ -113,6 +120,9 @@ public class SwipeLeftOrRightOne extends AppCompatActivity implements UserListen
                                         }
                                     });
 
+                                }
+                                for (int i =0; i<listUsers.size()-1; i++) {
+                                    otherUsers.add(0, listUsers.get(i));
                                 }
                             }
                         } );
@@ -260,6 +270,7 @@ public class SwipeLeftOrRightOne extends AppCompatActivity implements UserListen
 
     @Override
     public void onUserClicked(OtherUser user) {
+        Log.d(TAG, "checkpoint12");
         Intent intent=new Intent(this, ChatActivity.class);
         intent.putExtra("OtherUser", user);
         startActivity(intent);
@@ -267,8 +278,10 @@ public class SwipeLeftOrRightOne extends AppCompatActivity implements UserListen
 
     @Override
     public void onUserClicked(int userSelected) {
-        Intent intent=new Intent(this, ChatActivity.class);
+        Log.d(TAG, "checkpoint11");
+        Intent intent=new Intent(this, BioPage.class);
         intent.putExtra("OtherUser", otherUsers.get(userSelected));
+        Log.d(TAG, "Other User is "+ otherUsers.get(userSelected).toString() +" Please");
         startActivity(intent);
     }
 }

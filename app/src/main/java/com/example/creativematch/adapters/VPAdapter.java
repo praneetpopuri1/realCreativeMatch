@@ -1,5 +1,6 @@
 package com.example.creativematch.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ import java.util.ArrayList;
 public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
     ArrayList<ViewPagerItem> viewPagerItemArrayList;
     private final UserListener userListener;
-
+    private final String TAG = "Denna";
     public VPAdapter(ArrayList<ViewPagerItem> viewPagerItemArrayList, UserListener userListener) {
         this.viewPagerItemArrayList = viewPagerItemArrayList;
         this.userListener = userListener;
@@ -39,11 +40,15 @@ public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        Log.d(TAG, "checkpoint1");
         ViewPagerItem viewPagerItem = viewPagerItemArrayList.get(position);
-
+        Log.d(TAG, "checkpoint2");
         holder.imageView.setImageDrawable(viewPagerItem.imageID);
+        Log.d(TAG, "checkpoint3");
         holder.tcName.setText(viewPagerItem.name);
+        Log.d(TAG, "checkpoint4");
         holder.tvPro.setText(viewPagerItem.profession);
+        Log.d(TAG, "checkpoint5");
         /*
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -54,8 +59,8 @@ public class VPAdapter extends RecyclerView.Adapter<VPAdapter.ViewHolder> {
         });
 
          */
-        holder.layout.setOnClickListener(view -> userListener.onUserClicked(position));
-
+        holder.layout.setOnClickListener(v -> userListener.onUserClicked(position));
+        Log.d(TAG, "checkpoint6");
 
     }
 
